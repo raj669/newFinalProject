@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Properties – Nepal Real Estate</title>
+  <meta name="description" content="Browse all available properties for sale and rent in Nepal. Filter by city, type, price and more." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">
+      🏠 Nepal<span>Estates</span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="properties.html">Properties</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== PAGE HEADER ===== -->
+<div class="page-header">
+  <div class="container">
+    <h1>All Properties</h1>
+    <p>Browse verified listings across Nepal — apartments, houses, villas, land &amp; commercial</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== FILTER BAR ===== -->
+  <div class="filter-bar" id="filter-bar">
+    <div class="filter-group">
+      <label for="f-status">Status</label>
+      <select id="f-status">
+        <option value="">All</option>
+        <option value="sale">For Sale</option>
+        <option value="rent">For Rent</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="f-type">Type</label>
+      <select id="f-type">
+        <option value="">All Types</option>
+        <option value="apartment">Apartment</option>
+        <option value="house">House</option>
+        <option value="villa">Villa</option>
+        <option value="commercial">Commercial</option>
+        <option value="land">Land</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="f-city">City</label>
+      <select id="f-city">
+        <option value="">All Cities</option>
+        <option value="Kathmandu">Kathmandu</option>
+        <option value="Lalitpur">Lalitpur</option>
+        <option value="Bhaktapur">Bhaktapur</option>
+        <option value="Pokhara">Pokhara</option>
+        <option value="Biratnagar">Biratnagar</option>
+        <option value="Butwal">Butwal</option>
+        <option value="Birgunj">Birgunj</option>
+        <option value="Dharan">Dharan</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="f-bedrooms">Min Bedrooms</label>
+      <select id="f-bedrooms">
+        <option value="">Any</option>
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+        <option value="4">4+</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="f-minprice">Min Price (NPR)</label>
+      <input type="number" id="f-minprice" placeholder="e.g. 5000000" min="0" />
+    </div>
+    <div class="filter-group">
+      <label for="f-maxprice">Max Price (NPR)</label>
+      <input type="number" id="f-maxprice" placeholder="e.g. 30000000" min="0" />
+    </div>
+    <div class="filter-group" style="justify-content:flex-end;">
+      <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+    </div>
+  </div>
+
+  <!-- ===== RESULTS INFO ===== -->
+  <div id="results-info" style="margin-bottom:1rem;color:var(--muted);font-size:.9rem;"></div>
+
+  <!-- ===== PROPERTY GRID ===== -->
+  <div id="properties-grid" class="properties-grid">
+    <div class="loading-container"><div class="spinner"></div></div>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>🏠 Nepal<span style="color:var(--accent)">Estates</span></h4>
+        <p>Your trusted partner for buying, selling, and renting properties across Nepal since 2014.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="properties.html">Properties</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Property Types</h4>
+        <ul>
+          <li><a href="properties.html?type=apartment">Apartments</a></li>
+          <li><a href="properties.html?type=house">Houses</a></li>
+          <li><a href="properties.html?type=villa">Villas</a></li>
+          <li><a href="properties.html?type=land">Land</a></li>
+          <li><a href="properties.html?type=commercial">Commercial</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <ul>
+          <li>📞 +977-1-4XXXXXX</li>
+          <li>📧 info@nepalestates.com.np</li>
+          <li>📍 Kathmandu, Nepal</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider" />
+    <div class="footer-bottom">
+      <span class="footer-bottom-brand">🏠 Nepal<span style="color:var(--accent)">Estates</span></span>
+      <span>© 2024 NepalEstates. All rights reserved. Made with <span class="nepal-flag-dot"></span> for Nepal 🇳🇵</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  // Full property list – used as fallback when the server is not running
+  const ALL_PROPERTIES = [
+    { id:1,  title:"Modern Apartment in Thamel",        type:"apartment",  status:"sale",  price:8500000,  bedrooms:2, bathrooms:2, area:850,  areaUnit:"sqft", city:"Kathmandu", address:"Thamel, Kathmandu",          featured:true  },
+    { id:2,  title:"Spacious House in Lalitpur",        type:"house",      status:"sale",  price:25000000, bedrooms:4, bathrooms:3, area:2400, areaUnit:"sqft", city:"Lalitpur",  address:"Jhamsikhel, Lalitpur",        featured:true  },
+    { id:3,  title:"Commercial Space in New Baneshwor", type:"commercial", status:"rent",  price:120000,   bedrooms:0, bathrooms:2, area:1200, areaUnit:"sqft", city:"Kathmandu", address:"New Baneshwor, Kathmandu",    featured:true  },
+    { id:4,  title:"Cozy Studio Apartment in Bouddha",  type:"apartment",  status:"rent",  price:18000,    bedrooms:1, bathrooms:1, area:450,  areaUnit:"sqft", city:"Kathmandu", address:"Bouddha, Kathmandu",          featured:false },
+    { id:5,  title:"Luxury Villa in Godavari",          type:"villa",      status:"sale",  price:65000000, bedrooms:5, bathrooms:5, area:5000, areaUnit:"sqft", city:"Lalitpur",  address:"Godavari, Lalitpur",          featured:true  },
+    { id:6,  title:"Land Plot in Bhaktapur",            type:"land",       status:"sale",  price:15000000, bedrooms:0, bathrooms:0, area:4,    areaUnit:"aana", city:"Bhaktapur", address:"Suryabinayak, Bhaktapur",     featured:false },
+    { id:7,  title:"3-BHK Flat in Pokhara",            type:"apartment",  status:"sale",  price:12000000, bedrooms:3, bathrooms:2, area:1100, areaUnit:"sqft", city:"Pokhara",   address:"Lakeside, Pokhara",           featured:true  },
+    { id:8,  title:"Office Space in Durbar Marg",       type:"commercial", status:"rent",  price:250000,   bedrooms:0, bathrooms:3, area:2500, areaUnit:"sqft", city:"Kathmandu", address:"Durbar Marg, Kathmandu",      featured:false },
+    { id:9,  title:"Residential House in Biratnagar",   type:"house",      status:"sale",  price:9500000,  bedrooms:3, bathrooms:2, area:1600, areaUnit:"sqft", city:"Biratnagar",address:"Traffic Chowk, Biratnagar",   featured:false },
+    { id:10, title:"Shop Space in Butwal",               type:"commercial", status:"rent",  price:35000,    bedrooms:0, bathrooms:1, area:400,  areaUnit:"sqft", city:"Butwal",    address:"Traffic Chowk, Butwal",       featured:false },
+    { id:11, title:"2-BHK Apartment in Lazimpat",       type:"apartment",  status:"rent",  price:35000,    bedrooms:2, bathrooms:2, area:900,  areaUnit:"sqft", city:"Kathmandu", address:"Lazimpat, Kathmandu",         featured:false },
+    { id:12, title:"Family House in Chitwan",           type:"house",      status:"sale",  price:14000000, bedrooms:4, bathrooms:3, area:2000, areaUnit:"sqft", city:"Bharatpur", address:"Narayangadh, Bharatpur",      featured:true  },
+    { id:13, title:"Residential Land in Dharan",        type:"land",       status:"sale",  price:6000000,  bedrooms:0, bathrooms:0, area:3,    areaUnit:"aana", city:"Dharan",    address:"Dharan-10, Sunsari",          featured:false },
+    { id:14, title:"Modern Villa in Banasthali",        type:"villa",      status:"rent",  price:180000,   bedrooms:4, bathrooms:4, area:3200, areaUnit:"sqft", city:"Kathmandu", address:"Banasthali, Kathmandu",       featured:true  },
+    { id:15, title:"Commercial Plot in Birgunj",        type:"commercial", status:"sale",  price:22000000, bedrooms:0, bathrooms:0, area:6,    areaUnit:"aana", city:"Birgunj",   address:"Adarshanagar, Birgunj",       featured:false },
+    { id:16, title:"Affordable Apartment in Bhairahawa",type:"apartment",  status:"sale",  price:5500000,  bedrooms:2, bathrooms:1, area:650,  areaUnit:"sqft", city:"Bhairahawa",address:"Siddharthanagar, Bhairahawa", featured:false },
+    { id:17, title:"Rental House in Hetauda",           type:"house",      status:"rent",  price:22000,    bedrooms:3, bathrooms:2, area:1400, areaUnit:"sqft", city:"Hetauda",   address:"Hetauda-4, Makwanpur",        featured:false },
+    { id:18, title:"Agricultural Land in Janakpur",     type:"land",       status:"sale",  price:4500000,  bedrooms:0, bathrooms:0, area:10,   areaUnit:"aana", city:"Janakpur",  address:"Janakpurdham, Dhanusha",      featured:false },
+    { id:19, title:"Office Space in Dhangadhi",         type:"commercial", status:"rent",  price:45000,    bedrooms:0, bathrooms:2, area:800,  areaUnit:"sqft", city:"Dhangadhi", address:"Dhangadhi-4, Kailali",        featured:false },
+    { id:20, title:"Premium Flat in Patan",             type:"apartment",  status:"sale",  price:18000000, bedrooms:3, bathrooms:3, area:1500, areaUnit:"sqft", city:"Lalitpur",  address:"Mangalbazar, Patan",          featured:true  },
+    { id:21, title:"New Construction House in Suryabinayak", type:"house", status:"sale",  price:19500000, bedrooms:4, bathrooms:3, area:2200, areaUnit:"sqft", city:"Bhaktapur", address:"Suryabinayak-6, Bhaktapur",  featured:false },
+    { id:22, title:"Hill-View Villa in Nuwakot",        type:"villa",      status:"sale",  price:38000000, bedrooms:4, bathrooms:4, area:3600, areaUnit:"sqft", city:"Bidur",     address:"Bidur-3, Nuwakot",            featured:true  },
+    { id:23, title:"1-BHK Apartment in Maharajgunj",   type:"apartment",  status:"rent",  price:16000,    bedrooms:1, bathrooms:1, area:500,  areaUnit:"sqft", city:"Kathmandu", address:"Maharajgunj, Kathmandu",      featured:false },
+    { id:24, title:"Farmland in Chitwan",               type:"land",       status:"sale",  price:8000000,  bedrooms:0, bathrooms:0, area:8,    areaUnit:"aana", city:"Bharatpur", address:"Madi, Chitwan",               featured:false },
+    { id:25, title:"Restaurant Space in Pokhara",       type:"commercial", status:"rent",  price:65000,    bedrooms:0, bathrooms:3, area:900,  areaUnit:"sqft", city:"Pokhara",   address:"Damside, Pokhara",            featured:true  },
+    { id:26, title:"Bungalow near Pokhara Airport",     type:"house",      status:"sale",  price:32000000, bedrooms:5, bathrooms:4, area:3000, areaUnit:"sqft", city:"Pokhara",   address:"Pokhara-32, Kaski",           featured:true  },
+    { id:27, title:"Studio Apartment in Dharan",        type:"apartment",  status:"sale",  price:3800000,  bedrooms:1, bathrooms:1, area:380,  areaUnit:"sqft", city:"Dharan",    address:"Dharan-8, Sunsari",           featured:false },
+    { id:28, title:"Duplex House in Itahari",           type:"house",      status:"rent",  price:28000,    bedrooms:3, bathrooms:2, area:1800, areaUnit:"sqft", city:"Itahari",   address:"Itahari-6, Sunsari",          featured:false },
+    { id:29, title:"Prime Land in Hetauda",             type:"land",       status:"sale",  price:9000000,  bedrooms:0, bathrooms:0, area:5,    areaUnit:"aana", city:"Hetauda",   address:"Hetauda-6, Makwanpur",        featured:false },
+    { id:30, title:"Showroom Space in Lalitpur",        type:"commercial", status:"sale",  price:28000000, bedrooms:0, bathrooms:2, area:1800, areaUnit:"sqft", city:"Lalitpur",  address:"Pulchowk, Lalitpur",          featured:true  },
+    { id:31, title:"Sky Penthouse in Lazimpat",          type:"apartment",  status:"sale",  price:35000000, bedrooms:3, bathrooms:3, area:2200, areaUnit:"sqft", city:"Kathmandu", address:"Lazimpat, Kathmandu",          featured:true  },
+    { id:32, title:"Heritage Newari Home in Bhaktapur",  type:"house",      status:"sale",  price:45000000, bedrooms:5, bathrooms:4, area:3500, areaUnit:"sqft", city:"Bhaktapur", address:"Dattatreya Square, Bhaktapur", featured:true  },
+    { id:33, title:"Eco-Resort Land in Bandipur",        type:"land",       status:"sale",  price:18000000, bedrooms:0, bathrooms:0, area:20,   areaUnit:"aana", city:"Bandipur",  address:"Bandipur-2, Tanahun",          featured:false },
+    { id:34, title:"Co-working Space in Thamel",         type:"commercial", status:"rent",  price:85000,    bedrooms:0, bathrooms:2, area:750,  areaUnit:"sqft", city:"Kathmandu", address:"Jyatha, Thamel, Kathmandu",   featured:false },
+    { id:35, title:"Mountain-View Apartment in Pokhara", type:"apartment",  status:"sale",  price:9500000,  bedrooms:2, bathrooms:2, area:950,  areaUnit:"sqft", city:"Pokhara",   address:"Birauta, Pokhara",             featured:true  },
+    { id:36, title:"Riverside Villa in Chitwan",         type:"villa",      status:"rent",  price:250000,   bedrooms:4, bathrooms:4, area:4000, areaUnit:"sqft", city:"Bharatpur", address:"Rapti Riverbank, Bharatpur",   featured:false },
+    { id:37, title:"Industrial Warehouse in Bhairahawa", type:"commercial", status:"rent",  price:120000,   bedrooms:0, bathrooms:2, area:3000, areaUnit:"sqft", city:"Bhairahawa",address:"Industrial Zone, Bhairahawa",  featured:false },
+    { id:38, title:"Luxury Townhouse in Patan",          type:"house",      status:"sale",  price:28000000, bedrooms:4, bathrooms:3, area:2600, areaUnit:"sqft", city:"Lalitpur",  address:"Sanepa, Lalitpur",             featured:false },
+    { id:39, title:"Studio near Tribhuvan University",   type:"apartment",  status:"rent",  price:12000,    bedrooms:1, bathrooms:1, area:320,  areaUnit:"sqft", city:"Kathmandu", address:"Kirtipur, Kathmandu",           featured:false },
+    { id:40, title:"Prime Commercial Corner in New Baneshwor", type:"commercial", status:"sale", price:55000000, bedrooms:0, bathrooms:4, area:4500, areaUnit:"sqft", city:"Kathmandu", address:"New Baneshwor, Kathmandu", featured:true },
+    // --- New listings IDs 41–70 ---
+    { id:41, title:"4-BHK Premium Flat in Jhamsikhel",       type:"apartment",  status:"sale",  price:22000000,  bedrooms:4, bathrooms:3, area:1800,  areaUnit:"sqft", city:"Lalitpur",         address:"Jhamsikhel, Lalitpur",              featured:false },
+    { id:42, title:"Budget Flat in Butwal",                    type:"apartment",  status:"rent",  price:8000,      bedrooms:1, bathrooms:1, area:350,   areaUnit:"sqft", city:"Butwal",           address:"Golpark, Butwal",                   featured:false },
+    { id:43, title:"Serviced Apartment in Lazimpat",           type:"apartment",  status:"rent",  price:55000,     bedrooms:2, bathrooms:2, area:950,   areaUnit:"sqft", city:"Kathmandu",        address:"Lazimpat, Kathmandu",               featured:true  },
+    { id:44, title:"New Build Flat in Pokhara Lakeside",       type:"apartment",  status:"sale",  price:11000000,  bedrooms:2, bathrooms:2, area:1050,  areaUnit:"sqft", city:"Pokhara",          address:"Lakeside-6, Pokhara",               featured:false },
+    { id:45, title:"Hill-Facing Flat in Dhulikhel",            type:"apartment",  status:"sale",  price:7500000,   bedrooms:2, bathrooms:1, area:720,   areaUnit:"sqft", city:"Dhulikhel",        address:"Dhulikhel Municipality-4",          featured:false },
+    { id:46, title:"Compact Studio near Balkumari",            type:"apartment",  status:"rent",  price:14000,     bedrooms:1, bathrooms:1, area:430,   areaUnit:"sqft", city:"Bhaktapur",        address:"Balkumari, Bhaktapur",              featured:false },
+    { id:47, title:"Colonial-Style House in Maharajgunj",      type:"house",      status:"sale",  price:38000000,  bedrooms:5, bathrooms:4, area:4200,  areaUnit:"sqft", city:"Kathmandu",        address:"Maharajgunj, Kathmandu",            featured:true  },
+    { id:48, title:"Row House in Banepa",                      type:"house",      status:"sale",  price:12000000,  bedrooms:3, bathrooms:2, area:1500,  areaUnit:"sqft", city:"Banepa",           address:"Banepa Municipality-6",             featured:false },
+    { id:49, title:"Bungalow in Siddharthanagar",              type:"house",      status:"sale",  price:18000000,  bedrooms:4, bathrooms:3, area:2800,  areaUnit:"sqft", city:"Bhairahawa",       address:"Siddharthanagar-8, Rupandehi",      featured:false },
+    { id:50, title:"Family Home in Birtamode",                 type:"house",      status:"sale",  price:8500000,   bedrooms:3, bathrooms:2, area:1400,  areaUnit:"sqft", city:"Birtamode",        address:"Birtamode-4, Jhapa",                featured:false },
+    { id:51, title:"Restored Rana-Era Mansion in Durbarmarg",  type:"house",      status:"sale",  price:120000000, bedrooms:8, bathrooms:6, area:8000,  areaUnit:"sqft", city:"Kathmandu",        address:"Durbarmarg, Kathmandu",             featured:true  },
+    { id:52, title:"Farmhouse in Dhading",                     type:"house",      status:"sale",  price:9000000,   bedrooms:3, bathrooms:2, area:1600,  areaUnit:"sqft", city:"Dhading Besi",     address:"Dhading Besi-5, Dhading",           featured:false },
+    { id:53, title:"Garden Villa in Godawari",                 type:"villa",      status:"rent",  price:200000,    bedrooms:4, bathrooms:4, area:3800,  areaUnit:"sqft", city:"Lalitpur",         address:"Godawari, Lalitpur",                featured:false },
+    { id:54, title:"Boutique Villa in Nagarkot",               type:"villa",      status:"sale",  price:55000000,  bedrooms:5, bathrooms:5, area:5500,  areaUnit:"sqft", city:"Nagarkot",         address:"Nagarkot-1, Bhaktapur",             featured:true  },
+    { id:55, title:"Infinity Pool Villa in Pokhara",           type:"villa",      status:"rent",  price:350000,    bedrooms:5, bathrooms:5, area:6000,  areaUnit:"sqft", city:"Pokhara",          address:"Sarangkot Road, Pokhara",           featured:true  },
+    { id:56, title:"Mountain-View Villa in Dhulikhel",         type:"villa",      status:"sale",  price:42000000,  bedrooms:4, bathrooms:4, area:4200,  areaUnit:"sqft", city:"Dhulikhel",        address:"Dhulikhel-7, Kavrepalanchok",       featured:false },
+    { id:57, title:"Lakefront Restaurant Space in Pokhara",    type:"commercial", status:"rent",  price:90000,     bedrooms:0, bathrooms:3, area:1100,  areaUnit:"sqft", city:"Pokhara",          address:"Lakeside-4, Pokhara",               featured:false },
+    { id:58, title:"Hotel Building in Thamel",                 type:"commercial", status:"sale",  price:150000000, bedrooms:0, bathrooms:20,area:12000, areaUnit:"sqft", city:"Kathmandu",        address:"Thamel Marg, Kathmandu",            featured:true  },
+    { id:59, title:"Petrol Station Site in Hetauda",           type:"commercial", status:"sale",  price:35000000,  bedrooms:0, bathrooms:2, area:8000,  areaUnit:"sqft", city:"Hetauda",          address:"Prithvi Highway, Hetauda",          featured:false },
+    { id:60, title:"Cold Storage Unit in Birtamode",           type:"commercial", status:"rent",  price:65000,     bedrooms:0, bathrooms:2, area:2000,  areaUnit:"sqft", city:"Birtamode",        address:"Industrial Area, Birtamode",        featured:false },
+    { id:61, title:"Pharmacy & Clinic Space in Koteshwor",     type:"commercial", status:"rent",  price:40000,     bedrooms:0, bathrooms:1, area:350,   areaUnit:"sqft", city:"Kathmandu",        address:"Koteshwor Chowk, Kathmandu",        featured:false },
+    { id:62, title:"Wedding & Event Venue in Bhaisepati",      type:"commercial", status:"rent",  price:500000,    bedrooms:0, bathrooms:10,area:20000, areaUnit:"sqft", city:"Lalitpur",         address:"Bhaisepati, Lalitpur",              featured:false },
+    { id:63, title:"Private School Building in Butwal",        type:"commercial", status:"sale",  price:45000000,  bedrooms:0, bathrooms:15,area:8000,  areaUnit:"sqft", city:"Butwal",           address:"Devinagar, Butwal",                 featured:false },
+    { id:64, title:"Tea Garden Estate in Ilam",                type:"land",       status:"sale",  price:25000000,  bedrooms:0, bathrooms:0, area:50,    areaUnit:"aana", city:"Ilam",             address:"Ilam-3, Ilam District",             featured:true  },
+    { id:65, title:"Highway Commercial Land in Narayanghat",   type:"land",       status:"sale",  price:30000000,  bedrooms:0, bathrooms:0, area:8,     areaUnit:"aana", city:"Narayanghat",      address:"Prithvi Highway, Narayanghat",      featured:false },
+    { id:66, title:"Agricultural Land near Lumbini",           type:"land",       status:"sale",  price:12000000,  bedrooms:0, bathrooms:0, area:15,    areaUnit:"aana", city:"Siddharthanagar",  address:"Lumbini Buffer Zone, Rupandehi",    featured:false },
+    { id:67, title:"Riverside Land on Kali Gandaki",           type:"land",       status:"sale",  price:8000000,   bedrooms:0, bathrooms:0, area:12,    areaUnit:"aana", city:"Baglung",          address:"Baglung-5, Baglung",                featured:false },
+    { id:68, title:"Hilltop Land in Nagarkot",                 type:"land",       status:"sale",  price:20000000,  bedrooms:0, bathrooms:0, area:6,     areaUnit:"aana", city:"Nagarkot",         address:"Nagarkot-2, Bhaktapur",             featured:false },
+    { id:69, title:"Industrial Plot in Simara SEZ",            type:"land",       status:"sale",  price:22000000,  bedrooms:0, bathrooms:0, area:10,    areaUnit:"aana", city:"Simara",           address:"Simara Industrial Zone, Bara",      featured:false },
+    { id:70, title:"Shopfront & Flat Combo in Pokhara Lakeside",type:"commercial",status:"rent",  price:75000,     bedrooms:2, bathrooms:2, area:1200,  areaUnit:"sqft", city:"Pokhara",          address:"Lakeside-3, Pokhara",               featured:false }
+  ];
+
+  // Client-side filter applied to inline data (used when server is not available)
+  function filterLocally() {
+    const status   = document.getElementById('f-status').value;
+    const type     = document.getElementById('f-type').value;
+    const city     = document.getElementById('f-city').value;
+    const bedrooms = parseInt(document.getElementById('f-bedrooms').value, 10);
+    const minPrice = parseInt(document.getElementById('f-minprice').value, 10);
+    const maxPrice = parseInt(document.getElementById('f-maxprice').value, 10);
+    return ALL_PROPERTIES.filter(function(p) {
+      if (status   && p.status !== status) return false;
+      if (type     && p.type   !== type)   return false;
+      if (city     && !p.city.toLowerCase().includes(city.toLowerCase())) return false;
+      if (!isNaN(bedrooms) && bedrooms > 0 && p.bedrooms < bedrooms) return false;
+      if (!isNaN(minPrice) && p.price < minPrice) return false;
+      if (!isNaN(maxPrice) && p.price > maxPrice) return false;
+      return true;
+    });
+  }
+
+  // Pre-fill filters from URL query params
+  function readUrlParams() {
+    const p = new URLSearchParams(location.search);
+    if (p.get('status'))   document.getElementById('f-status').value   = p.get('status');
+    if (p.get('type'))     document.getElementById('f-type').value     = p.get('type');
+    if (p.get('city'))     document.getElementById('f-city').value     = p.get('city');
+    if (p.get('bedrooms')) document.getElementById('f-bedrooms').value = p.get('bedrooms');
+    if (p.get('minPrice')) document.getElementById('f-minprice').value = p.get('minPrice');
+    if (p.get('maxPrice')) document.getElementById('f-maxprice').value = p.get('maxPrice');
+  }
+
+  function buildApiUrl() {
+    const params = new URLSearchParams();
+    const status   = document.getElementById('f-status').value;
+    const type     = document.getElementById('f-type').value;
+    const city     = document.getElementById('f-city').value;
+    const bedrooms = document.getElementById('f-bedrooms').value;
+    const minPrice = document.getElementById('f-minprice').value;
+    const maxPrice = document.getElementById('f-maxprice').value;
+    if (status)   params.set('status', status);
+    if (type)     params.set('type', type);
+    if (city)     params.set('city', city);
+    if (bedrooms) params.set('bedrooms', bedrooms);
+    if (minPrice) params.set('minPrice', minPrice);
+    if (maxPrice) params.set('maxPrice', maxPrice);
+    return '/api/properties?' + params.toString();
+  }
+
+  function renderList(list) {
+    const grid = document.getElementById('properties-grid');
+    const info = document.getElementById('results-info');
+    info.textContent = 'Showing ' + list.length + ' propert' + (list.length === 1 ? 'y' : 'ies');
+    if (list.length === 0) {
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="icon">🏠</div><h3>No properties found</h3><p>Try adjusting your filters to see more results.</p></div>';
+    } else {
+      grid.innerHTML = list.map(renderPropertyCard).join('');
+    }
+  }
+
+  function loadProperties() {
+    const grid = document.getElementById('properties-grid');
+    grid.innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
+    // Try live API; fall back to inline data + client-side filtering
+    fetch(buildApiUrl())
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        renderList(data.data || []);
+      })
+      .catch(function() {
+        renderList(filterLocally());
+      });
+  }
+
+  function applyFilters() {
+    const params = new URLSearchParams();
+    const status   = document.getElementById('f-status').value;
+    const type     = document.getElementById('f-type').value;
+    const city     = document.getElementById('f-city').value;
+    const bedrooms = document.getElementById('f-bedrooms').value;
+    const minPrice = document.getElementById('f-minprice').value;
+    const maxPrice = document.getElementById('f-maxprice').value;
+    if (status)   params.set('status', status);
+    if (type)     params.set('type', type);
+    if (city)     params.set('city', city);
+    if (bedrooms) params.set('bedrooms', bedrooms);
+    if (minPrice) params.set('minPrice', minPrice);
+    if (maxPrice) params.set('maxPrice', maxPrice);
+    history.replaceState(null, '', '?' + params.toString());
+    loadProperties();
+  }
+
+  readUrlParams();
+  loadProperties();
+</script>
+
+</body>
+</html>

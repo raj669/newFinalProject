@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us – Nepal Real Estate</title>
+  <meta name="description" content="Get in touch with NepalEstates. We're here to help you find your perfect property in Nepal." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">
+      🏠 Nepal<span>Estates</span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="properties.html">Properties</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== PAGE HEADER ===== -->
+<div class="page-header">
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p>We're here to help you find your perfect property in Nepal</p>
+  </div>
+</div>
+
+<div class="container" style="padding-bottom:3rem;">
+  <div class="contact-grid">
+
+    <!-- Contact Form -->
+    <div class="contact-form">
+      <h2>Send Us a Message</h2>
+      <div id="form-alert"></div>
+      <form id="contact-form" onsubmit="handleContactSubmit(event)" novalidate>
+        <div class="form-group">
+          <label for="c-name">Full Name *</label>
+          <input type="text" id="c-name" placeholder="Your full name" required maxlength="100" />
+        </div>
+        <div class="form-group">
+          <label for="c-email">Email Address *</label>
+          <input type="email" id="c-email" placeholder="your@email.com" required maxlength="150" />
+        </div>
+        <div class="form-group">
+          <label for="c-phone">Phone Number</label>
+          <input type="tel" id="c-phone" placeholder="+977 98XXXXXXXX" maxlength="20" />
+        </div>
+        <div class="form-group">
+          <label for="c-interest">I am interested in</label>
+          <select id="c-interest">
+            <option value="">Select an option</option>
+            <option value="buy">Buying a property</option>
+            <option value="rent">Renting a property</option>
+            <option value="sell">Selling my property</option>
+            <option value="list">Listing my property</option>
+            <option value="general">General enquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="c-message">Message *</label>
+          <textarea id="c-message" placeholder="Tell us what you're looking for…" required maxlength="2000"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+      </form>
+    </div>
+
+    <!-- Contact Info Cards -->
+    <div class="contact-info">
+      <div class="contact-info-card">
+        <div class="contact-info-icon">📞</div>
+        <div>
+          <h4>Phone</h4>
+          <p>+977-1-4XXXXXX (Office)</p>
+          <p>+977-98XXXXXXXX (Mobile)</p>
+        </div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-info-icon">📧</div>
+        <div>
+          <h4>Email</h4>
+          <p>info@nepalestates.com.np</p>
+          <p>support@nepalestates.com.np</p>
+        </div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-info-icon">📍</div>
+        <div>
+          <h4>Office Address</h4>
+          <p>Durbar Marg, Kathmandu</p>
+          <p>Nepal – 44600</p>
+        </div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-info-icon">🕐</div>
+        <div>
+          <h4>Office Hours</h4>
+          <p>Sun – Fri: 9:00 AM – 6:00 PM</p>
+          <p>Saturday: 10:00 AM – 4:00 PM</p>
+        </div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-info-icon">🇳🇵</div>
+        <div>
+          <h4>Serving All of Nepal</h4>
+          <p>Kathmandu Valley &bull; Pokhara &bull; Chitwan &bull; Biratnagar &bull; Butwal &bull; Birgunj &bull; Dharan &amp; more</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>🏠 NepalEstates</h4>
+        <p>Your trusted partner for buying, selling, and renting properties across Nepal.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="properties.html">Properties</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li>📞 +977-1-4XXXXXX</li>
+          <li>📧 info@nepalestates.com.np</li>
+          <li>📍 Kathmandu, Nepal</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 NepalEstates. All rights reserved. | Designed for Nepal 🇳🇵</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  function handleContactSubmit(e) {
+    e.preventDefault();
+    const alertEl = document.getElementById('form-alert');
+    const name    = document.getElementById('c-name').value.trim();
+    const email   = document.getElementById('c-email').value.trim();
+    const message = document.getElementById('c-message').value.trim();
+
+    if (!name || !email || !message) {
+      alertEl.innerHTML = '<div class="alert alert-error">Please fill in all required fields (Name, Email, Message).</div>';
+      return;
+    }
+
+    // Basic email validation
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alertEl.innerHTML = '<div class="alert alert-error">Please enter a valid email address.</div>';
+      return;
+    }
+
+    // Simulate successful submission (in a real app this would POST to /api/contact)
+    alertEl.innerHTML = '<div class="alert alert-success">✅ Thank you! We have received your message and will get back to you within 1-2 business days.</div>';
+    document.getElementById('contact-form').reset();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nepal Real Estate – Buy, Sell & Rent Properties in Nepal</title>
+  <meta name="description" content="Find your dream property in Nepal. Buy, sell or rent apartments, houses, villas, land and commercial properties across Kathmandu, Pokhara, Lalitpur and more." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">
+      🏠 Nepal<span>Estates</span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="properties.html">Properties</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">🇳🇵 Nepal's #1 Property Platform</div>
+    <h1>Find Your Dream Property<br/><span>in Nepal</span></h1>
+    <p>Browse hundreds of verified listings across Kathmandu, Pokhara, Lalitpur and beyond — apartments, houses, villas, land &amp; commercial spaces.</p>
+    <form class="search-box" id="hero-search-form" onsubmit="handleHeroSearch(event)">
+      <select id="search-status" aria-label="Looking to">
+        <option value="">Looking to…</option>
+        <option value="sale">Buy</option>
+        <option value="rent">Rent</option>
+      </select>
+      <select id="search-type" aria-label="Property type">
+        <option value="">Property Type</option>
+        <option value="apartment">Apartment</option>
+        <option value="house">House</option>
+        <option value="villa">Villa</option>
+        <option value="commercial">Commercial</option>
+        <option value="land">Land</option>
+      </select>
+      <select id="search-city" aria-label="City">
+        <option value="">Any City</option>
+        <option value="Kathmandu">Kathmandu</option>
+        <option value="Lalitpur">Lalitpur</option>
+        <option value="Bhaktapur">Bhaktapur</option>
+        <option value="Pokhara">Pokhara</option>
+        <option value="Biratnagar">Biratnagar</option>
+        <option value="Butwal">Butwal</option>
+        <option value="Birgunj">Birgunj</option>
+        <option value="Dharan">Dharan</option>
+      </select>
+      <button type="submit" class="btn btn-primary">🔍 Search</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== FEATURED PROPERTIES ===== -->
+<section class="section" id="featured-section">
+  <div class="container">
+    <div class="text-center"><span class="section-eyebrow">✦ Curated for You</span></div>
+    <h2 class="section-title text-center">Featured Properties</h2>
+    <p class="section-subtitle text-center">Hand-picked premium listings across Nepal</p>
+    <div id="featured-grid" class="properties-grid">
+      <div class="loading-container"><div class="spinner"></div></div>
+    </div>
+    <div class="text-center" style="margin-top:2rem;">
+      <a href="properties.html" class="btn btn-secondary">View All Properties →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="stats-strip">
+  <div class="container">
+    <div class="stats-grid">
+      <div>
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Properties Listed</div>
+      </div>
+      <div>
+        <div class="stat-number">12+</div>
+        <div class="stat-label">Cities Covered</div>
+      </div>
+      <div>
+        <div class="stat-number">1,200+</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div>
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY CHOOSE US ===== -->
+<section class="section" style="background:var(--surface);">
+  <div class="container">
+    <div class="text-center"><span class="section-eyebrow">✦ Why Us</span></div>
+    <h2 class="section-title text-center">Why Choose NepalEstates?</h2>
+    <p class="section-subtitle text-center">We make property buying and renting simple and transparent</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <h3>Verified Listings</h3>
+        <p>Every property is verified by our team before publishing to ensure authenticity.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💼</div>
+        <h3>Expert Agents</h3>
+        <p>Our experienced agents provide personalized guidance throughout your property journey.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Secure Transactions</h3>
+        <p>Safe and transparent dealing with complete legal documentation support.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📍</div>
+        <h3>Nepal-Wide Coverage</h3>
+        <p>Listings from all major cities and districts — Kathmandu Valley, Pokhara and beyond.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>🏠 Nepal<span style="color:var(--accent)">Estates</span></h4>
+        <p>Your trusted partner for buying, selling, and renting properties across Nepal since 2014. Serving over 1,200 happy clients nationwide.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="properties.html">Properties</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Property Types</h4>
+        <ul>
+          <li><a href="properties.html?type=apartment">Apartments</a></li>
+          <li><a href="properties.html?type=house">Houses</a></li>
+          <li><a href="properties.html?type=villa">Villas</a></li>
+          <li><a href="properties.html?type=land">Land</a></li>
+          <li><a href="properties.html?type=commercial">Commercial</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <ul>
+          <li>📞 +977-1-4XXXXXX</li>
+          <li>📧 info@nepalestates.com.np</li>
+          <li>📍 Kathmandu, Nepal</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider" />
+    <div class="footer-bottom">
+      <span class="footer-bottom-brand">🏠 Nepal<span style="color:var(--accent)">Estates</span></span>
+      <span>© 2024 NepalEstates. All rights reserved. Made with <span class="nepal-flag-dot"></span> for Nepal 🇳🇵</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  // Inline featured properties – works without a running server
+  const FEATURED_PROPERTIES = [
+    {
+      id: 1, title: "Modern Apartment in Thamel", type: "apartment", status: "sale",
+      price: 8500000, bedrooms: 2, bathrooms: 2, area: 850, areaUnit: "sqft",
+      city: "Kathmandu", address: "Thamel, Kathmandu", featured: true
+    },
+    {
+      id: 2, title: "Spacious House in Lalitpur", type: "house", status: "sale",
+      price: 25000000, bedrooms: 4, bathrooms: 3, area: 2400, areaUnit: "sqft",
+      city: "Lalitpur", address: "Jhamsikhel, Lalitpur", featured: true
+    },
+    {
+      id: 3, title: "Commercial Space in New Baneshwor", type: "commercial", status: "rent",
+      price: 120000, bedrooms: 0, bathrooms: 2, area: 1200, areaUnit: "sqft",
+      city: "Kathmandu", address: "New Baneshwor, Kathmandu", featured: true
+    },
+    {
+      id: 5, title: "Luxury Villa in Godavari", type: "villa", status: "sale",
+      price: 65000000, bedrooms: 5, bathrooms: 5, area: 5000, areaUnit: "sqft",
+      city: "Lalitpur", address: "Godavari, Lalitpur", featured: true
+    },
+    {
+      id: 7, title: "3-BHK Flat in Pokhara", type: "apartment", status: "sale",
+      price: 12000000, bedrooms: 3, bathrooms: 2, area: 1100, areaUnit: "sqft",
+      city: "Pokhara", address: "Lakeside, Pokhara", featured: true
+    },
+    {
+      id: 12, title: "Family House in Chitwan", type: "house", status: "sale",
+      price: 14000000, bedrooms: 4, bathrooms: 3, area: 2000, areaUnit: "sqft",
+      city: "Bharatpur", address: "Narayangadh, Bharatpur", featured: true
+    }
+  ];
+
+  function loadFeatured() {
+    const grid = document.getElementById('featured-grid');
+    // Try the live API first; fall back to inline data if server is not running
+    fetch('/api/properties/featured')
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        const list = (data && data.data && data.data.length) ? data.data : FEATURED_PROPERTIES;
+        grid.innerHTML = list.map(renderPropertyCard).join('');
+      })
+      .catch(function() {
+        // Server not available – render inline dummy data instead
+        grid.innerHTML = FEATURED_PROPERTIES.map(renderPropertyCard).join('');
+      });
+  }
+
+  function handleHeroSearch(e) {
+    e.preventDefault();
+    const status = document.getElementById('search-status').value;
+    const type   = document.getElementById('search-type').value;
+    const city   = document.getElementById('search-city').value;
+    const params = new URLSearchParams();
+    if (status) params.set('status', status);
+    if (type)   params.set('type', type);
+    if (city)   params.set('city', city);
+    window.location.href = 'properties.html?' + params.toString();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadFeatured);
+</script>
+</body>
+</html>
