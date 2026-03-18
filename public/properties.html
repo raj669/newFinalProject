@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Properties – NepalEstates</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">🏠 NepalEstates</div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/properties.html" class="active">Properties</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/report.html">Report</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>Browse Properties</h1>
+    <p>Discover verified listings across Nepal's major cities</p>
+  </div>
+
+  <!-- Filter bar -->
+  <form class="filter-bar" id="filterForm">
+    <select name="type">
+      <option value="">All Types</option>
+      <option value="apartment">Apartment</option>
+      <option value="house">House</option>
+      <option value="villa">Villa</option>
+      <option value="commercial">Commercial</option>
+      <option value="land">Land</option>
+    </select>
+    <select name="status">
+      <option value="">Buy &amp; Rent</option>
+      <option value="sale">Buy</option>
+      <option value="rent">Rent</option>
+    </select>
+    <select name="city">
+      <option value="">All Cities</option>
+      <option value="Kathmandu">Kathmandu</option>
+      <option value="Lalitpur">Lalitpur</option>
+      <option value="Bhaktapur">Bhaktapur</option>
+      <option value="Pokhara">Pokhara</option>
+      <option value="Biratnagar">Biratnagar</option>
+      <option value="Dharan">Dharan</option>
+      <option value="Bharatpur">Bharatpur</option>
+    </select>
+    <input type="number" name="minPrice" placeholder="Min Price (NPR)" min="0" />
+    <input type="number" name="maxPrice" placeholder="Max Price (NPR)" min="0" />
+    <input type="number" name="bedrooms" placeholder="Min Bedrooms" min="0" max="10" />
+    <select name="featured">
+      <option value="">All Listings</option>
+      <option value="true">Featured Only</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Search</button>
+    <button type="reset" class="btn btn-outline" id="clearBtn">Clear</button>
+  </form>
+
+  <div class="results-count" id="resultsCount">Loading…</div>
+
+  <div class="section">
+    <div class="properties-grid" id="propertiesGrid">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2024 NepalEstates. All rights reserved.</p>
+    <p>Kathmandu, Nepal | info@nepalestates.com.np | +977-01-4123456</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProperties();
+      document.getElementById('filterForm').addEventListener('submit', handleFilter);
+      document.getElementById('clearBtn').addEventListener('click', () => {
+        setTimeout(() => { window.history.replaceState(null, '', '/properties.html'); loadProperties(); }, 50);
+      });
+    });
+  </script>
+</body>
+</html>
