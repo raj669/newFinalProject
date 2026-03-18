@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Property Detail – NepalEstates</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">🏠 NepalEstates</div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/properties.html">Properties</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/report.html">Report</a></li>
+    </ul>
+  </nav>
+
+  <div class="section" style="padding-top:2rem">
+    <a href="/properties.html" class="btn btn-outline" style="margin-bottom:1.5rem;display:inline-block">← Back to Listings</a>
+    <div class="property-detail" id="propertyDetail">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2024 NepalEstates. All rights reserved.</p>
+    <p>Kathmandu, Nepal | info@nepalestates.com.np | +977-01-4123456</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', loadPropertyDetail);
+  </script>
+</body>
+</html>

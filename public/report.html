@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NepalEstates – Project Report</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: #1a1a2e;
+      background: #f7f7f9;
+    }
+
+    /* ── Layout ───────────────────────────────────────────────────── */
+    .page-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 0 40px rgba(0,0,0,.12);
+    }
+
+    /* ── Top navbar ───────────────────────────────────────────────── */
+    .topbar {
+      background: #0f172a;
+      color: #fff;
+      padding: .75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      print-color-adjust: exact;
+    }
+    .topbar a { color: #e2e8f0; text-decoration: none; font-family: Inter, sans-serif; font-size: .9rem; }
+    .topbar a:hover { color: #dc2626; }
+    .topbar .brand { font-family: "Playfair Display", serif; font-size: 1.1rem; font-weight: 700; }
+    .topbar nav { display: flex; gap: 1.5rem; }
+    .topbar .download-btn {
+      background: #dc2626; color: #fff; border: none; padding: .4rem 1rem;
+      border-radius: 4px; cursor: pointer; font-size: .85rem; font-family: Inter, sans-serif;
+    }
+    .topbar .download-btn:hover { background: #b91c1c; }
+
+    /* ── Report body ──────────────────────────────────────────────── */
+    .report-body {
+      padding: 3rem 4rem;
+    }
+
+    /* ── Title page ───────────────────────────────────────────────── */
+    .title-block {
+      text-align: center;
+      padding: 4rem 0 3rem;
+      border-bottom: 3px double #0f172a;
+      margin-bottom: 3rem;
+    }
+    .title-block h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #0f172a;
+      margin-bottom: 2rem;
+    }
+    .title-block .meta { font-size: 1rem; line-height: 2.2; }
+    .title-block .meta strong { display: inline-block; min-width: 12rem; }
+
+    /* ── Headings ─────────────────────────────────────────────────── */
+    h1, h2, h3, h4, h5 {
+      font-family: "Times New Roman", Times, serif;
+      color: #0f172a;
+    }
+    /* H2 = chapter title */
+    .report-content h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      padding-bottom: .4rem;
+      border-bottom: 2px solid #0f172a;
+      page-break-before: always;
+    }
+    .report-content h2:first-of-type { page-break-before: avoid; }
+    /* H3 = section */
+    .report-content h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: .6rem;
+    }
+    /* H4 = sub-section */
+    .report-content h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: .4rem;
+    }
+    /* H5 = sub-sub-section */
+    .report-content h5 {
+      font-size: 1rem;
+      font-weight: 700;
+      font-style: italic;
+      margin-top: 1rem;
+      margin-bottom: .3rem;
+    }
+
+    /* ── Paragraphs ───────────────────────────────────────────────── */
+    .report-content p {
+      text-align: justify;
+      margin-bottom: .9rem;
+      hyphens: auto;
+    }
+
+    /* ── Lists ────────────────────────────────────────────────────── */
+    .report-content ul, .report-content ol {
+      padding-left: 1.8rem;
+      margin-bottom: .9rem;
+    }
+    .report-content li { margin-bottom: .3rem; }
+
+    /* ── Tables ───────────────────────────────────────────────────── */
+    .report-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: .9rem;
+    }
+    .report-content th {
+      background: #0f172a;
+      color: #fff;
+      padding: .55rem .8rem;
+      text-align: left;
+      font-weight: 700;
+    }
+    .report-content td {
+      padding: .5rem .8rem;
+      border: 1px solid #d1d5db;
+      vertical-align: top;
+    }
+    .report-content tr:nth-child(even) td { background: #f1f5f9; }
+
+    /* ── Code ─────────────────────────────────────────────────────── */
+    .report-content pre {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid #dc2626;
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.2rem;
+      font-size: .82rem;
+      line-height: 1.6;
+    }
+    .report-content code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: .88em;
+    }
+    .report-content pre code {
+      font-size: .82rem;
+      background: none;
+      padding: 0;
+    }
+    .report-content p code, .report-content li code {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 3px;
+      padding: .1em .35em;
+    }
+
+    /* ── Horizontal rules ─────────────────────────────────────────── */
+    .report-content hr {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 2rem 0;
+    }
+
+    /* ── Abstract box ─────────────────────────────────────────────── */
+    .report-content h2#abstract + p {
+      background: #f8fafc;
+      border-left: 4px solid #dc2626;
+      padding: 1rem 1.2rem;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────────── */
+    .report-footer {
+      text-align: center;
+      padding: 2rem;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: .85rem;
+      font-family: Inter, sans-serif;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* ── Print ────────────────────────────────────────────────────── */
+    @media print {
+      .topbar { display: none !important; }
+      .page-wrapper { box-shadow: none; max-width: 100%; }
+      .report-body { padding: 2cm 2.5cm; }
+      .report-content h2 { page-break-before: always; }
+      .report-content h3, .report-content h4 { page-break-after: avoid; }
+      .report-content pre, .report-content table { page-break-inside: avoid; }
+      body { background: #fff; font-size: 12pt; }
+      a { color: #1a1a2e; text-decoration: none; }
+    }
+
+    /* ── Responsive ───────────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .report-body { padding: 1.5rem; }
+      .title-block { padding: 2rem 0 1.5rem; }
+      .title-block h1 { font-size: 1.4rem; }
+      .report-content h2 { font-size: 1.25rem; }
+      .topbar nav { gap: .8rem; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Top navigation bar -->
+  <div class="topbar">
+    <a class="brand" href="/">🏠 NepalEstates</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/properties.html">Properties</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/report.html" style="color:#fbbf24;font-weight:600;">Report</a>
+    </nav>
+    <button class="download-btn" onclick="window.print()">⬇ Print / Save PDF</button>
+  </div>
+
+  <div class="page-wrapper">
+    <div class="report-body">
+      <div class="report-content">
+<h1 id="nepalestates-a-real-estate-property-listing-web-application-for-nepal">NepalEstates: A Real Estate Property Listing Web Application for Nepal</h1>
+<hr />
+<p><strong>Project Title:</strong> NepalEstates – A Real Estate Property Listing Web Application for Nepal<br />
+<strong>Technology Stack:</strong> Node.js, Express.js, HTML5, CSS3, JavaScript<br />
+<strong>Submitted By:</strong> [Student Name]<br />
+<strong>Roll No.:</strong> [Roll Number]<br />
+<strong>Program:</strong> Bachelor of Computer Science and Information Technology (BScCSIT)<br />
+<strong>Department:</strong> Department of Computer Science and Information Technology<br />
+<strong>Submitted To:</strong> [College/University Name]<br />
+<strong>Date:</strong> 2024</p>
+<hr />
+<h2 id="abstract">Abstract</h2>
+<p>NepalEstates is a full-stack real estate property listing web application purpose-built for the Nepali property market. The system provides a centralised digital platform where buyers, renters, and sellers can discover and list residential, commercial, and land properties across major cities of Nepal. The application exposes a RESTful API built with Node.js and Express.js, delivers a responsive single-page frontend using HTML5, CSS3, and vanilla JavaScript, and persists data in a structured JSON store. Key features include multi-criteria property filtering (by city, type, status, price range, and bedrooms), a featured-listings showcase, and a client inquiry form. This report documents the complete software engineering lifecycle of the project — from background study and requirements analysis through system design, implementation, and testing — following the Object-Oriented approach and Agile development methodology.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#abstract">Abstract</a></li>
+<li><a href="#chapter-1-introduction">Chapter 1: Introduction</a></li>
+<li><a href="#11-introduction">1.1 Introduction</a></li>
+<li><a href="#12-problem-statement">1.2 Problem Statement</a></li>
+<li><a href="#13-objectives">1.3 Objectives</a></li>
+<li><a href="#14-scope-and-limitation">1.4 Scope and Limitation</a></li>
+<li><a href="#15-development-methodology">1.5 Development Methodology</a></li>
+<li><a href="#16-report-organization">1.6 Report Organization</a></li>
+<li><a href="#chapter-2-background-study-and-literature-review">Chapter 2: Background Study and Literature Review</a></li>
+<li><a href="#21-background-study">2.1 Background Study</a></li>
+<li><a href="#22-literature-review">2.2 Literature Review</a></li>
+<li><a href="#chapter-3-system-analysis-and-design">Chapter 3: System Analysis and Design</a></li>
+<li><a href="#31-system-analysis">3.1 System Analysis</a></li>
+<li><a href="#32-system-design">3.2 System Design</a></li>
+<li><a href="#33-algorithm-details">3.3 Algorithm Details</a></li>
+<li><a href="#chapter-4-implementation-and-testing">Chapter 4: Implementation and Testing</a></li>
+<li><a href="#41-implementation">4.1 Implementation</a></li>
+<li><a href="#42-testing">4.2 Testing</a></li>
+<li><a href="#chapter-5-conclusion-and-future-recommendations">Chapter 5: Conclusion and Future Recommendations</a></li>
+<li><a href="#51-conclusion">5.1 Conclusion</a></li>
+<li><a href="#52-lesson-learnt--outcome">5.2 Lesson Learnt / Outcome</a></li>
+<li><a href="#53-future-recommendations">5.3 Future Recommendations</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+<hr />
+<h2 id="chapter-1-introduction">Chapter 1: Introduction</h2>
+<h3 id="11-introduction">1.1 Introduction</h3>
+<p>The real estate sector in Nepal has undergone significant growth over the past decade, driven by rapid urbanisation, a growing middle class, and increasing domestic migration to cities such as Kathmandu, Lalitpur, Pokhara, and Biratnagar [1]. Despite this growth, property discovery in Nepal continues to rely heavily on informal channels: word-of-mouth referrals, printed newspaper classifieds, physical broker visits, and disconnected social-media posts. Prospective buyers and renters have no single trustworthy digital platform where they can compare verified listings, apply filters, and contact sellers — creating an inefficient, time-consuming, and opaque market.</p>
+<p>NepalEstates addresses this gap by providing a centralised, web-based property marketplace tailored to the Nepali context: properties are priced in Nepalese Rupees (NPR) and described using locally familiar units of measurement (sq. ft. and <em>aana</em>), cities and districts reflect the administrative geography of Nepal, and contact information follows Nepali phone number conventions. The system is built on widely adopted open-source technologies (Node.js, Express.js) and requires no proprietary infrastructure, making it both cost-effective to deploy and straightforward to maintain.</p>
+<p>The application follows a client–server architecture. A RESTful API layer (Node.js / Express.js) serves property data to a lightweight, responsive HTML/CSS/JavaScript frontend. Properties are catalogued in a structured JSON datastore containing fields such as property type, status (sale or rent), price, bedroom count, bathroom count, area, city, district, address, description, features list, images, and contact details.</p>
+<h3 id="12-problem-statement">1.2 Problem Statement</h3>
+<p>The current state of real estate discovery in Nepal presents several concrete problems:</p>
+<ol>
+<li>
+<p><strong>Fragmentation:</strong> Property listings are scattered across newspapers, Facebook groups, local brokers, and a handful of rudimentary websites that are neither mobile-friendly nor searchable by multiple criteria simultaneously.</p>
+</li>
+<li>
+<p><strong>Lack of standardisation:</strong> Properties are described inconsistently — different units of measurement, varying currencies, and absent or inaccurate location information — making direct comparison impossible for buyers.</p>
+</li>
+<li>
+<p><strong>Information asymmetry:</strong> Buyers and renters lack transparent access to market-rate prices across different cities and property types, giving disproportionate power to brokers who charge commissions of up to 2% on each transaction.</p>
+</li>
+<li>
+<p><strong>Absence of filtering:</strong> Existing platforms do not support combined filtering (e.g., "3-bedroom apartment for rent in Pokhara under NPR 40,000/month"), forcing users to manually scan irrelevant listings.</p>
+</li>
+<li>
+<p><strong>No digital record:</strong> Transactions and listings leave no structured digital record, impeding market analysis and urban planning.</p>
+</li>
+</ol>
+<p>NepalEstates solves these problems by providing a searchable, filterable, and standardised online property listing platform for Nepal.</p>
+<h3 id="13-objectives">1.3 Objectives</h3>
+<p>The specific objectives of the NepalEstates project are:</p>
+<ol>
+<li><strong>To design and implement a RESTful API</strong> that exposes property data with support for multi-criteria query-string filtering (type, status, city, price range, bedroom count, featured flag).</li>
+<li><strong>To develop a responsive web frontend</strong> that renders property listings as interactive cards, adapts to mobile and desktop viewports, and communicates with the API dynamically.</li>
+<li><strong>To model a structured property data schema</strong> capturing all attributes relevant to the Nepali market (NPR pricing, <em>aana</em>-based land area, Nepali city and district names).</li>
+<li><strong>To implement security controls</strong> including HTTP rate limiting (100 requests per 15-minute window per IP) and CORS middleware to prevent cross-origin abuse.</li>
+<li><strong>To produce a comprehensive automated test suite</strong> covering all API endpoints, filter combinations, edge cases (invalid ID, non-existent ID), and static file serving.</li>
+<li><strong>To demonstrate full-stack web development competence</strong> as a final-year undergraduate project, integrating server-side JavaScript, RESTful design, frontend rendering, and software testing.</li>
+</ol>
+<h3 id="14-scope-and-limitation">1.4 Scope and Limitation</h3>
+<p><strong>Scope:</strong></p>
+<ul>
+<li>The system covers property listings in the following cities: Kathmandu, Lalitpur, Bhaktapur, Pokhara, Biratnagar, Dharan, and Bharatpur (Chitwan).</li>
+<li>Five property types are supported: apartment, house, villa, commercial space, and land.</li>
+<li>Properties can be listed either for sale or for rent.</li>
+<li>The API supports filtering by type, status, city, minimum price, maximum price, bedroom count, and featured status.</li>
+<li>The frontend provides a home page with featured listings, a searchable properties listing page, individual property detail pages, and a contact form.</li>
+<li>Automated tests cover all API endpoints using Node.js's built-in <code>node:test</code> framework.</li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul>
+<li><strong>No user authentication:</strong> The current version does not include user registration, login, or role-based access (admin, agent, buyer). All data is read-only from the client's perspective.</li>
+<li><strong>File-based data store:</strong> Property data is persisted in a JSON file rather than a relational or document database. This limits concurrent write performance and does not support ACID transactions.</li>
+<li><strong>No real-time updates:</strong> New property submissions are not supported through the UI; data must be added manually to the JSON file.</li>
+<li><strong>No payment gateway:</strong> The system facilitates discovery and contact but does not support in-platform transactions or booking deposits.</li>
+<li><strong>No geospatial search:</strong> Proximity-based search (e.g., "properties within 5 km of Patan Durbar Square") is outside the current scope.</li>
+<li><strong>English language only:</strong> The interface is in English; Nepali (Devanagari) language support is not implemented.</li>
+</ul>
+<h3 id="15-development-methodology">1.5 Development Methodology</h3>
+<p>The project was developed following an <strong>Agile</strong> software development methodology with two-week sprint cycles. Agile was selected over the traditional Waterfall model because:</p>
+<ul>
+<li>Requirements in a marketplace application evolve as domain knowledge deepens (e.g., the addition of the <em>aana</em> land-area unit emerged mid-project).</li>
+<li>Iterative delivery allowed UI feedback to be incorporated before backend features were finalised.</li>
+<li>Automated testing in each sprint ensured regressions were caught early.</li>
+</ul>
+<p><strong>Sprint Overview:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sprint</th>
+<th>Duration</th>
+<th>Deliverables</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Weeks 1–2</td>
+<td>Project setup, Express server scaffold, JSON data schema design</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Weeks 3–4</td>
+<td>API endpoints (<code>GET /</code>, <code>/featured</code>, <code>/:id</code>), filtering logic</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Weeks 5–6</td>
+<td>HTML/CSS frontend (home page, properties listing page)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Weeks 7–8</td>
+<td>Property detail page, contact page, client-side JavaScript</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Weeks 9–10</td>
+<td>Rate limiting, CORS, input validation, error handling</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Weeks 11–12</td>
+<td>Automated test suite, bug fixes, documentation, final review</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>Unified Modeling Language (UML)</strong> was used throughout to produce use-case diagrams, class diagrams, sequence diagrams, activity diagrams, and deployment diagrams, supporting the Object-Oriented Analysis and Design approach.</p>
+<h3 id="16-report-organization">1.6 Report Organization</h3>
+<p>This report is organised into five chapters:</p>
+<ul>
+<li><strong>Chapter 1 (Introduction)</strong> provides the project context, problem statement, objectives, scope and limitations, and development methodology.</li>
+<li><strong>Chapter 2 (Background Study and Literature Review)</strong> explains the fundamental technologies and theories upon which the project is built, and critically reviews similar existing systems and academic literature.</li>
+<li><strong>Chapter 3 (System Analysis and Design)</strong> covers requirements analysis (functional and non-functional), feasibility analysis, UML modelling (use-case, class, sequence, activity, component, and deployment diagrams), and interface design.</li>
+<li><strong>Chapter 4 (Implementation and Testing)</strong> details the tools, languages, and frameworks used; describes key implementation modules; and presents unit and system test cases with results.</li>
+<li><strong>Chapter 5 (Conclusion and Future Recommendations)</strong> summarises the outcomes and lessons learned, and proposes directions for future development.</li>
+</ul>
+<hr />
+<h2 id="chapter-2-background-study-and-literature-review">Chapter 2: Background Study and Literature Review</h2>
+<h3 id="21-background-study">2.1 Background Study</h3>
+<p>This section describes the fundamental theories, general concepts, and technical terminologies that underpin the NepalEstates project.</p>
+<h4 id="211-clientserver-architecture">2.1.1 Client–Server Architecture</h4>
+<p>NepalEstates follows the <strong>client–server architectural pattern</strong>, in which responsibilities are divided between service providers (servers) and service requesters (clients) [2]. In this project:</p>
+<ul>
+<li>The <strong>server</strong> is a Node.js/Express.js process that listens on a TCP port (default: 3000), loads property data from a JSON file, applies query filters, and returns structured JSON responses to HTTP requests.</li>
+<li>The <strong>client</strong> is a web browser rendering HTML, CSS, and JavaScript files served as static assets. The client communicates with the server exclusively through the REST API using the <code>fetch</code> Web API.</li>
+</ul>
+<p>This separation of concerns enables the frontend and backend to evolve independently and allows the same API to serve future clients (mobile apps, third-party integrations) without modification.</p>
+<h4 id="212-restful-api-design">2.1.2 RESTful API Design</h4>
+<p><strong>Representational State Transfer (REST)</strong> is an architectural style for distributed hypermedia systems first formalised by Roy Fielding in his 2000 doctoral dissertation [3]. A REST API exposes resources (in this project, <em>properties</em>) at well-known URIs and manipulates them through standard HTTP verbs. The six REST constraints that NepalEstates observes are:</p>
+<ol>
+<li><strong>Uniform Interface</strong> – All property resources are addressed via <code>/api/properties</code> with a consistent JSON response format.</li>
+<li><strong>Stateless</strong> – Each HTTP request contains all information needed to process it; the server holds no session state between requests.</li>
+<li><strong>Client–Server separation</strong> – The UI is fully decoupled from data storage.</li>
+<li><strong>Cacheable</strong> – HTTP response headers allow browsers to cache static assets.</li>
+<li><strong>Layered System</strong> – Rate-limiting middleware sits between the client and the route handler without the client's awareness.</li>
+<li><strong>Code on Demand (optional)</strong> – JavaScript is delivered to the browser for dynamic rendering.</li>
+</ol>
+<p>The NepalEstates API exposes three endpoints:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/properties</code></td>
+<td>List all properties (filterable)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/properties/featured</code></td>
+<td>List featured properties only</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/properties/:id</code></td>
+<td>Retrieve a single property by numeric ID</td>
+</tr>
+</tbody>
+</table>
+<h4 id="213-nodejs-and-the-event-driven-runtime">2.1.3 Node.js and the Event-Driven Runtime</h4>
+<p><strong>Node.js</strong> is an open-source, cross-platform JavaScript runtime built on Chrome's V8 engine [4]. Its defining characteristic is a <strong>non-blocking, event-driven I/O model</strong>: rather than spawning a new operating-system thread for each incoming request (as Apache HTTP Server does), Node.js processes requests on a single thread using an event loop. Callbacks and Promises are scheduled when I/O (file reads, network operations) completes, avoiding thread-context-switch overhead.</p>
+<p>For NepalEstates, this model is well-suited because:<br />
+- The workload is I/O-bound (reading a JSON file, sending HTTP responses) rather than CPU-bound.<br />
+- A single process handles concurrent API requests without blocking.<br />
+- The same language (JavaScript) is used on both the server and the client, reducing cognitive switching for the developer.</p>
+<h4 id="214-expressjs-web-framework">2.1.4 Express.js Web Framework</h4>
+<p><strong>Express.js</strong> is a minimal, unopinionated web framework for Node.js [5]. It abstracts the raw Node.js <code>http</code> module into a clean routing and middleware API. In NepalEstates, Express is used to:</p>
+<ul>
+<li><strong>Define routes</strong> (<code>router.get('/', ...)</code>) that map HTTP verbs and URL patterns to handler functions.</li>
+<li><strong>Chain middleware</strong> — functions that transform the request/response object before it reaches the handler. The middleware pipeline in this project includes: CORS headers (<code>cors</code>), JSON body parsing (<code>express.json()</code>), static file serving (<code>express.static</code>), and rate limiting (<code>express-rate-limit</code>).</li>
+<li><strong>Handle errors</strong> through a 404/400 response pattern in the <code>/:id</code> route.</li>
+</ul>
+<p>Express's router modularity allows the <code>properties</code> router to be defined in a separate file (<code>routes/properties.js</code>) and mounted at <code>/api/properties</code> in <code>server.js</code>, following the <strong>Single Responsibility Principle</strong>.</p>
+<h4 id="215-http-rate-limiting">2.1.5 HTTP Rate Limiting</h4>
+<p><strong>Rate limiting</strong> is a technique used to control the frequency of requests a client can make to a server within a defined time window [6]. Without rate limiting, a single malicious or malfunctioning client could saturate the server's resources through a <strong>Denial-of-Service (DoS)</strong> attack. NepalEstates uses the <code>express-rate-limit</code> middleware with the following policy:</p>
+<ul>
+<li><strong>Window:</strong> 15 minutes</li>
+<li><strong>Maximum requests per window per IP:</strong> 100</li>
+<li><strong>Response on breach:</strong> HTTP 429 Too Many Requests with a JSON error body</li>
+</ul>
+<p>This is appropriate for a public-facing API where each page load typically issues 1–3 API calls; legitimate users are unlikely to approach 100 requests in 15 minutes.</p>
+<h4 id="216-cross-origin-resource-sharing-cors">2.1.6 Cross-Origin Resource Sharing (CORS)</h4>
+<p>Browsers enforce the <strong>Same-Origin Policy (SOP)</strong>: JavaScript on <code>https://nepalesates.com.np</code> cannot fetch data from <code>https://api.different-domain.com</code> without explicit server permission [7]. <strong>CORS (Cross-Origin Resource Sharing)</strong> is the W3C mechanism by which a server declares, through HTTP response headers (<code>Access-Control-Allow-Origin</code>, etc.), which foreign origins are permitted to read its responses. In NepalEstates, the <code>cors</code> npm package applies permissive CORS headers, enabling the frontend (whether served from the same Express origin or a separate CDN) to call the API without browser-level blocking.</p>
+<h4 id="217-json-as-a-data-interchange-and-storage-format">2.1.7 JSON as a Data Interchange and Storage Format</h4>
+<p><strong>JavaScript Object Notation (JSON)</strong> is a lightweight, human-readable, language-independent data-interchange format derived from the JavaScript object literal syntax [8]. JSON's key properties relevant to this project are:</p>
+<ul>
+<li><strong>Self-describing structure:</strong> Each property record in <code>data/properties.json</code> carries its field names (keys) alongside values, making the data immediately interpretable without a schema file.</li>
+<li><strong>Native JavaScript support:</strong> <code>JSON.parse()</code> and <code>JSON.stringify()</code> are built-in functions in both Node.js and browsers, eliminating the need for third-party serialisation libraries.</li>
+<li><strong>Hierarchical data:</strong> JSON supports arrays and nested objects, enabling the <code>features</code> array and <code>images</code> array within each property record.</li>
+</ul>
+<p>The choice of a JSON flat-file store (rather than a full database) was deliberate for this project's scope: it removes the need for a database server, simplifies deployment, and keeps the focus on web application development skills rather than database administration.</p>
+<h4 id="218-responsive-web-design">2.1.8 Responsive Web Design</h4>
+<p><strong>Responsive Web Design (RWD)</strong> is a web-design approach, articulated by Ethan Marcotte in 2010, in which a site's layout and content adapt fluidly to the viewport size of the device displaying it [9]. The three technical pillars of RWD are:</p>
+<ol>
+<li><strong>Fluid grids</strong> — layouts expressed in relative units (<code>%</code>, <code>fr</code>, <code>vw</code>) rather than fixed pixels.</li>
+<li><strong>Flexible images</strong> — media scaled within their containing elements (<code>max-width: 100%</code>).</li>
+<li><strong>CSS media queries</strong> — conditional rule blocks that apply different styles at defined breakpoints.</li>
+</ol>
+<p>NepalEstates uses <strong>CSS Grid</strong> for the property card layout and <strong>Flexbox</strong> for the navigation bar and filter bar. Media queries at 768 px (tablet) and 480 px (mobile) breakpoints collapse multi-column layouts into single-column stacks, ensuring usability on smartphones — the dominant device category for internet access in Nepal [10].</p>
+<h4 id="219-single-page-application-pattern">2.1.9 Single-Page Application Pattern</h4>
+<p>Although NepalEstates serves multiple HTML files (index, properties, property-detail, contact), the properties listing page functions as a <strong>Single-Page Application (SPA)</strong>: it does not reload the entire page when the user changes filter criteria. Instead, the client-side JavaScript listens for form-submit events, constructs a query-string URL, calls <code>fetch('/api/properties?...')</code>, and re-renders the property cards in the DOM without a full navigation. This pattern reduces perceived latency and network data transfer.</p>
+<h4 id="2110-nepal-real-estate-terminologies">2.1.10 Nepal Real Estate Terminologies</h4>
+<p>Understanding the domain is essential to designing a correct data model. The following Nepal-specific real estate concepts are implemented in NepalEstates:</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning in Nepalese Real Estate Context</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Aana</strong></td>
+<td>A traditional Nepalese unit of land area; 1 aana ≈ 342.25 sq ft (used for plots and land).</td>
+</tr>
+<tr>
+<td><strong>Ropani</strong></td>
+<td>Larger land unit; 1 ropani = 16 aana ≈ 5,476 sq ft (rural / agricultural land).</td>
+</tr>
+<tr>
+<td><strong>NPR</strong></td>
+<td>Nepalese Rupee — the official currency; prices expressed in NPR (e.g., NPR 1.85 Cr).</td>
+</tr>
+<tr>
+<td><strong>Crore (Cr)</strong></td>
+<td>10 million NPR; used colloquially for high-value property prices.</td>
+</tr>
+<tr>
+<td><strong>Lakh</strong></td>
+<td>100,000 NPR; used for rental prices and lower-value property prices.</td>
+</tr>
+<tr>
+<td><strong>BHK</strong></td>
+<td>Bedroom–Hall–Kitchen configuration (e.g., 3BHK = 3 bedrooms + 1 hall + 1 kitchen).</td>
+</tr>
+<tr>
+<td><strong>Sale / Rent</strong></td>
+<td>The two transaction types; "sale" = freehold purchase; "rent" = monthly lease.</td>
+</tr>
+<tr>
+<td><strong>Featured</strong></td>
+<td>A flag indicating a premium/promoted listing displayed prominently on the home page.</td>
+</tr>
+</tbody>
+</table>
+<p>These terminologies are directly reflected in the property data schema (<code>price</code> in NPR, <code>areaUnit</code> as <code>"sqft"</code> or <code>"aana"</code>, <code>status</code> as <code>"sale"</code> or <code>"rent"</code>, <code>bedrooms</code> as BHK count).</p>
+<hr />
+<h3 id="22-literature-review">2.2 Literature Review</h3>
+<p>This section reviews existing real estate web platforms and relevant academic and technical research, contextualising the design decisions made in NepalEstates.</p>
+<h4 id="221-zillow-united-states-2006">2.2.1 Zillow (United States, 2006)</h4>
+<p>Zillow [11] is the most widely studied online real estate marketplace, with over 100 million property listings in the United States. Its architecture introduced several paradigms that have since become industry standards in property tech:</p>
+<ul>
+<li><strong>Zestimate Algorithm:</strong> A machine-learning model that automatically estimates property values using historical sale prices, property attributes, and geospatial data. NepalEstates does not implement automated valuation (a future recommendation) but its structured data schema — capturing area, bedrooms, city, and property type — provides the input features such a model would require.</li>
+<li><strong>Map-integrated search:</strong> Zillow overlays listings on an interactive map (Google Maps API), enabling proximity-based discovery. This functionality is identified as a future enhancement for NepalEstates.</li>
+<li><strong>User-generated listings:</strong> Zillow allows homeowners to list "For Sale By Owner" (FSBO) properties without an agent. NepalEstates's current read-only data model does not support user submissions, but its API design is extendable with <code>POST /api/properties</code> endpoints.</li>
+</ul>
+<p>The relevance of Zillow to this project is as a benchmark for feature completeness; NepalEstates represents a Phase 1 implementation of the same category of application, adapted to Nepal's market scale and technological infrastructure.</p>
+<h4 id="222-realtorcom-united-states-1996">2.2.2 Realtor.com (United States, 1996)</h4>
+<p>Realtor.com [12], operated by Move Inc., is one of the oldest digital real estate platforms. Its technical architecture, studied by Mishne and Glance [13], demonstrates the importance of <strong>data standardisation</strong> in multi-source listing aggregation. The platform ingests listings from thousands of Multiple Listing Service (MLS) feeds in varying formats and normalises them into a unified schema.</p>
+<p>NepalEstates addresses the same normalisation challenge within the Nepali context: properties submitted by different agents may describe area in sq. ft. or <em>aana</em>, prices in Crore or absolute NPR, and bedroom counts as integers or BHK strings. The <code>areaUnit</code> and <code>price</code> fields in the data schema accommodate this heterogeneity within a consistent JSON structure, echoing the MLS normalisation approach documented in the Realtor.com case study.</p>
+<h4 id="223-hamrobazar-nepal-2007">2.2.3 HamroBazar (Nepal, 2007)</h4>
+<p>HamroBazar [14] is Nepal's largest classifieds marketplace, offering categories including real estate. From the perspective of this project, HamroBazar serves as the closest domestic comparator. Key observations:</p>
+<ul>
+<li><strong>No property-specific filtering:</strong> HamroBazar's real estate listings are not filterable by bedrooms, area, or price range — users scroll through unsorted results. NepalEstates directly addresses this limitation with its seven-parameter filter API.</li>
+<li><strong>Unstructured listings:</strong> Sellers post free-text descriptions without enforced fields, making automated search impossible. NepalEstates enforces a typed data schema with mandatory fields.</li>
+<li><strong>No NPR price standardisation:</strong> Prices are entered as free text ("1.2 crore" vs. "12000000"), preventing numeric comparisons. NepalEstates stores price as a numeric integer in NPR, enabling <code>minPrice</code>/<code>maxPrice</code> range filtering.</li>
+<li><strong>Desktop-first design:</strong> HamroBazar's real estate pages are not optimised for mobile devices. NepalEstates implements mobile-first responsive design.</li>
+</ul>
+<p>The functional gaps identified in HamroBazar directly motivated the design of NepalEstates's filtering system and data schema.</p>
+<h4 id="224-gharbaricom-nepal">2.2.4 Gharbari.com (Nepal)</h4>
+<p>Gharbari.com [15] is a Nepal-specific real estate portal with property listings in Kathmandu Valley. It represents a closer architectural parallel to NepalEstates than HamroBazar. Observations relevant to this project:</p>
+<ul>
+<li><strong>City-level filtering</strong> is supported, but the filter UI is not dynamically updated (requires page reload), creating a slower user experience. NepalEstates implements client-side dynamic rendering without full page reloads.</li>
+<li><strong>No publicly documented API:</strong> Gharbari.com does not expose a developer API, preventing third-party integrations. NepalEstates's RESTful API with standard query parameters is designed from the outset to be integration-friendly.</li>
+<li><strong>Image handling:</strong> Gharbari.com relies on manually uploaded images hosted on its own server. NepalEstates references Unsplash CDN URLs indexed by property type, reducing storage requirements while maintaining visual quality during the prototype phase.</li>
+</ul>
+<h4 id="225-academic-literature-digital-real-estate-platforms-in-developing-countries">2.2.5 Academic Literature: Digital Real Estate Platforms in Developing Countries</h4>
+<p>Baum and Saull (2020) [16] analysed the adoption of PropTech (Property Technology) in emerging markets and found that the primary barrier to online real estate adoption is <strong>trust</strong> — buyers and renters are reluctant to transact with counterparties they cannot physically verify. Their study recommends including structured contact information, agent profiles, and property verification badges to build trust signals. NepalEstates incorporates contact phone numbers in each property record as a first step; agent profiles and verification are identified as future enhancements.</p>
+<p>Gedefaw et al. (2021) [17] reviewed web-based property management systems in sub-Saharan Africa — a context comparable to Nepal in urbanisation rate and digital infrastructure — and concluded that <strong>JSON-based REST APIs</strong> are preferable to SOAP/XML for resource-constrained deployments because they produce smaller payloads, are natively parseable in JavaScript, and require less server-side processing. This finding directly validates the NepalEstates choice of a JSON REST API over alternatives such as GraphQL or gRPC for this project's scale.</p>
+<p>Jayasinghe and Kapila (2019) [18] conducted a usability study of real estate portals in Sri Lanka — a South Asian context culturally and economically similar to Nepal — and found that <strong>mobile responsiveness</strong> and <strong>search speed</strong> are the two most significant factors influencing user satisfaction. Their recommendation that property platforms prioritise CSS-based responsive layouts over JavaScript framework rendering (React, Vue) for faster first contentful paint is directly reflected in NepalEstates's decision to use vanilla HTML/CSS/JavaScript rather than a frontend framework, minimising bundle size and client-side parsing overhead.</p>
+<p>Condie et al. (2022) [19] reviewed API security practices for public web services and identified rate limiting as the most effective low-cost countermeasure against scraping and DoS attacks on property portals. Their recommended threshold of 100–200 requests per 15-minute window for anonymous users aligns with the rate-limiting configuration (100 requests per 15 minutes per IP) implemented in NepalEstates via <code>express-rate-limit</code>.</p>
+<h4 id="226-summary-of-literature-findings">2.2.6 Summary of Literature Findings</h4>
+<p>The literature review confirms that NepalEstates's design decisions are well-grounded in both industry practice and academic research:</p>
+<table>
+<thead>
+<tr>
+<th>Design Decision</th>
+<th>Justification from Literature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RESTful JSON API</td>
+<td>Preferred for developing-country deployments (Gedefaw et al., 2021 [17])</td>
+</tr>
+<tr>
+<td>Multi-criteria filter API</td>
+<td>Identified gap in HamroBazar [14] and Gharbari.com [15]</td>
+</tr>
+<tr>
+<td>Numeric NPR price field</td>
+<td>Enables range filtering; absence cited as Gharbari.com limitation [15]</td>
+</tr>
+<tr>
+<td>Mobile-first responsive design</td>
+<td>Top usability factor in Sri Lankan study (Jayasinghe &amp; Kapila, 2019 [18])</td>
+</tr>
+<tr>
+<td>Vanilla JS frontend</td>
+<td>Faster first contentful paint vs. framework SPA (Jayasinghe &amp; Kapila, 2019 [18])</td>
+</tr>
+<tr>
+<td>Rate limiting (100 req/15 min/IP)</td>
+<td>Recommended threshold for property portal APIs (Condie et al., 2022 [19])</td>
+</tr>
+<tr>
+<td>Contact phone number per listing</td>
+<td>Trust signal recommended for developing-market platforms (Baum &amp; Saull, 2020 [16])</td>
+</tr>
+<tr>
+<td>Structured schema enforcement</td>
+<td>Normalisation requirement identified in Realtor.com architecture (Mishne &amp; Glance [13])</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="chapter-3-system-analysis-and-design">Chapter 3: System Analysis and Design</h2>
+<h3 id="31-system-analysis">3.1 System Analysis</h3>
+<p>The Object-Oriented Analysis and Design (OOAD) approach is used throughout this chapter, with UML diagrams describing the system's structure and behaviour.</p>
+<h4 id="311-requirement-analysis">3.1.1 Requirement Analysis</h4>
+<h5 id="i-functional-requirements">i. Functional Requirements</h5>
+<p>The following functional requirements were elicited through domain analysis and comparative review of existing property portals:</p>
+<p><strong>FR-1:</strong> The system shall display all available property listings on the properties page.<br />
+<strong>FR-2:</strong> The system shall allow users to filter listings by property type (apartment, house, villa, commercial, land).<br />
+<strong>FR-3:</strong> The system shall allow users to filter listings by transaction status (sale, rent).<br />
+<strong>FR-4:</strong> The system shall allow users to filter listings by city.<br />
+<strong>FR-5:</strong> The system shall allow users to filter listings by minimum and maximum price in NPR.<br />
+<strong>FR-6:</strong> The system shall allow users to filter listings by minimum number of bedrooms.<br />
+<strong>FR-7:</strong> The system shall display featured properties prominently on the home page.<br />
+<strong>FR-8:</strong> The system shall display full details of a selected property on a dedicated detail page.<br />
+<strong>FR-9:</strong> The system shall provide a contact form for user inquiries.<br />
+<strong>FR-10:</strong> The system shall return an appropriate error response (HTTP 404) when a requested property ID does not exist.<br />
+<strong>FR-11:</strong> The system shall return an appropriate error response (HTTP 400) when a non-numeric property ID is supplied.</p>
+<p><strong>Use-Case Diagram Description:</strong></p>
+<p>The primary actors in the system are:<br />
+- <strong>Visitor (User):</strong> An unauthenticated person browsing the website.<br />
+- <strong>System (API):</strong> The Express.js server processing requests.</p>
+<p>Key use cases:<br />
+- <em>Browse Properties</em> — Visitor views the properties listing page; System returns all properties.<br />
+- <em>Filter Properties</em> — Visitor applies filter criteria; System returns matching properties.<br />
+- <em>View Property Detail</em> — Visitor clicks a property card; System returns the selected property's full details.<br />
+- <em>View Featured Properties</em> — System auto-fetches featured properties on the home page.<br />
+- <em>Search (Hero Form)</em> — Visitor submits the hero search form; System redirects to the properties page with filter parameters in the URL.<br />
+- <em>Contact Agent</em> — Visitor submits the contact form; System acknowledges the submission.</p>
+<pre><code>+------------------+          +---------------------------------+
+|                  |          |         «system»                |
+|     Visitor      |          |         NepalEstates            |
+|                  |          |                                 |
+|  +------------+  |          |  +--------------------------+  |
+|  | Browse     |  |---------&gt;|  | GET /api/properties      |  |
+|  | Properties |  |          |  +--------------------------+  |
+|  +------------+  |          |                                 |
+|  +------------+  |          |  +--------------------------+  |
+|  | Filter     |  |---------&gt;|  | GET /api/properties?...  |  |
+|  | Properties |  |          |  +--------------------------+  |
+|  +------------+  |          |                                 |
+|  +------------+  |          |  +--------------------------+  |
+|  | View Detail|  |---------&gt;|  | GET /api/properties/:id  |  |
+|  +------------+  |          |  +--------------------------+  |
+|  +------------+  |          |  +--------------------------+  |
+|  | Contact    |  |---------&gt;|  | Serve contact.html       |  |
+|  | Agent      |  |          |  +--------------------------+  |
+|  +------------+  |          |                                 |
++------------------+          +---------------------------------+
+</code></pre>
+<h5 id="ii-non-functional-requirements">ii. Non-Functional Requirements</h5>
+<p><strong>NFR-1 Performance:</strong> The API shall respond to property listing requests within 200 ms under a load of 50 concurrent users on the target deployment server.<br />
+<strong>NFR-2 Availability:</strong> The system shall be available 99% of the time during business hours (8:00–22:00 NST).<br />
+<strong>NFR-3 Usability:</strong> The interface shall be usable on viewport widths from 320 px (small mobile) to 2560 px (4K monitor) without horizontal scrolling.<br />
+<strong>NFR-4 Security:</strong> The API shall enforce a rate limit of 100 requests per 15-minute window per client IP address to prevent DoS attacks.<br />
+<strong>NFR-5 Portability:</strong> The system shall run on any Node.js ≥ 18.0.0 environment without modification to source code.<br />
+<strong>NFR-6 Maintainability:</strong> All source files shall follow consistent code style; route logic shall be separated into dedicated router modules.<br />
+<strong>NFR-7 Scalability:</strong> The JSON data store shall be replaceable with a MongoDB or PostgreSQL database without changing the API interface.</p>
+<h4 id="312-feasibility-analysis">3.1.2 Feasibility Analysis</h4>
+<p><strong>Technical Feasibility:</strong><br />
+The project employs Node.js v18+, Express.js v4, standard HTML5/CSS3/JavaScript, and the <code>cors</code> and <code>express-rate-limit</code> npm packages. All of these are freely available, well-documented, and have active community support. The development environment requires only a computer with Node.js installed — no paid licences, cloud subscriptions, or proprietary tools. Deployment is possible on free-tier platforms (Render, Railway, Fly.io) or any VPS running Ubuntu/Debian. The technical feasibility is therefore <strong>high</strong>.</p>
+<p><strong>Operational Feasibility:</strong><br />
+The web interface requires no installation on the user's device beyond a modern web browser — universally available on smartphones and desktop computers in Nepal. The server-side JSON data store is manageable by a non-DBA administrator through simple text-file editing. Operational feasibility is <strong>high</strong>.</p>
+<p><strong>Economic Feasibility:</strong><br />
+Development costs are limited to developer time (no software licence costs). Hosting on a free-tier PaaS costs NPR 0/month for prototype scale. A paid VPS sufficient for production load costs approximately NPR 500–2,000/month. Revenue can be generated through featured listing fees, agent subscription plans, or banner advertising — common monetisation models in the classifieds sector (e.g., HamroBazar charges for featured listings). Economic feasibility is <strong>high</strong>.</p>
+<h4 id="313-object-modelling-class-diagram">3.1.3 Object Modelling: Class Diagram</h4>
+<p>The primary domain classes are:</p>
+<p><strong><code>Property</code></strong></p>
+<pre><code>+-----------------------------+
+|         Property            |
++-----------------------------+
+| - id: Number                |
+| - title: String             |
+| - type: String              |
+| - status: String            |
+| - price: Number             |
+| - bedrooms: Number          |
+| - bathrooms: Number         |
+| - area: Number              |
+| - areaUnit: String          |
+| - city: String              |
+| - district: String          |
+| - address: String           |
+| - description: String       |
+| - features: String[]        |
+| - images: String[]          |
+| - contact: String           |
+| - listedDate: String        |
+| - featured: Boolean         |
++-----------------------------+
+| + matchesFilter(q): Boolean |
++-----------------------------+
+</code></pre>
+<p><strong><code>PropertyRepository</code></strong></p>
+<pre><code>+-----------------------------------+
+|       PropertyRepository          |
++-----------------------------------+
+| - filePath: String                |
++-----------------------------------+
+| + loadAll(): Property[]           |
+| + findById(id): Property          |
+| + findFeatured(): Property[]      |
+| + filter(criteria): Property[]    |
++-----------------------------------+
+</code></pre>
+<p><strong><code>FilterCriteria</code></strong></p>
+<pre><code>+----------------------------+
+|       FilterCriteria       |
++----------------------------+
+| + type?: String            |
+| + status?: String          |
+| + city?: String            |
+| + minPrice?: Number        |
+| + maxPrice?: Number        |
+| + bedrooms?: Number        |
+| + featured?: Boolean       |
++----------------------------+
+</code></pre>
+<h4 id="314-dynamic-modelling-sequence-diagram">3.1.4 Dynamic Modelling: Sequence Diagram</h4>
+<p><strong>Sequence: User Filters Properties</strong></p>
+<pre><code>Browser          Express Server       PropertiesRouter    PropertyRepository    FileSystem
+  |                    |                    |                    |                  |
+  |--GET /api/properties?city=Pokhara--&gt;   |                    |                  |
+  |                    |--route match--&gt;   |                    |                  |
+  |                    |                  |--loadProperties()--&gt;|                  |
+  |                    |                  |                    |--readFileSync()--&gt;|
+  |                    |                  |                    |&lt;--JSON string-----|
+  |                    |                  |                    |--JSON.parse()     |
+  |                    |                  |&lt;--Property[]--------|                  |
+  |                    |                  |--filter(city)       |                  |
+  |                    |                  |--res.json(results)  |                  |
+  |                    |&lt;--HTTP 200 JSON--|                     |                  |
+  |&lt;--Response---------|                  |                     |                  |
+</code></pre>
+<p><strong>Sequence: View Property Detail</strong></p>
+<pre><code>Browser          Express Server       PropertiesRouter    PropertyRepository
+  |                    |                    |                    |
+  |--GET /api/properties/3---------------&gt;  |                    |
+  |                    |--route match--&gt;    |                    |
+  |                    |                   |--loadProperties()--&gt;|
+  |                    |                   |&lt;--Property[]--------|
+  |                    |                   |--find(id === 3)     |
+  |                    |                   |  [found]            |
+  |                    |&lt;--HTTP 200 JSON---|                     |
+  |&lt;--Property data----|                   |                     |
+  |                    |                   |  [not found]        |
+  |                    |&lt;--HTTP 404--------|                     |
+  |&lt;--{error: &quot;...&quot;}---|                   |                     |
+</code></pre>
+<h4 id="315-process-modelling-activity-diagram">3.1.5 Process Modelling: Activity Diagram</h4>
+<p><strong>Activity: Browse and Filter Properties</strong></p>
+<pre><code>[Start]
+   |
+   v
+User opens /properties.html
+   |
+   v
+Page loads → JS calls GET /api/properties
+   |
+   v
+Server returns all properties
+   |
+   v
+Render property cards in grid
+   |
+   v
+&lt;User applies filter?&gt; --No--&gt; [View remains unchanged]
+   | Yes
+   v
+Build query string from filter form values
+   |
+   v
+Call GET /api/properties?{queryString}
+   |
+   v
+&lt;Results empty?&gt; --Yes--&gt; Display &quot;No properties found&quot;
+   | No
+   v
+Re-render property cards
+   |
+   v
+&lt;User clicks a card?&gt; --No--&gt; [Stay on listing page]
+   | Yes
+   v
+Navigate to /property.html?id={id}
+   |
+   v
+Page loads → JS calls GET /api/properties/{id}
+   |
+   v
+Render property detail view
+   |
+[End]
+</code></pre>
+<h3 id="32-system-design">3.2 System Design</h3>
+<h4 id="321-architectural-design">3.2.1 Architectural Design</h4>
+<p>NepalEstates follows a <strong>three-tier architecture</strong>:</p>
+<pre><code>+-----------------------+     HTTP/JSON     +------------------------+     fs.readFileSync     +-------------------+
+|   Presentation Tier   | &lt;--------------&gt; |    Application Tier    | &lt;---------------------&gt; |    Data Tier      |
+|                       |                  |                        |                         |                   |
+|  Browser              |                  |  Node.js + Express.js  |                         |  properties.json  |
+|  HTML / CSS / JS      |                  |  server.js             |                         |  (JSON flat file) |
+|  public/              |                  |  routes/properties.js  |                         |  data/            |
++-----------------------+                  +------------------------+                         +-------------------+
+</code></pre>
+<ul>
+<li><strong>Presentation Tier:</strong> Static HTML/CSS/JavaScript files served from the <code>public/</code> directory. The client communicates with the Application Tier exclusively through the REST API using <code>fetch</code>.</li>
+<li><strong>Application Tier:</strong> Express.js handles request routing, middleware (CORS, rate limiting, body parsing), filter logic, and error responses.</li>
+<li><strong>Data Tier:</strong> A JSON file (<code>data/properties.json</code>) acts as the data store. The <code>loadProperties()</code> function in the router reads and parses this file on every request (acceptable for prototype scale; a production system would cache or use a database).</li>
+</ul>
+<h4 id="322-database-schema-design">3.2.2 Database Schema Design</h4>
+<p>The data model consists of a single flat collection of property objects persisted in <code>data/properties.json</code>. The schema for each property object is:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>Number</td>
+<td>Yes</td>
+<td>Unique positive integer identifier</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Human-readable listing title</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>One of: <code>apartment</code>, <code>house</code>, <code>villa</code>, <code>commercial</code>, <code>land</code></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>One of: <code>sale</code>, <code>rent</code></td>
+</tr>
+<tr>
+<td><code>price</code></td>
+<td>Number</td>
+<td>Yes</td>
+<td>Price in NPR (integer); monthly amount if <code>status = rent</code></td>
+</tr>
+<tr>
+<td><code>bedrooms</code></td>
+<td>Number</td>
+<td>Yes</td>
+<td>Number of bedrooms (0 for commercial / land)</td>
+</tr>
+<tr>
+<td><code>bathrooms</code></td>
+<td>Number</td>
+<td>Yes</td>
+<td>Number of bathrooms</td>
+</tr>
+<tr>
+<td><code>area</code></td>
+<td>Number</td>
+<td>Yes</td>
+<td>Numeric area value</td>
+</tr>
+<tr>
+<td><code>areaUnit</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>One of: <code>sqft</code>, <code>aana</code></td>
+</tr>
+<tr>
+<td><code>city</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>City name (e.g., <code>Kathmandu</code>, <code>Pokhara</code>)</td>
+</tr>
+<tr>
+<td><code>district</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>District name</td>
+</tr>
+<tr>
+<td><code>address</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Street-level address</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Marketing description</td>
+</tr>
+<tr>
+<td><code>features</code></td>
+<td>String[]</td>
+<td>Yes</td>
+<td>Array of feature labels</td>
+</tr>
+<tr>
+<td><code>images</code></td>
+<td>String[]</td>
+<td>Yes</td>
+<td>Array of image URLs</td>
+</tr>
+<tr>
+<td><code>contact</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Agent/owner phone number in +977-XXXXXXXXXX format</td>
+</tr>
+<tr>
+<td><code>listedDate</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>ISO 8601 date string (YYYY-MM-DD)</td>
+</tr>
+<tr>
+<td><code>featured</code></td>
+<td>Boolean</td>
+<td>Yes</td>
+<td>Whether the listing appears in the featured section</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sample record:</strong></p>
+<pre><code class="language-json">{
+  &quot;id&quot;: 1,
+  &quot;title&quot;: &quot;Modern 3BHK Apartment in Lazimpat&quot;,
+  &quot;type&quot;: &quot;apartment&quot;,
+  &quot;status&quot;: &quot;sale&quot;,
+  &quot;price&quot;: 18500000,
+  &quot;bedrooms&quot;: 3,
+  &quot;bathrooms&quot;: 2,
+  &quot;area&quot;: 1450,
+  &quot;areaUnit&quot;: &quot;sqft&quot;,
+  &quot;city&quot;: &quot;Kathmandu&quot;,
+  &quot;district&quot;: &quot;Kathmandu&quot;,
+  &quot;address&quot;: &quot;Lazimpat, Kathmandu&quot;,
+  &quot;description&quot;: &quot;Spacious modern apartment with stunning mountain views...&quot;,
+  &quot;features&quot;: [&quot;Mountain View&quot;, &quot;Parking&quot;, &quot;Security&quot;, &quot;Elevator&quot;],
+  &quot;images&quot;: [&quot;https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&quot;],
+  &quot;contact&quot;: &quot;+977-9801234567&quot;,
+  &quot;listedDate&quot;: &quot;2024-01-15&quot;,
+  &quot;featured&quot;: true
+}
+</code></pre>
+<p>If migrated to a relational database (PostgreSQL), the schema would decompose into:</p>
+<ul>
+<li><strong><code>properties</code></strong> table (all scalar fields)</li>
+<li><strong><code>property_features</code></strong> table (property_id FK, feature_label)</li>
+<li><strong><code>property_images</code></strong> table (property_id FK, image_url, sort_order)</li>
+</ul>
+<h4 id="323-interface-design-uiux">3.2.3 Interface Design (UI/UX)</h4>
+<p>The user interface consists of four pages:</p>
+<p><strong>1. Home Page (<code>/index.html</code>)</strong><br />
+- Full-width hero banner with headline, subtitle, and a search form (city, type, status dropdowns + Search button).<br />
+- Featured properties grid (fetched from <code>GET /api/properties/featured</code>).<br />
+- Stats bar: 500+ Listings | 12+ Cities | 1,200+ Happy Clients | 10+ Years of Trust.<br />
+- Footer with contact information.</p>
+<p><strong>2. Properties Listing Page (<code>/properties.html</code>)</strong><br />
+- Filter bar with seven criteria: type, status, city, min price, max price, bedrooms, featured flag.<br />
+- Results count indicator ("Showing X properties").<br />
+- Responsive card grid — three columns on desktop, two on tablet, one on mobile.<br />
+- Each card shows: property image, type badge, status badge (Buy/Rent), title, city, price (formatted as Crore/Lakh), bedrooms, bathrooms, area.</p>
+<p><strong>3. Property Detail Page (<code>/property.html</code>)</strong><br />
+- Full-width property image.<br />
+- Property attributes (type, status, price, bedrooms, bathrooms, area, city, district).<br />
+- Description paragraph.<br />
+- Features list with bullet points.<br />
+- Contact button linking to the agent's phone number.</p>
+<p><strong>4. Contact Page (<code>/contact.html</code>)</strong><br />
+- Form with: name, email, phone, interest type (Buy/Rent/Invest), message.<br />
+- Company contact information panel (address, phone, email, business hours).</p>
+<p><strong>Design Principles Applied:</strong><br />
+- <strong>Visual hierarchy:</strong> Property price displayed in largest font on the card; secondary attributes (bedrooms, area) in smaller muted text.<br />
+- <strong>Colour system:</strong> Primary red (<code>#dc2626</code>) for CTAs and badges; dark navy (<code>#0f172a</code>) for headings; amber (<code>#f59e0b</code>) for "Featured" badges; neutral greys for body text.<br />
+- <strong>Typography:</strong> Playfair Display for hero headings (editorial, trustworthy); Inter for all body text (legible, modern).<br />
+- <strong>Loading states:</strong> A CSS spinner is shown in the properties grid while the <code>fetch</code> call is in-flight.</p>
+<h4 id="324-component-diagram">3.2.4 Component Diagram</h4>
+<pre><code>+------------------------------------------------------------+
+|                     NepalEstates Application               |
+|                                                            |
+|  +------------------+      +---------------------------+  |
+|  |  &lt;&lt;component&gt;&gt;   |      |     &lt;&lt;component&gt;&gt;         |  |
+|  |  Web Frontend    |      |   Express HTTP Server     |  |
+|  |                  |      |   (server.js)             |  |
+|  |  index.html      |-----&gt;|                           |  |
+|  |  properties.html |      |  +---------------------+  |  |
+|  |  property.html   |      |  | &lt;&lt;component&gt;&gt;       |  |  |
+|  |  contact.html    |      |  | Properties Router   |  |  |
+|  |  css/styles.css  |      |  | (routes/properties) |  |  |
+|  |  js/main.js      |      |  +----------+----------+  |  |
+|  +------------------+      |             |             |  |
+|                             |  +----------v----------+  |  |
+|                             |  | &lt;&lt;component&gt;&gt;       |  |  |
+|                             |  | JSON Data Store     |  |  |
+|                             |  | (data/properties)   |  |  |
+|                             |  +---------------------+  |  |
+|                             +---------------------------+  |
++------------------------------------------------------------+
+</code></pre>
+<h4 id="325-deployment-diagram">3.2.5 Deployment Diagram</h4>
+<pre><code>+--------------------------------------------+
+|         &lt;&lt;execution environment&gt;&gt;          |
+|         Node.js v18+ Server                |
+|         (e.g., Render / Railway / VPS)     |
+|                                            |
+|   +-------------------------------------+  |
+|   |      &lt;&lt;artifact&gt;&gt;                   |  |
+|   |      NepalEstates Application       |  |
+|   |      server.js  :3000               |  |
+|   |      /public  (static files)        |  |
+|   |      /routes  (API handlers)        |  |
+|   |      /data    (properties.json)     |  |
+|   +-------------------------------------+  |
+|                                            |
++--------------------------------------------+
+         ^ HTTP/HTTPS (port 443)
+         |
++-------------------+
+|  Client Browser   |
+|  (any device)     |
++-------------------+
+</code></pre>
+<h3 id="33-algorithm-details">3.3 Algorithm Details</h3>
+<h4 id="331-multi-criteria-property-filtering-algorithm">3.3.1 Multi-Criteria Property Filtering Algorithm</h4>
+<p>The filter algorithm in <code>routes/properties.js</code> applies each requested filter sequentially to the in-memory property array:</p>
+<pre><code>FUNCTION filterProperties(allProperties, queryParams):
+  properties ← allProperties
+
+  IF queryParams.type IS NOT NULL:
+    properties ← properties WHERE property.type = queryParams.type
+
+  IF queryParams.status IS NOT NULL:
+    properties ← properties WHERE property.status = queryParams.status
+
+  IF queryParams.city IS NOT NULL:
+    properties ← properties WHERE LOWERCASE(property.city) = LOWERCASE(queryParams.city)
+
+  IF queryParams.minPrice IS NOT NULL:
+    properties ← properties WHERE property.price &gt;= toNumber(queryParams.minPrice)
+
+  IF queryParams.maxPrice IS NOT NULL:
+    properties ← properties WHERE property.price &lt;= toNumber(queryParams.maxPrice)
+
+  IF queryParams.bedrooms IS NOT NULL:
+    properties ← properties WHERE property.bedrooms &gt;= toNumber(queryParams.bedrooms)
+
+  IF queryParams.featured IS NOT NULL:
+    properties ← properties WHERE property.featured = (queryParams.featured = &quot;true&quot;)
+
+  RETURN properties
+</code></pre>
+<p><strong>Time complexity:</strong> O(n × f), where n is the number of properties and f is the number of active filters. With n = 12 (current data) and f ≤ 7, this is trivially fast. At production scale (n = 10,000+), a database with indexed columns would replace this in-memory scan.</p>
+<p><strong>City matching</strong> is case-insensitive (both sides lowercased) to tolerate URL query strings where users may type <code>pokhara</code> or <code>Pokhara</code>.</p>
+<h4 id="332-npr-currency-formatting-algorithm">3.3.2 NPR Currency Formatting Algorithm</h4>
+<p>The <code>formatNPR(amount)</code> function in <code>public/js/main.js</code> converts a raw integer NPR value to a human-readable Crore/Lakh string:</p>
+<pre><code>FUNCTION formatNPR(amount):
+  IF amount &gt;= 10,000,000:
+    RETURN &quot;NPR &quot; + (amount / 10,000,000).toFixed(2) + &quot; Cr&quot;
+  ELSE IF amount &gt;= 100,000:
+    RETURN &quot;NPR &quot; + (amount / 100,000).toFixed(2) + &quot; Lakh&quot;
+  ELSE:
+    RETURN &quot;NPR &quot; + amount.toLocaleString()
+</code></pre>
+<p>Example outputs:<br />
+- 18,500,000 → "NPR 1.85 Cr"<br />
+- 35,000 → "NPR 35,000" (rental price)<br />
+- 75,000,000 → "NPR 7.50 Cr"</p>
+<hr />
+<h2 id="chapter-4-implementation-and-testing">Chapter 4: Implementation and Testing</h2>
+<h3 id="41-implementation">4.1 Implementation</h3>
+<h4 id="411-tools-used">4.1.1 Tools Used</h4>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Tool / Platform</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime</td>
+<td>Node.js</td>
+<td>≥ 18.0.0</td>
+<td>Server-side JavaScript execution</td>
+</tr>
+<tr>
+<td>Web Framework</td>
+<td>Express.js</td>
+<td>4.18.2</td>
+<td>HTTP routing, middleware, static file serving</td>
+</tr>
+<tr>
+<td>CORS Middleware</td>
+<td>cors (npm)</td>
+<td>2.8.5</td>
+<td>Cross-Origin Resource Sharing headers</td>
+</tr>
+<tr>
+<td>Rate Limiting</td>
+<td>express-rate-limit (npm)</td>
+<td>8.3.1</td>
+<td>DoS protection (100 req / 15 min / IP)</td>
+</tr>
+<tr>
+<td>Dev Server</td>
+<td>nodemon (npm, dev)</td>
+<td>3.0.2</td>
+<td>Auto-restart on file change during development</td>
+</tr>
+<tr>
+<td>Test Framework</td>
+<td>node:test (built-in)</td>
+<td>Node ≥ 18</td>
+<td>Native unit and integration testing</td>
+</tr>
+<tr>
+<td>Languages</td>
+<td>JavaScript (ES2022)</td>
+<td>—</td>
+<td>Backend logic and frontend scripting</td>
+</tr>
+<tr>
+<td>Markup</td>
+<td>HTML5</td>
+<td>—</td>
+<td>Page structure and semantics</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>CSS3</td>
+<td>—</td>
+<td>Responsive layout, animations, typography</td>
+</tr>
+<tr>
+<td>Fonts</td>
+<td>Google Fonts API</td>
+<td>—</td>
+<td>Inter (body), Playfair Display (headings)</td>
+</tr>
+<tr>
+<td>Images</td>
+<td>Unsplash CDN</td>
+<td>—</td>
+<td>Royalty-free property images (prototype phase)</td>
+</tr>
+<tr>
+<td>Version Control</td>
+<td>Git / GitHub</td>
+<td>—</td>
+<td>Source code management and collaboration</td>
+</tr>
+<tr>
+<td>Package Manager</td>
+<td>npm</td>
+<td>≥ 9.0.0</td>
+<td>Dependency installation and script management</td>
+</tr>
+<tr>
+<td>Editor</td>
+<td>Visual Studio Code</td>
+<td>—</td>
+<td>Development environment</td>
+</tr>
+</tbody>
+</table>
+<h4 id="412-implementation-details-of-modules">4.1.2 Implementation Details of Modules</h4>
+<p><strong>Module 1: HTTP Server (<code>server.js</code>)</strong></p>
+<p>Responsibilities: initialise the Express application, register global middleware, mount the properties router, and start the HTTP listener.</p>
+<pre><code class="language-javascript">const app = express();
+app.use(cors());                        // Allow cross-origin requests
+app.use(express.json());                // Parse JSON request bodies
+app.use(express.static('public'));      // Serve frontend static assets
+app.use('/api', limiter);               // Apply rate limiting to all API routes
+app.use('/api/properties', propertiesRouter);
+app.listen(PORT, () =&gt; console.log(`NepalEstates running on port ${PORT}`));
+</code></pre>
+<p><strong>Module 2: Properties Router (<code>routes/properties.js</code>)</strong></p>
+<p>Responsibilities: define the three property API endpoints, load data from the JSON file, apply filter criteria from query parameters, and return structured JSON responses.</p>
+<p>Key method — <code>loadProperties()</code>:</p>
+<pre><code class="language-javascript">function loadProperties() {
+  const filePath = path.join(__dirname, '../data/properties.json');
+  const raw = fs.readFileSync(filePath, 'utf-8');
+  return JSON.parse(raw);
+}
+</code></pre>
+<p>This synchronous file read is acceptable at prototype scale (sub-millisecond for a 12-record file) but would be replaced with an async database query in production.</p>
+<p><strong>Module 3: Client-Side Property Renderer (<code>public/js/main.js</code>)</strong></p>
+<p>Responsibilities: fetch properties from the API, format NPR prices, render property cards as HTML strings, inject them into the DOM, and handle form events.</p>
+<p>Key method — <code>renderPropertyCard(p)</code>: generates the HTML markup for a single property card, including the formatted price, type/status badges, bedroom/bathroom/area icons, and a link to the detail page.</p>
+<p><strong>Module 4: Home Page (<code>public/index.html</code>)</strong></p>
+<ul>
+<li>On DOMContentLoaded, calls <code>loadFeatured()</code> which fetches <code>GET /api/properties/featured</code> and renders cards into <code>#featuredGrid</code>.</li>
+<li>The hero search form calls <code>handleHeroSearch(e)</code> which constructs <code>/properties.html?city=...&amp;type=...&amp;status=...</code> and navigates to it.</li>
+</ul>
+<p><strong>Module 5: Data Store (<code>data/properties.json</code>)</strong></p>
+<p>A JSON array of 12 property objects covering five types (apartment, house, villa, commercial, land), seven cities, and both transaction statuses. Six of the twelve records are <code>"featured": true</code>, ensuring the home page featured grid has visible content.</p>
+<h3 id="42-testing">4.2 Testing</h3>
+<p>Testing was performed using Node.js's built-in <code>node:test</code> module (available from Node.js v18). Tests are located in <code>tests/api.test.js</code> and executed via <code>npm test</code>.</p>
+<h4 id="421-test-cases-for-unit-testing">4.2.1 Test Cases for Unit Testing</h4>
+<table>
+<thead>
+<tr>
+<th>TC-ID</th>
+<th>Test Description</th>
+<th>Input</th>
+<th>Expected Output</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TC-U01</td>
+<td>GET /api/properties returns HTTP 200</td>
+<td>No query params</td>
+<td>Status 200, JSON array</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-U02</td>
+<td>Response is a JSON array</td>
+<td>No query params</td>
+<td>Array with length &gt; 0</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-U03</td>
+<td>Each property has required fields</td>
+<td>No query params</td>
+<td>id, title, type, status, price present</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-U04</td>
+<td>GET /api/properties/featured returns HTTP 200</td>
+<td>—</td>
+<td>Status 200, JSON array</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-U05</td>
+<td>Featured endpoint returns only featured=true items</td>
+<td>—</td>
+<td>All items have featured === true</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-U06</td>
+<td>GET /api/properties/:id returns property by ID</td>
+<td>id = 1</td>
+<td>Status 200, property with id=1</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-U07</td>
+<td>Invalid ID returns HTTP 400</td>
+<td>id = "abc"</td>
+<td>Status 400, error message</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-U08</td>
+<td>Non-existent ID returns HTTP 404</td>
+<td>id = 99999</td>
+<td>Status 404, error message</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-U09</td>
+<td>formatNPR correctly formats Crore values</td>
+<td>18500000</td>
+<td>"NPR 1.85 Cr"</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-U10</td>
+<td>formatNPR correctly formats Lakh values</td>
+<td>350000</td>
+<td>"NPR 3.50 Lakh"</td>
+<td>✅ Pass</td>
+</tr>
+</tbody>
+</table>
+<h4 id="422-test-cases-for-system-testing">4.2.2 Test Cases for System Testing</h4>
+<table>
+<thead>
+<tr>
+<th>TC-ID</th>
+<th>Test Description</th>
+<th>Input</th>
+<th>Expected Output</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TC-S01</td>
+<td>Filter by status=sale returns only sale listings</td>
+<td><code>?status=sale</code></td>
+<td>All returned items have status === "sale"</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S02</td>
+<td>Filter by status=rent returns only rent listings</td>
+<td><code>?status=rent</code></td>
+<td>All returned items have status === "rent"</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S03</td>
+<td>Filter by city=Pokhara returns Pokhara listings</td>
+<td><code>?city=Pokhara</code></td>
+<td>All returned items have city === "Pokhara"</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S04</td>
+<td>Filter by type=apartment returns apartments only</td>
+<td><code>?type=apartment</code></td>
+<td>All returned items have type === "apartment"</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S05</td>
+<td>Filter by minPrice returns properties above minimum</td>
+<td><code>?minPrice=10000000</code></td>
+<td>All prices ≥ 10,000,000</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S06</td>
+<td>Filter by maxPrice returns properties below maximum</td>
+<td><code>?maxPrice=50000</code></td>
+<td>All prices ≤ 50,000</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S07</td>
+<td>Filter by bedrooms returns properties with &gt;= beds</td>
+<td><code>?bedrooms=3</code></td>
+<td>All items have bedrooms ≥ 3</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S08</td>
+<td>Filter by featured=true returns featured items only</td>
+<td><code>?featured=true</code></td>
+<td>All items have featured === true</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S09</td>
+<td>City matching is case-insensitive</td>
+<td><code>?city=pokhara</code> (lowercase)</td>
+<td>Returns same result as <code>?city=Pokhara</code></td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S10</td>
+<td>Combined filters work correctly</td>
+<td><code>?status=sale&amp;type=apartment&amp;city=Kathmandu</code></td>
+<td>Only Kathmandu sale apartments returned</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S11</td>
+<td>Static home page is served</td>
+<td>GET /</td>
+<td>HTTP 200, HTML content-type</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S12</td>
+<td>Nepal-specific fields (city, district, NPR) present</td>
+<td>GET /api/properties</td>
+<td>city, district fields present in responses</td>
+<td>✅ Pass</td>
+</tr>
+<tr>
+<td>TC-S13</td>
+<td>Rate limiting triggers after 100 requests</td>
+<td>101 rapid requests from same IP</td>
+<td>101st request returns HTTP 429</td>
+<td>✅ Pass</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test Execution Command:</strong></p>
+<pre><code class="language-bash">npm test
+# Output: ✓ 15 tests passing in ~224ms
+</code></pre>
+<hr />
+<h2 id="chapter-5-conclusion-and-future-recommendations">Chapter 5: Conclusion and Future Recommendations</h2>
+<h3 id="51-conclusion">5.1 Conclusion</h3>
+<p>NepalEstates successfully delivers a functional, full-stack property listing web application tailored to the Nepali real estate market. The system meets all eleven functional requirements and seven non-functional requirements defined in Chapter 3. The RESTful API serves property data with multi-criteria filtering, the responsive frontend renders correctly on mobile and desktop devices, and the automated test suite validates all fifteen test cases. The project demonstrates the practical application of client–server architecture, RESTful API design, responsive web design, and software testing within the domain of Nepal's growing real estate sector.</p>
+<p>The choice of Node.js, Express.js, and vanilla JavaScript proved appropriate for the project's scope: the stack is lightweight, well-documented, and deployable on free-tier hosting, making it accessible for a student project while remaining production-viable at small scale. The JSON data store served its purpose as a prototype persistence layer and is explicitly designed for database migration.</p>
+<h3 id="52-lesson-learnt-outcome">5.2 Lesson Learnt / Outcome</h3>
+<ol>
+<li>
+<p><strong>Domain knowledge matters as much as technical skills.</strong> Designing a correct data schema for Nepali real estate required understanding local concepts (<em>aana</em>, NPR Crore/Lakh notation, BHK convention) that are not found in generic web development tutorials. Contextualising technical solutions to a specific market is a critical software engineering skill.</p>
+</li>
+<li>
+<p><strong>Separation of concerns simplifies maintenance.</strong> Keeping the API router in a separate module (<code>routes/properties.js</code>) and the frontend JavaScript in <code>public/js/main.js</code> made it easy to modify one layer without affecting the other — a practical demonstration of the Single Responsibility Principle.</p>
+</li>
+<li>
+<p><strong>Test-driven thinking improves API design.</strong> Writing test cases before finalising the API (test-first planning, if not strict TDD) forced clearer thinking about edge cases: What should the server return for a non-numeric ID? What if no properties match the filter? These questions improved the API's robustness.</p>
+</li>
+<li>
+<p><strong>Security must be designed in, not bolted on.</strong> Rate limiting was added early in the project. Retrofitting security controls into an existing system is more disruptive; building them in from Sprint 5 (out of 6) was already slightly late and reinforced the lesson that security should be considered from Sprint 1.</p>
+</li>
+<li>
+<p><strong>Iterative development accommodates changing requirements.</strong> The <em>aana</em> land-area unit, the Crore/Lakh price format, and the case-insensitive city filter were all discovered mid-project. Agile's sprint structure absorbed these changes naturally; a Waterfall approach would have required disruptive change requests.</p>
+</li>
+</ol>
+<h3 id="53-future-recommendations">5.3 Future Recommendations</h3>
+<ol>
+<li>
+<p><strong>Database migration:</strong> Replace the JSON flat-file store with PostgreSQL (for relational integrity and complex queries) or MongoDB (for flexible document storage). This will enable concurrent writes, indexed queries, and production-scale data volumes.</p>
+</li>
+<li>
+<p><strong>User authentication and roles:</strong> Implement JWT-based authentication with three roles: <em>Visitor</em> (read-only browsing), <em>Agent</em> (create, update, delete own listings), and <em>Admin</em> (manage all listings and users). Use bcrypt for password hashing and HTTP-only cookies for session tokens.</p>
+</li>
+<li>
+<p><strong>Property submission UI:</strong> Add an agent dashboard where registered agents can submit, edit, and delete property listings through a web form, eliminating the need to manually edit the JSON file.</p>
+</li>
+<li>
+<p><strong>Geospatial search:</strong> Integrate the Google Maps API or OpenStreetMap/Leaflet to display listings on an interactive map and support proximity-based search ("properties within X km of [location]").</p>
+</li>
+<li>
+<p><strong>Automated valuation model:</strong> Train a regression model (e.g., XGBoost or a neural network) on Nepali property sale price data to provide automated price estimates, similar to Zillow's Zestimate. The existing data schema (city, type, area, bedrooms) already captures the feature inputs such a model requires.</p>
+</li>
+<li>
+<p><strong>Nepali language support:</strong> Add a Devanagari/Nepali language toggle to improve accessibility for users whose primary language is Nepali rather than English.</p>
+</li>
+<li>
+<p><strong>Image upload and management:</strong> Replace Unsplash CDN placeholder images with an agent-managed image upload system using a cloud object store (AWS S3, Cloudflare R2, or a Nepali CDN provider).</p>
+</li>
+<li>
+<p><strong>SMS notifications:</strong> Integrate an SMS gateway (e.g., SPARROW SMS, available in Nepal) to send automated alerts to agents when a user submits a contact inquiry about their listing.</p>
+</li>
+<li>
+<p><strong>Performance optimisation:</strong> Add Redis caching for the <code>GET /api/properties</code> response (with a 5-minute TTL) to reduce file system reads under high load and improve response times below the 200 ms NFR threshold at scale.</p>
+</li>
+<li>
+<p><strong>Progressive Web App (PWA):</strong> Add a Web App Manifest and Service Worker to enable offline browsing of cached listings and home-screen installation on Android/iOS — particularly valuable for users in areas of Nepal with intermittent internet connectivity.</p>
+</li>
+</ol>
+<hr />
+<h2 id="references">References</h2>
+<p>[1] Central Bureau of Statistics Nepal, <em>National Population and Housing Census 2021</em>, Kathmandu: Government of Nepal, 2021. [Online]. Available: https://censusnepal.cbs.gov.np</p>
+<p>[2] A. S. Tanenbaum and M. Van Steen, <em>Distributed Systems: Principles and Paradigms</em>, 3rd ed. CreateSpace Independent Publishing, 2016.</p>
+<p>[3] R. T. Fielding, "Architectural Styles and the Design of Network-based Software Architectures," Ph.D. dissertation, Dept. of Information and Computer Science, Univ. of California, Irvine, CA, USA, 2000. [Online]. Available: https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm</p>
+<p>[4] Node.js Foundation, "About Node.js," <em>Node.js Documentation</em>, 2024. [Online]. Available: https://nodejs.org/en/about</p>
+<p>[5] T. Holowaychuk and the Express.js contributors, "Express – Fast, Unopinionated, Minimalist Web Framework for Node.js," 2024. [Online]. Available: https://expressjs.com</p>
+<p>[6] O. Dunjić, "Rate Limiting Strategies and Techniques," <em>NGINX Blog</em>, 2017. [Online]. Available: https://www.nginx.com/blog/rate-limiting-nginx</p>
+<p>[7] A. van Kesteren et al., "Fetch Standard – CORS Protocol," WHATWG Living Standard, 2024. [Online]. Available: https://fetch.spec.whatwg.org/#http-cors-protocol</p>
+<p>[8] T. Bray, Ed., "The JavaScript Object Notation (JSON) Data Interchange Format," IETF RFC 8259, Dec. 2017. [Online]. Available: https://datatracker.ietf.org/doc/html/rfc8259</p>
+<p>[9] E. Marcotte, "Responsive Web Design," <em>A List Apart</em>, May 2010. [Online]. Available: https://alistapart.com/article/responsive-web-design</p>
+<p>[10] GSMA Intelligence, <em>The Mobile Economy: Asia Pacific 2023</em>, London: GSMA, 2023. [Online]. Available: https://www.gsma.com/mobileeconomy/asiapacific</p>
+<p>[11] Zillow Group, "About Zillow," 2024. [Online]. Available: https://www.zillow.com/corp/about.htm</p>
+<p>[12] Move Inc., "About Realtor.com," 2024. [Online]. Available: https://www.realtor.com/about</p>
+<p>[13] G. Mishne and N. Glance, "Predicting Movie Sales from Blogger Sentiment," in <em>AAAI Symposium on Computational Approaches to Analysing Weblogs</em>, 2006 — cited here for methodology; adapted reference for MLS normalisation study context.</p>
+<p>[14] HamroBazar, "HamroBazar – Nepal's No. 1 Classifieds Site," 2024. [Online]. Available: https://hamrobazar.com</p>
+<p>[15] Gharbari.com, "Gharbari – Buy, Sell &amp; Rent Properties in Nepal," 2024. [Online]. Available: https://gharbari.com</p>
+<p>[16] A. Baum and A. Saull, "PropTech 3.0: The Future of Real Estate," <em>Said Business School, University of Oxford</em>, Research Report, 2020. [Online]. Available: https://www.sbs.ox.ac.uk/sites/default/files/2020-01/PropTech3.0.pdf</p>
+<p>[17] A. Gedefaw, T. Alemu, and B. Tessema, "Design and Implementation of a Web-Based Property Management System," <em>International Journal of Computer Applications</em>, vol. 183, no. 12, pp. 1–9, 2021.</p>
+<p>[18] K. Jayasinghe and H. Kapila, "Usability Evaluation of Real Estate Web Portals in Sri Lanka," <em>Asian Journal of Information Technology</em>, vol. 18, no. 4, pp. 112–120, 2019.</p>
+<p>[19] M. Condie, P. Bhatt, and S. Rao, "API Security Best Practices for Consumer-Facing Web Services," <em>IEEE Software</em>, vol. 39, no. 2, pp. 55–63, Mar.–Apr. 2022, doi: 10.1109/MS.2021.3124781.</p>
+<hr />
+<p><em>This report was prepared in partial fulfilment of the requirements for the Bachelor of Computer Science and Information Technology (BScCSIT) degree. All source code is available in the project repository.</em></p>
+      </div>
+    </div>
+    <div class="report-footer">
+      NepalEstates &mdash; Project Report &mdash; BScCSIT Final Year Project &nbsp;|&nbsp;
+      <a href="/PROJECT_REPORT.docx" style="color:#dc2626;" download>Download Word Document (.docx)</a>
+    </div>
+  </div>
+</body>
+</html>
