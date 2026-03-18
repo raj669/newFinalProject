@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rate limiting: 100 requests per 15 minutes per IP
+// Rate limiting: 100 requests per 15 minutes per IP (API)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -23,8 +23,15 @@ app.use('/api', limiter);
 const propertiesRouter = require('./routes/properties');
 app.use('/api/properties', propertiesRouter);
 
+// Rate-limit the SPA catch-all to prevent filesystem-access abuse
+const staticLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 300,
+  message: { error: 'Too many requests, please try again later.' }
+});
+
 // Serve index.html for all unmatched routes (SPA support)
-app.get('*', (req, res) => {
+app.get('*', staticLimiter, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
