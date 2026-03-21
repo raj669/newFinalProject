@@ -39,6 +39,7 @@ OUT_PATH = REPO_DIR / "PROJECT_REPORT.docx"
 
 TNR     = "Times New Roman"
 COURIER = "Courier New"
+IMAGE_WIDTH_INCHES = 5.8   # max diagram width within A4 text area (margins: L=1.25in, R=1in)
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Low-level XML helpers
@@ -380,6 +381,35 @@ def build(lines: list) -> Document:
             _run_fmt(run0, size=12, bold=False)
             _apply_inline(p, text)
             i += 1; continue
+
+        # ── Inline image: ![caption](path) ──────────────────────────────────
+        m_img = re.match(r'^!\[([^\]]*)\]\(([^)]+)\)\s*$', stripped)
+        if m_img:
+            caption_text = m_img.group(1)
+            img_path_raw = m_img.group(2)
+            img_path = REPO_DIR / img_path_raw
+            if img_path.exists():
+                # Centre-align paragraph, embed image at full text-width
+                p_img = doc.add_paragraph()
+                _para_fmt(p_img, align=WD_ALIGN_PARAGRAPH.CENTER,
+                          before=Pt(10), after=Pt(4), ls=1.0)
+                run_img = p_img.add_run()
+                run_img.add_picture(str(img_path), width=Inches(IMAGE_WIDTH_INCHES))
+                # Caption paragraph
+                p_cap = doc.add_paragraph()
+                _para_fmt(p_cap, align=WD_ALIGN_PARAGRAPH.CENTER,
+                          before=Pt(2), after=Pt(12), ls=1.0)
+                run_cap = p_cap.add_run(caption_text)
+                _run_fmt(run_cap, size=10, bold=True, italic=True)
+            else:
+                # Image file not found – fall back to italic caption text
+                p_img = doc.add_paragraph()
+                _para_fmt(p_img, align=WD_ALIGN_PARAGRAPH.CENTER,
+                          before=Pt(6), after=Pt(6), ls=1.0)
+                run_img = p_img.add_run(f"[Image not found: {img_path_raw}]")
+                _run_fmt(run_img, size=10, italic=True)
+            i += 1
+            continue
 
         # ── Regular paragraph (including bold metadata cover lines) ──────────
         p = doc.add_paragraph()
