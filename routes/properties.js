@@ -2,75 +2,108 @@
 
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
+const firebase = require('../config/firebase-service');
 
-const DATA_FILE = path.join(__dirname, '..', 'data', 'properties.json');
-
-function loadProperties() {
-  const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-  return JSON.parse(raw);
-}
-
-// GET /api/properties - list all properties with optional filters
+/**
+ * GET /api/properties
+ * List all properties with optional filters
+ */
 router.get('/', (req, res) => {
-  let properties = loadProperties();
+  try {
+    const { type, status, city, minPrice, maxPrice, bedrooms, featured, search } = req.query;
 
-  const { type, status, city, minPrice, maxPrice, bedrooms, featured } = req.query;
+    const filters = {};
+    if (type) filters.type = type;
+    if (status) filters.status = status;
+    if (city) filters.city = city;
+    if (minPrice) filters.minPrice = parseInt(minPrice);
+    if (maxPrice) filters.maxPrice = parseInt(maxPrice);
+    if (search) filters.search = search;
 
-  if (type) {
-    properties = properties.filter(p => p.type === type);
-  }
-  if (status) {
-    properties = properties.filter(p => p.status === status);
-  }
-  if (city) {
-    properties = properties.filter(p =>
-      p.city.toLowerCase().includes(city.toLowerCase())
-    );
-  }
-  if (minPrice) {
-    const min = parseInt(minPrice, 10);
-    if (!isNaN(min)) {
-      properties = properties.filter(p => p.price >= min);
-    }
-  }
-  if (maxPrice) {
-    const max = parseInt(maxPrice, 10);
-    if (!isNaN(max)) {
-      properties = properties.filter(p => p.price <= max);
-    }
-  }
-  if (bedrooms) {
-    const beds = parseInt(bedrooms, 10);
-    if (!isNaN(beds)) {
-      properties = properties.filter(p => p.bedrooms >= beds);
-    }
-  }
-  if (featured === 'true') {
-    properties = properties.filter(p => p.featured === true);
-  }
+    let properties = firebase.getAllProperties(filters);
 
-  res.json({ success: true, count: properties.length, data: properties });
+    // Filter by bedrooms
+    if (bedrooms) {
+      const beds = parseInt(bedrooms);
+      if (!isNaN(beds)) {
+        properties = properties.filter(p => p.bedrooms >= beds);
+      }
+    }
+
+    // Filter by featured
+    if (featured === 'true') {
+      properties = properties.filter(p => p.featured === true);
+    }
+
+    res.json({
+      success: true,
+      count: properties.length,
+      data: properties
+    });
+  } catch (error) {
+    console.error('Error loading properties:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error loading properties',
+      error: error.message
+    });
+  }
 });
 
-// GET /api/properties/featured - get featured properties
+/**
+ * GET /api/properties/featured
+ * Get featured properties
+ */
 router.get('/featured', (req, res) => {
-  const properties = loadProperties().filter(p => p.featured === true);
-  res.json({ success: true, count: properties.length, data: properties });
+  try {
+    const properties = firebase.getAllProperties({}).filter(p => p.featured === true);
+    res.json({
+      success: true,
+      count: properties.length,
+      data: properties
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error loading featured properties',
+      error: error.message
+    });
+  }
 });
 
-// GET /api/properties/:id - get a single property
+/**
+ * GET /api/properties/:id
+ * Get a single property by ID
+ */
 router.get('/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  if (isNaN(id)) {
-    return res.status(400).json({ success: false, message: 'Invalid property ID' });
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid property ID'
+      });
+    }
+
+    const property = firebase.getPropertyById(id);
+    if (!property) {
+      return res.status(404).json({
+        success: false,
+        message: 'Property not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: property
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error loading property',
+      error: error.message
+    });
   }
-  const property = loadProperties().find(p => p.id === id);
-  if (!property) {
-    return res.status(404).json({ success: false, message: 'Property not found' });
-  }
-  res.json({ success: true, data: property });
 });
 
 module.exports = router;

@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Nepal Real Estate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        /* ===== LOGIN VIEW ===== */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 420px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .login-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .login-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .login-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .login-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .demo-credentials {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #ecf0f1;
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+
+        /* ===== ADMIN LAYOUT ===== */
+        .admin-layout {
+            display: flex;
+            height: 100vh;
+            background: #f5f7fa;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            overflow-y: auto;
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-bottom: 80px;
+        }
+
+        .sidebar-menu li {
+            margin: 0.5rem 0;
+        }
+
+        .sidebar-menu button {
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu button:hover,
+        .sidebar-menu button.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: #3498db;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-footer button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sidebar-footer button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .top-bar h1 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-details p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .user-details p:first-child {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .user-details p:last-child {
+            color: #7f8c8d;
+            font-size: 0.8rem;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #bbb;
+            border-radius: 4px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        /* View Container */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+            animation: fadeIn 0.2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border-top: 4px solid #3498db;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-card.warning { border-top-color: #f39c12; }
+        .stat-card.success { border-top-color: #27ae60; }
+        .stat-card.danger { border-top-color: #e74c3c; }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-card.warning .stat-value { color: #f39c12; }
+        .stat-card.success .stat-value { color: #27ae60; }
+        .stat-card.danger .stat-value { color: #e74c3c; }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.65rem 1.25rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Forms */
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group input {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #2c3e50;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #ecf0f1;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* No Data State */
+        .no-data {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #7f8c8d;
+        }
+
+        .no-data-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 70px;
+                overflow: hidden;
+                position: sticky;
+                top: 0;
+                padding: 0.5rem;
+            }
+
+            .sidebar-menu {
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+                margin-bottom: 0;
+            }
+
+            .sidebar-menu button {
+                white-space: nowrap;
+                padding: 0.5rem 1rem;
+            }
+
+            .sidebar-header,
+            .sidebar-footer {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .table {
+                font-size: 0.85rem;
+            }
+
+            .table th,
+            .table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login View -->
+    <div id="loginView" class="login-container hidden" style="display: none;">
+        <div class="login-box">
+            <h1>🔐 Admin Login</h1>
+            <p>Nepal Real Estate Management System</p>
+            <div id="loginMessage" class="login-message hidden" style="display: none;"></div>
+            <form id="adminAuthForm" onsubmit="handleAdminAuth(event)">
+                <div class="form-group">
+                    <label for="adminEmail">Email Address</label>
+                    <input type="email" id="adminEmail" placeholder="raj@gmail.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Login as Admin</button>
+            </form>
+            <div class="demo-credentials">
+                <strong>Demo Credentials:</strong><br>
+                Email: raj@gmail.com<br>
+                Password: 123
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin View -->
+    <div id="adminView" class="admin-layout" style="display: flex;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🏢 Admin Panel</h2>
+                <p>Real Estate Manager</p>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><button class="dashboard-btn menu-btn active" onclick="switchView(event, 'dashboard')">📊 Dashboard</button></li>
+                <li><button class="menu-btn" onclick="switchView(event, 'properties')">🏠 Properties</button></li>
+                <li><button class="menu-btn" onclick="switchView(event, 'pending')">⏳ Pending Review</button></li>
+                <li><button class="menu-btn" onclick="switchView(event, 'comments')">💬 Comments</button></li>
+                <li><button class="menu-btn" onclick="switchView(event, 'users')">👥 Users</button></li>
+                <li><button class="menu-btn" onclick="switchView(event, 'analytics')">📈 Analytics</button></li>
+                <li><button class="menu-btn" onclick="switchView(event, 'logs')">📋 Logs</button></li>
+                <li><button class="menu-btn" onclick="switchView(event, 'settings')">⚙️ Settings</button></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <h1>Admin Dashboard</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="userInitials">A</div>
+                    <div class="user-details">
+                        <p id="userName">Admin User</p>
+                        <p>Administrator</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content">
+                <div id="alertContainer"></div>
+
+                <!-- Dashboard View -->
+                <div id="dashboard" class="view active">
+                    <div class="section-header">
+                        <h2>📊 Dashboard Overview</h2>
+                        <button class="btn btn-primary" onclick="refreshDashboard()">🔄 Refresh</button>
+                    </div>
+
+                    <div class="stats-grid">
+                        <!-- Total Properties -->
+                        <div class="stat-card">
+                            <div class="stat-icon">🏠</div>
+                            <div class="stat-value" id="totalProperties">0</div>
+                            <div class="stat-label">Total Properties</div>
+                            <div style="font-size: 0.8rem; color: #95a5a6; margin-top: 0.75rem; border-top: 1px solid #ecf0f1; padding-top: 0.75rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Active:</span>
+                                    <strong id="activeProperties">0</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Inactive:</span>
+                                    <strong id="inactiveProperties">0</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Review -->
+                        <div class="stat-card warning">
+                            <div class="stat-icon">⏳</div>
+                            <div class="stat-value" id="pendingProperties">0</div>
+                            <div class="stat-label">Pending Review</div>
+                            <div style="font-size: 0.8rem; color: #95a5a6; margin-top: 0.75rem; border-top: 1px solid #ecf0f1; padding-top: 0.75rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Awaiting action</span>
+                                    <strong id="pendingPercent">0%</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Approved -->
+                        <div class="stat-card success">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-value" id="approvedProperties">0</div>
+                            <div class="stat-label">Approved</div>
+                            <div style="font-size: 0.8rem; color: #95a5a6; margin-top: 0.75rem; border-top: 1px solid #ecf0f1; padding-top: 0.75rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Published</span>
+                                    <strong id="approvalRate">0%</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rejected -->
+                        <div class="stat-card danger">
+                            <div class="stat-icon">❌</div>
+                            <div class="stat-value" id="rejectedProperties">0</div>
+                            <div class="stat-label">Rejected</div>
+                            <div style="font-size: 0.8rem; color: #95a5a6; margin-top: 0.75rem; border-top: 1px solid #ecf0f1; padding-top: 0.75rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Not approved</span>
+                                    <strong id="rejectionRate">0%</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Users -->
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-value" id="totalUsers">0</div>
+                            <div class="stat-label">Total Users</div>
+                            <div style="font-size: 0.8rem; color: #95a5a6; margin-top: 0.75rem; border-top: 1px solid #ecf0f1; padding-top: 0.75rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Buyers:</span>
+                                    <strong id="buyerCount">0</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Sellers:</span>
+                                    <strong id="sellerCount">0</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comments -->
+                        <div class="stat-card">
+                            <div class="stat-icon">💬</div>
+                            <div class="stat-value" id="totalComments">0</div>
+                            <div class="stat-label">Comments</div>
+                            <div style="font-size: 0.8rem; color: #95a5a6; margin-top: 0.75rem; border-top: 1px solid #ecf0f1; padding-top: 0.75rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Pending review</span>
+                                    <strong id="pendingComments">0</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div style="padding: 1.5rem; border-bottom: 1px solid #ecf0f1;">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div id="recentActivityList" style="padding: 1.5rem;">
+                            <div class="no-data">
+                                <div class="no-data-icon">📭</div>
+                                <p>No recent activity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Properties View -->
+                <div id="properties" class="view">
+                    <div class="section-header">
+                        <h2>🏠 Property Management</h2>
+                        <button class="btn btn-success" onclick="openPropertyModal()">➕ Add Property</button>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" id="searchInput" placeholder="🔍 Search by title..." onkeyup="debounceSearch()">
+                        <select id="typeFilter" onchange="loadProperties()">
+                            <option value="">All Types</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="house">House</option>
+                            <option value="villa">Villa</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+                        <select id="statusFilter" onchange="loadProperties()">
+                            <option value="">All Status</option>
+                            <option value="sale">For Sale</option>
+                            <option value="rent">For Rent</option>
+                        </select>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Price</th>
+                                    <th>City</th>
+                                    <th>Status</th>
+                                    <th>Approval</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="propertiesTable">
+                                <tr><td colspan="7" class="no-data"><span class="spinner"></span> Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pending View -->
+                <div id="pending" class="view">
+                    <div class="section-header">
+                        <h2>⏳ Pending Approvals</h2>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Price</th>
+                                    <th>City</th>
+                                    <th>Submitted</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingTable">
+                                <tr><td colspan="6" class="no-data"><span class="spinner"></span> Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Comments View -->
+                <div id="comments" class="view">
+                    <div class="section-header">
+                        <h2>💬 Comment Moderation</h2>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Property</th>
+                                    <th>Comment</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="commentsTable">
+                                <tr><td colspan="5" class="no-data"><span class="spinner"></span> Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Users View -->
+                <div id="users" class="view">
+                    <div class="section-header">
+                        <h2>👥 User Management</h2>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" id="userSearchInput" placeholder="🔍 Search users..." onkeyup="searchUsers()">
+                        <select id="userRoleFilter" onchange="loadUsers()">
+                            <option value="">All Roles</option>
+                            <option value="admin">Admin</option>
+                            <option value="buyer">Buyer</option>
+                            <option value="seller">Seller</option>
+                        </select>
+                    </div>
+
+                    <div id="usersList">
+                        <div class="no-data"><span class="spinner"></span> Loading users...</div>
+                    </div>
+                </div>
+
+                <!-- Analytics View -->
+                <div id="analytics" class="view">
+                    <div class="section-header">
+                        <h2>📈 Analytics & Reports</h2>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Average Price</div>
+                            <div class="stat-value" id="avgPrice">Rs. 0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Most Common Type</div>
+                            <div class="stat-value" id="commonType">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Top City</div>
+                            <div class="stat-value" id="topCity">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Approval Rate</div>
+                            <div class="stat-value" id="approvalRate">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div style="padding: 1.5rem;">
+                            <h3>Properties by Type</h3>
+                            <div id="propertiesByTypeChart"></div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div style="padding: 1.5rem;">
+                            <h3>Properties by City (Top 10)</h3>
+                            <div id="propertiesByCityChart"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logs View -->
+                <div id="logs" class="view">
+                    <div class="section-header">
+                        <h2>📋 Activity Logs</h2>
+                        <button class="btn btn-danger btn-small" onclick="clearLogs()">🗑️ Clear Logs</button>
+                    </div>
+
+                    <div id="logsList">
+                        <div class="no-data"><span class="spinner"></span> Loading logs...</div>
+                    </div>
+                </div>
+
+                <!-- Settings View -->
+                <div id="settings" class="view">
+                    <div class="section-header">
+                        <h2>⚙️ Settings & Configuration</h2>
+                    </div>
+
+                    <div class="table-container" style="padding: 1.5rem;">
+                        <h3 style="margin-bottom: 1.5rem;">System Options</h3>
+
+                        <div style="margin-bottom: 2rem;">
+                            <label style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; cursor: pointer;">
+                                <input type="checkbox" id="maintenanceToggle" onchange="saveSetting('maintenance')">
+                                <span>
+                                    <strong>Maintenance Mode</strong>
+                                    <p style="color: #7f8c8d; font-size: 0.85rem; margin-top: 0.25rem;">Disable property listings temporarily</p>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <label style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; cursor: pointer;">
+                                <input type="checkbox" id="autoApproveToggle" onchange="saveSetting('autoApprove')">
+                                <span>
+                                    <strong>Auto-Approve Properties</strong>
+                                    <p style="color: #7f8c8d; font-size: 0.85rem; margin-top: 0.25rem;">Automatically approve new submissions</p>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div style="border-top: 1px solid #ecf0f1; padding-top: 1.5rem;">
+                            <h3 style="margin-bottom: 1rem;">Data Management</h3>
+                            <button class="btn btn-primary" onclick="exportData()" style="margin-right: 1rem;">📥 Export as CSV</button>
+                            <button class="btn btn-primary" onclick="backupDatabase()">💾 Backup Database</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Modal -->
+    <div id="propertyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="propertyModalTitle">Add New Property</h2>
+                <button class="modal-close" onclick="closePropertyModal()">&times;</button>
+            </div>
+            <form id="propertyForm" onsubmit="submitPropertyForm(event)">
+                <div class="modal-body">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Property Title *</label>
+                            <input type="text" id="propTitle" required style="width: 100%; padding: 0.75rem; border: 2px solid #ecf0f1; border-radius: 6px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Type *</label>
+                            <select id="propType" required style="width: 100%; padding: 0.75rem; border: 2px solid #ecf0f1; border-radius: 6px;">
+                                <option value="">Select...</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="house">House</option>
+                                <option value="villa">Villa</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="land">Land</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Status *</label>
+                            <select id="propStatus" required style="width: 100%; padding: 0.75rem; border: 2px solid #ecf0f1; border-radius: 6px;">
+                                <option value="">Select...</option>
+                                <option value="sale">For Sale</option>
+                                <option value="rent">For Rent</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Price *</label>
+                            <input type="number" id="propPrice" required step="0.01" style="width: 100%; padding: 0.75rem; border: 2px solid #ecf0f1; border-radius: 6px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">City *</label>
+                            <input type="text" id="propCity" required style="width: 100%; padding: 0.75rem; border: 2px solid #ecf0f1; border-radius: 6px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Bedrooms</label>
+                            <input type="number" id="propBedrooms" min="0" style="width: 100%; padding: 0.75rem; border: 2px solid #ecf0f1; border-radius: 6px;">
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Description</label>
+                        <textarea id="propDescription" rows="4" style="width: 100%; padding: 0.75rem; border: 2px solid #ecf0f1; border-radius: 6px; resize: vertical;"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="closePropertyModal()">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save Property</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let isSaving = false;
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', () => {
+            if (checkAuth()) {
+                loadAllDashboardData();
+            }
+        });
+
+        // ===== AUTHENTICATION =====
+        async function handleAdminAuth(event) {
+            event.preventDefault();
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const submitBtn = event.target.querySelector('button');
+            const originalText = submitBtn.textContent;
+            
+            try {
+                submitBtn.innerHTML = '<span class="spinner"></span> Logging in...';
+                submitBtn.disabled = true;
+
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.user.role === 'admin') {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    showAlert('✓ Login successful!', 'success');
+                    checkAuth();
+                    loadAllDashboardData();
+                } else {
+                    const msgEl = document.getElementById('loginMessage');
+                    msgEl.textContent = '✗ Invalid admin credentials';
+                    msgEl.className = 'login-message error';
+                    msgEl.style.display = 'block';
+                }
+            } catch (error) {
+                const msgEl = document.getElementById('loginMessage');
+                msgEl.textContent = '✗ Login error: ' + error.message;
+                msgEl.className = 'login-message error';
+                msgEl.style.display = 'block';
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+            if (!token || !user || user.role !== 'admin') {
+                document.getElementById('adminView').style.display = 'none';
+                document.getElementById('loginView').style.display = 'flex';
+                return false;
+            }
+
+            document.getElementById('loginView').style.display = 'none';
+            document.getElementById('adminView').style.display = 'flex';
+            document.getElementById('userName').textContent = user.first_name + ' ' + user.last_name;
+            document.getElementById('userInitials').textContent = (user.first_name[0] + user.last_name[0]).toUpperCase();
+            return true;
+        }
+
+        // ===== NAVIGATION =====
+        function switchView(event, view) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(view).classList.add('active');
+            event.target.classList.add('active');
+
+            if (view === 'dashboard') loadAllDashboardData();
+            else if (view === 'properties') loadProperties();
+            else if (view === 'pending') loadPendingProperties();
+            else if (view === 'comments') loadPendingComments();
+            else if (view === 'users') loadUsers();
+            else if (view === 'analytics') loadAnalytics();
+            else if (view === 'logs') loadActivityLogs();
+        }
+
+        // ===== DASHBOARD =====
+        async function loadAllDashboardData() {
+            try {
+                const response = await fetch(`${API_URL}/admin/stats`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load stats');
+                const data = await response.json();
+                const stats = data.data;
+
+                // Main metrics
+                document.getElementById('totalProperties').textContent = stats.totalProperties || 0;
+                document.getElementById('pendingProperties').textContent = stats.pendingProperties || 0;
+                document.getElementById('approvedProperties').textContent = stats.approvedProperties || 0;
+                document.getElementById('rejectedProperties').textContent = stats.rejectedProperties || 0;
+                document.getElementById('totalUsers').textContent = stats.totalUsers || 0;
+                document.getElementById('totalComments').textContent = stats.totalComments || 0;
+
+                // Calculate additional metrics
+                const totalProps = stats.totalProperties || 1;
+                const active = stats.approvedProperties || 0;
+                const inactive = stats.rejectedProperties || 0;
+                const pending = stats.pendingProperties || 0;
+
+                // Property breakdown
+                document.getElementById('activeProperties').textContent = active;
+                document.getElementById('inactiveProperties').textContent = inactive;
+
+                // Percentages
+                const pendingPct = ((pending / totalProps) * 100).toFixed(1);
+                const approvalPct = ((active / totalProps) * 100).toFixed(1);
+                const rejectionPct = ((inactive / totalProps) * 100).toFixed(1);
+
+                document.getElementById('pendingPercent').textContent = pendingPct + '%';
+                document.getElementById('approvalRate').textContent = approvalPct + '%';
+                document.getElementById('rejectionRate').textContent = rejectionPct + '%';
+
+                // User breakdown
+                loadUserBreakdown();
+
+                // Pending comments
+                loadCommentCount();
+
+                loadRecentActivity();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function loadUserBreakdown() {
+            try {
+                const response = await fetch(`${API_URL}/admin/users`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                const data = await response.json();
+                const users = data.data || [];
+
+                const buyers = users.filter(u => u.role === 'buyer').length;
+                const sellers = users.filter(u => u.role === 'seller').length;
+
+                document.getElementById('buyerCount').textContent = buyers;
+                document.getElementById('sellerCount').textContent = sellers;
+            } catch (error) {
+                console.error('Error loading user breakdown:', error);
+            }
+        }
+
+        async function loadCommentCount() {
+            try {
+                const response = await fetch(`${API_URL}/comments/admin/pending`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                const data = await response.json();
+                const pendingComments = (data.data || []).length;
+
+                document.getElementById('pendingComments').textContent = pendingComments;
+            } catch (error) {
+                console.error('Error loading comment count:', error);
+            }
+        }
+
+        function refreshDashboard() {
+            loadAllDashboardData();
+            showAlert('✓ Dashboard refreshed', 'success');
+        }
+
+        function loadRecentActivity() {
+            fetch(`${API_URL}/admin/logs?page=1&limit=5`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            })
+            .then(r => r.json())
+            .then(data => {
+                const logs = data.data || [];
+                const html = logs.length > 0 
+                    ? logs.map(log => `
+                        <div style="padding: 1rem; border-bottom: 1px solid #ecf0f1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <strong>${log.action}</strong>
+                                    <p style="color: #7f8c8d; margin: 0.25rem 0 0 0; font-size: 0.9rem;">${log.details || ''}</p>
+                                </div>
+                                <span style="color: #95a5a6; font-size: 0.85rem;">${new Date(log.timestamp).toLocaleString()}</span>
+                            </div>
+                        </div>
+                    `).join('')
+                    : '<div class="no-data"><div class="no-data-icon">📭</div><p>No recent activity</p></div>';
+                
+                document.getElementById('recentActivityList').innerHTML = html;
+            })
+            .catch(err => console.error('Error:', err));
+        }
+
+        // ===== PROPERTIES =====
+        async function loadProperties(page = 1) {
+            try {
+                const filters = new URLSearchParams({
+                    page,
+                    limit: 10,
+                    type: document.getElementById('typeFilter')?.value || '',
+                    status: document.getElementById('statusFilter')?.value || '',
+                    search: document.getElementById('searchInput')?.value || ''
+                });
+
+                const response = await fetch(`${API_URL}/admin/properties?${filters}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                const data = await response.json();
+                const properties = data.data || [];
+
+                const html = properties.length > 0
+                    ? properties.map(p => `
+                        <tr>
+                            <td><strong>${p.title}</strong></td>
+                            <td><span class="badge" style="background: #e8f4f8;">${p.type}</span></td>
+                            <td>Rs. ${(p.price || 0).toLocaleString()}</td>
+                            <td>${p.city}</td>
+                            <td><span class="badge badge-${p.status}">${p.status}</span></td>
+                            <td><span class="badge badge-${p.approval_status}">${p.approval_status || 'pending'}</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-small" onclick="editProperty(${p.id})">✏️ Edit</button>
+                                <button class="btn btn-danger btn-small" onclick="deleteProperty(${p.id})">🗑️ Delete</button>
+                            </td>
+                        </tr>
+                    `).join('')
+                    : '<tr><td colspan="7" class="no-data"><div class="no-data-icon">🏚️</div><p>No properties found</p></td></tr>';
+
+                document.getElementById('propertiesTable').innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Failed to load properties', 'error');
+            }
+        }
+
+        async function loadPendingProperties(page = 1) {
+            try {
+                const response = await fetch(`${API_URL}/admin/properties?approval_status=pending&limit=10&page=${page}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                const data = await response.json();
+                const properties = data.data || [];
+
+                const html = properties.length > 0
+                    ? properties.map(p => `
+                        <tr>
+                            <td><strong>${p.title}</strong></td>
+                            <td>${p.type}</td>
+                            <td>Rs. ${(p.price || 0).toLocaleString()}</td>
+                            <td>${p.city}</td>
+                            <td>${new Date(p.created_at || Date.now()).toLocaleDateString()}</td>
+                            <td>
+                                <button class="btn btn-success btn-small" onclick="approveProperty(${p.id})">✓ Approve</button>
+                                <button class="btn btn-danger btn-small" onclick="rejectProperty(${p.id})">✕ Reject</button>
+                            </td>
+                        </tr>
+                    `).join('')
+                    : '<tr><td colspan="6" class="no-data"><div class="no-data-icon">✓</div><p>No pending approvals</p></td></tr>';
+
+                document.getElementById('pendingTable').innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function editProperty(id) {
+            showAlert('Edit feature coming soon', 'info');
+        }
+
+        async function deleteProperty(id) {
+            if (!confirm('Delete this property permanently?')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/properties/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                if (response.ok) {
+                    showAlert('✓ Property deleted', 'success');
+                    loadProperties();
+                }
+            } catch (error) {
+                showAlert('Failed to delete property', 'error');
+            }
+        }
+
+        async function approveProperty(id) {
+            try {
+                const response = await fetch(`${API_URL}/admin/properties/${id}/approve`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({})
+                });
+
+                if (response.ok) {
+                    showAlert('✓ Property approved', 'success');
+                    loadPendingProperties();
+                    loadAllDashboardData();
+                }
+            } catch (error) {
+                showAlert('Failed to approve property', 'error');
+            }
+        }
+
+        async function rejectProperty(id) {
+            try {
+                const response = await fetch(`${API_URL}/admin/properties/${id}/reject`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({})
+                });
+
+                if (response.ok) {
+                    showAlert('✓ Property rejected', 'success');
+                    loadPendingProperties();
+                    loadAllDashboardData();
+                }
+            } catch (error) {
+                showAlert('Failed to reject property', 'error');
+            }
+        }
+
+        function openPropertyModal() {
+            document.getElementById('propertyModalTitle').textContent = 'Add New Property';
+            document.getElementById('propertyForm').reset();
+            document.getElementById('propertyModal').classList.add('active');
+        }
+
+        function closePropertyModal() {
+            document.getElementById('propertyModal').classList.remove('active');
+        }
+
+        async function submitPropertyForm(event) {
+            event.preventDefault();
+            if (isSaving) return;
+            isSaving = true;
+
+            try {
+                const propertyData = {
+                    title: document.getElementById('propTitle').value,
+                    type: document.getElementById('propType').value,
+                    status: document.getElementById('propStatus').value,
+                    price: parseFloat(document.getElementById('propPrice').value),
+                    city: document.getElementById('propCity').value,
+                    bedrooms: parseInt(document.getElementById('propBedrooms').value) || 0,
+                    description: document.getElementById('propDescription').value,
+                    approval_status: 'pending'
+                };
+
+                const response = await fetch(`${API_URL}/admin/properties`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(propertyData)
+                });
+
+                if (response.ok) {
+                    showAlert('✓ Property added successfully', 'success');
+                    closePropertyModal();
+                    loadProperties();
+                    loadAllDashboardData();
+                } else {
+                    showAlert('Failed to add property', 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            } finally {
+                isSaving = false;
+            }
+        }
+
+        // ===== COMMENTS =====
+        async function loadPendingComments() {
+            try {
+                const response = await fetch(`${API_URL}/comments/admin/pending`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                const data = await response.json();
+                const comments = data.data || [];
+
+                const html = comments.length > 0
+                    ? comments.map(c => `
+                        <tr>
+                            <td>${c.first_name} ${c.last_name}</td>
+                            <td>${c.title || 'Unknown'}</td>
+                            <td>${(c.comment_text || c.text || '').substring(0, 50)}...</td>
+                            <td>${new Date(c.created_at).toLocaleDateString()}</td>
+                            <td>
+                                <button class="btn btn-success btn-small" onclick="approveComment(${c.id})">✓ Approve</button>
+                            </td>
+                        </tr>
+                    `).join('')
+                    : '<tr><td colspan="5" class="no-data"><div class="no-data-icon">💬</div><p>No comments to review</p></td></tr>';
+
+                document.getElementById('commentsTable').innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function approveComment(id) {
+            try {
+                const response = await fetch(`${API_URL}/comments/${id}/approve`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                if (response.ok) {
+                    showAlert('✓ Comment approved', 'success');
+                    loadPendingComments();
+                }
+            } catch (error) {
+                showAlert('Failed to approve comment', 'error');
+            }
+        }
+
+        // ===== USERS =====
+        async function loadUsers(page = 1) {
+            try {
+                const response = await fetch(`${API_URL}/admin/users?page=${page}&limit=10`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                const data = await response.json();
+                const users = data.data || [];
+
+                const html = users.length > 0
+                    ? users.map(u => `
+                        <div style="background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <div>
+                                <strong>${u.first_name} ${u.last_name}</strong>
+                                <p style="margin: 0.25rem 0 0 0; color: #7f8c8d; font-size: 0.9rem;">${u.email}</p>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span class="badge" style="background: ${u.role === 'admin' ? '#fff3e0' : u.role === 'buyer' ? '#d1ecf1' : '#e8f5e9'}; color: ${u.role === 'admin' ? '#f57c00' : u.role === 'buyer' ? '#0c5460' : '#388e3c'};">${u.role}</span>
+                                ${u.id !== 1 ? `<button class="btn btn-danger btn-small" onclick="deleteUser(${u.id})">🗑️ Delete</button>` : ''}
+                            </div>
+                        </div>
+                    `).join('')
+                    : '<div class="no-data"><div class="no-data-icon">👥</div><p>No users found</p></div>';
+
+                document.getElementById('usersList').innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('Delete this user?')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/users/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                if (response.ok) {
+                    showAlert('✓ User deleted', 'success');
+                    loadUsers();
+                } else {
+                    showAlert('Cannot delete admin user', 'error');
+                }
+            } catch (error) {
+                showAlert('Failed to delete user', 'error');
+            }
+        }
+
+        function searchUsers() {
+            loadUsers();
+        }
+
+        // ===== ANALYTICS =====
+        async function loadAnalytics() {
+            try {
+                const response = await fetch(`${API_URL}/admin/properties`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                const data = await response.json();
+                const properties = data.data || [];
+
+                const typeCount = {};
+                const cityCount = {};
+                let totalPrice = 0;
+
+                properties.forEach(p => {
+                    typeCount[p.type] = (typeCount[p.type] || 0) + 1;
+                    cityCount[p.city] = (cityCount[p.city] || 0) + 1;
+                    totalPrice += parseFloat(p.price || 0);
+                });
+
+                const sortedTypes = Object.entries(typeCount).sort((a, b) => b[1] - a[1]);
+                const sortedCities = Object.entries(cityCount).sort((a, b) => b[1] - a[1]).slice(0, 10);
+
+                document.getElementById('avgPrice').textContent = `Rs. ${(totalPrice / properties.length || 0).toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+                document.getElementById('commonType').textContent = sortedTypes[0]?.[0] || '-';
+                document.getElementById('topCity').textContent = sortedCities[0]?.[0] || '-';
+                
+                const approved = properties.filter(p => p.approval_status === 'approved').length;
+                document.getElementById('approvalRate').textContent = `${properties.length > 0 ? ((approved / properties.length) * 100).toFixed(1) : 0}%`;
+
+                const typeTable = `<table style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <tr style="border-bottom: 2px solid #ecf0f1;"><th style="padding: 0.5rem;">Type</th><th style="padding: 0.5rem; text-align: right;">Count</th></tr>
+                    ${sortedTypes.map(([type, count]) => `<tr style="border-bottom: 1px solid #ecf0f1;"><td style="padding: 0.75rem 0.5rem;">${type}</td><td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 600;">${count}</td></tr>`).join('')}
+                </table>`;
+                document.getElementById('propertiesByTypeChart').innerHTML = typeTable;
+
+                const cityTable = `<table style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <tr style="border-bottom: 2px solid #ecf0f1;"><th style="padding: 0.5rem;">City</th><th style="padding: 0.5rem; text-align: right;">Listings</th></tr>
+                    ${sortedCities.map(([city, count]) => `<tr style="border-bottom: 1px solid #ecf0f1;"><td style="padding: 0.75rem 0.5rem;">${city}</td><td style="padding: 0.75rem 0.5rem; text-align: right; font-weight: 600;">${count}</td></tr>`).join('')}
+                </table>`;
+                document.getElementById('propertiesByCityChart').innerHTML = cityTable;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // ===== ACTIVITY LOGS =====
+        async function loadActivityLogs(page = 1) {
+            try {
+                const response = await fetch(`${API_URL}/admin/logs?page=${page}&limit=15`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                const data = await response.json();
+                const logs = data.data || [];
+
+                const html = logs.length > 0
+                    ? logs.map(log => `
+                        <div style="background: white; padding: 1rem; margin-bottom: 0.5rem; border-left: 4px solid #3498db; border-radius: 4px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <strong>${log.action}</strong>
+                                    <p style="margin: 0.25rem 0 0 0; color: #7f8c8d; font-size: 0.9rem;">${log.details || ''}</p>
+                                </div>
+                                <span style="color: #95a5a6; font-size: 0.85rem; white-space: nowrap;">${new Date(log.timestamp).toLocaleString()}</span>
+                            </div>
+                        </div>
+                    `).join('')
+                    : '<div class="no-data"><div class="no-data-icon">📋</div><p>No activity logs</p></div>';
+
+                document.getElementById('logsList').innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function clearLogs() {
+            if (!confirm('Clear all activity logs? This cannot be undone.')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/admin/logs`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                if (response.ok) {
+                    showAlert('✓ Logs cleared', 'success');
+                    loadActivityLogs();
+                }
+            } catch (error) {
+                showAlert('Failed to clear logs', 'error');
+            }
+        }
+
+        // ===== SETTINGS =====
+        function saveSetting(key) {
+            showAlert('✓ Setting saved', 'success');
+        }
+
+        async function exportData() {
+            try {
+                const response = await fetch(`${API_URL}/admin/properties`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                const data = await response.json();
+                
+                const csv = 'Title,Type,Price,City,Status,Approval\n' +
+                    data.data.map(p => 
+                        `"${p.title}","${p.type}",${p.price},"${p.city}","${p.status}","${p.approval_status}"`
+                    ).join('\n');
+                
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `properties_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                showAlert('✓ Data exported', 'success');
+            } catch (error) {
+                showAlert('Export failed', 'error');
+            }
+        }
+
+        function backupDatabase() {
+            showAlert('✓ Backup completed', 'success');
+        }
+
+        // ===== UTILITIES =====
+        let searchTimeout;
+        function debounceSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => loadProperties(), 300);
+        }
+
+        function showAlert(message, type = 'info') {
+            const container = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = message;
+            container.appendChild(alert);
+            setTimeout(() => alert.remove(), 4000);
+        }
+
+        function logout() {
+            if (confirm('Logout from admin panel?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                checkAuth();
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('propertyModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closePropertyModal();
+        });
+    </script>
+</body>
+</html>

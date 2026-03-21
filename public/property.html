@@ -21,6 +21,8 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="properties.html">Properties</a></li>
       <li><a href="contact.html">Contact</a></li>
+      <li><a href="#" onclick="openAdminLogin(); return false;" style="color:var(--primary);font-weight:600;">👤 Admin</a></li>
+      <li id="auth-link" style="margin-left:auto;"></li>
     </ul>
   </div>
 </nav>
@@ -29,6 +31,79 @@
   <a href="properties.html" style="color:var(--primary);font-weight:600;">← Back to Properties</a>
   <div id="property-detail-container">
     <div class="loading-container"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- ===== LOGIN/REGISTER MODAL ===== -->
+<div id="login-modal" class="login-modal" style="display:none;">
+  <div class="login-overlay" id="login-overlay"></div>
+  <div class="login-box">
+    <button class="login-close" onclick="closeLogin()">&times;</button>
+    <div class="login-container">
+      <h2 id="login-title">Login</h2>
+      <div id="login-message"></div>
+      <form id="login-form" onsubmit="handleLogin(event)" style="display:block;">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Password" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Login</button>
+      </form>
+      <form id="register-form" onsubmit="handleRegister(event)" style="display:none;">
+        <div class="form-group">
+          <label for="register-name">Full Name</label>
+          <input type="text" id="register-name" placeholder="Your full name" required />
+        </div>
+        <div class="form-group">
+          <label for="register-email">Email</label>
+          <input type="email" id="register-email" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label for="register-password">Password</label>
+          <input type="password" id="register-password" placeholder="At least 6 characters" required />
+        </div>
+        <div class="form-group">
+          <label for="register-role">I am a</label>
+          <select id="register-role" required>
+            <option value="">Select role</option>
+            <option value="buyer">Buyer</option>
+            <option value="seller">Seller</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Register</button>
+      </form>
+      <div style="text-align:center;margin-top:1rem;color:var(--muted);">
+        <span id="toggle-text">Don't have an account? <a href="#" onclick="toggleForm(); return false;" style="color:var(--primary);font-weight:600;">Register</a></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN LOGIN MODAL ===== -->
+<div id="admin-modal" class="login-modal" style="display:none;">
+  <div class="login-overlay" id="admin-overlay" onclick="closeAdminLogin()"></div>
+  <div class="login-box">
+    <button class="login-close" onclick="closeAdminLogin()">&times;</button>
+    <h2 style="margin-top:0;margin-bottom:1.5rem;font-size:1.75rem;color:var(--secondary);">🔐 Admin Login</h2>
+    <div id="admin-message"></div>
+    <form id="admin-form" onsubmit="handleAdminLogin(event)" class="login-form">
+      <div class="form-group">
+        <label for="admin-email">Email</label>
+        <input type="email" id="admin-email" placeholder="raj@gmail.com" required />
+      </div>
+      <div class="form-group">
+        <label for="admin-password">Password</label>
+        <input type="password" id="admin-password" placeholder="••••••••" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Admin Login</button>
+    </form>
+    <div style="text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--muted);">
+      Not an admin? <a href="#" onclick="closeAdminLogin(); return false;" style="color:var(--primary);font-weight:600;cursor:pointer;">Close</a>
+    </div>
   </div>
 </div>
 
@@ -76,6 +151,140 @@
 
 <script src="js/main.js"></script>
 <script>
+  const API_BASE = 'http://localhost:3000/api';
+
+  function initializeAuth() {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    const authLink = document.getElementById('auth-link');
+    
+    if (token && user) {
+      const userData = JSON.parse(user);
+      authLink.innerHTML = `<a href="#" onclick="logoutUser(); return false;" style="color:var(--primary);font-weight:600;">Logout (${userData.name})</a>`;
+    } else {
+      authLink.innerHTML = '<a href="#" onclick="toggleLogin(); return false;" style="color:var(--primary);font-weight:600;">Login</a>';
+    }
+  }
+
+  function toggleLogin() {
+    document.getElementById('login-modal').style.display = 'block';
+  }
+
+  function closeLogin() {
+    document.getElementById('login-modal').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('register-form').style.display = 'none';
+    document.getElementById('login-title').textContent = 'Login';
+    document.getElementById('login-message').innerHTML = '';
+  }
+
+  function toggleForm() {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const title = document.getElementById('login-title');
+    const toggleText = document.getElementById('toggle-text');
+    
+    if (loginForm.style.display === 'block') {
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+      title.textContent = 'Register';
+      toggleText.innerHTML = 'Already have an account? <a href="#" onclick="toggleForm(); return false;" style="color:var(--primary);font-weight:600;">Login</a>';
+    } else {
+      loginForm.style.display = 'block';
+      registerForm.style.display = 'none';
+      title.textContent = 'Login';
+      toggleText.innerHTML = 'Don\'t have an account? <a href="#" onclick="toggleForm(); return false;" style="color:var(--primary);font-weight:600;">Register</a>';
+    }
+  }
+
+  function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    const messageEl = document.getElementById('login-message');
+    
+    fetch(API_BASE + '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        showMessage('Login successful!', 'success');
+        setTimeout(() => {
+          closeLogin();
+          initializeAuth();
+          const user = JSON.parse(localStorage.getItem('user'));
+          if (user.role === 'admin') {
+            window.location.href = '/admin-dashboard.html';
+          } else {
+            window.location.href = '/user-dashboard.html';
+          }
+        }, 1000);
+      } else {
+        showMessage(data.message || 'Login failed', 'error');
+      }
+    })
+    .catch(err => showMessage('Error: ' + err.message, 'error'));
+  }
+
+  function handleRegister(event) {
+    event.preventDefault();
+    const name = document.getElementById('register-name').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const role = document.getElementById('register-role').value;
+    const messageEl = document.getElementById('login-message');
+    
+    fetch(API_BASE + '/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, role })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        showMessage('Registration successful!', 'success');
+        setTimeout(() => {
+          closeLogin();
+          initializeAuth();
+          const user = JSON.parse(localStorage.getItem('user'));
+          if (user.role === 'admin') {
+            window.location.href = '/admin-dashboard.html';
+          } else {
+            window.location.href = '/user-dashboard.html';
+          }
+        }, 1000);
+      } else {
+        showMessage(data.message || 'Registration failed', 'error');
+      }
+    })
+    .catch(err => showMessage('Error: ' + err.message, 'error'));
+  }
+
+  function logoutUser() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    initializeAuth();
+    location.reload();
+  }
+
+  function showMessage(msg, type) {
+    const el = document.getElementById('login-message');
+    el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+  }
+
+  document.getElementById('login-overlay').onclick = closeLogin;
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    initializeAuth();
+  });
+
   // Full property dataset – fallback when server is not running
   const ALL_PROPERTIES_DETAIL = [
     { id:1,  title:"Modern Apartment in Thamel",        type:"apartment",  status:"sale",  price:8500000,  bedrooms:2, bathrooms:2, area:850,  areaUnit:"sqft", city:"Kathmandu", district:"Kathmandu", address:"Thamel, Kathmandu",          listedDate:"2024-01-15", featured:true,  contact:"9801234567", features:["Parking","Security","Water Supply","Backup Power","Lift"],                             description:"A beautifully designed modern apartment in the heart of Thamel. This 2-bedroom apartment features a spacious living area, modern kitchen, and stunning views of the city. Located close to restaurants, shops, and tourist attractions." },
@@ -337,6 +546,66 @@
   }
 
   loadProperty();
+
+  // ===== ADMIN LOGIN FUNCTIONS =====
+  function openAdminLogin() {
+    window.location.href = 'http://localhost:3000/admin-dashboard.html';
+  }
+
+  function closeAdminLogin() {
+    document.getElementById('admin-modal').style.display = 'none';
+    document.getElementById('admin-form').reset();
+    document.getElementById('admin-message').innerHTML = '';
+  }
+
+  function handleAdminLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('admin-email').value;
+    const password = document.getElementById('admin-password').value;
+
+    fetch(API_BASE + '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Check if user is admin
+        if (data.user.role === 'admin') {
+          document.getElementById('admin-message').innerHTML = '<div style="color:green;padding:0.5rem;text-align:center;">Admin login successful! Redirecting...</div>';
+          setTimeout(() => {
+            window.location.href = '/admin-dashboard.html';
+          }, 1000);
+        } else {
+          document.getElementById('admin-message').innerHTML = '<div style="color:red;padding:0.5rem;text-align:center;">Only admins can access this. You logged in as ' + data.user.role + '.</div>';
+          setTimeout(() => {
+            closeAdminLogin();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+          }, 2000);
+        }
+      } else {
+        document.getElementById('admin-message').innerHTML = '<div style="color:red;padding:0.5rem;text-align:center;">' + (data.message || 'Login failed') + '</div>';
+      }
+    })
+    .catch(err => {
+      document.getElementById('admin-message').innerHTML = '<div style="color:red;padding:0.5rem;text-align:center;">Error: ' + err.message + '</div>';
+    });
+  }
+
+  // Close admin modal when clicking overlay
+  (function() {
+    const adminOverlay = document.getElementById('admin-overlay');
+    if (adminOverlay) {
+      adminOverlay.onclick = function() {
+        closeAdminLogin();
+      };
+    }
+  })();
 </script>
 
 </body>

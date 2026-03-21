@@ -50,7 +50,7 @@ img { max-width: 100%; display: block; }
 .animate-fade-up { animation: fadeUp .5s ease both; }
 
 /* ---------- Utility ---------- */
-.container   { max-width: 1220px; margin: 0 auto; padding: 0 1.5rem; }
+.container   { max-width: 1220px; margin: 0 auto; padding: 2rem 1.5rem; }
 .text-center { text-align: center; }
 .text-muted  { color: var(--muted); }
 
@@ -758,6 +758,226 @@ img { max-width: 100%; display: block; }
 .property-gallery img:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 10px 20px rgba(0,0,0,.15);
+}
+
+/* ---------- Login/Register Form ---------- */
+.login-container {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.login-box {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  position: relative;
+  animation: fadeUp .3s ease both;
+}
+
+.login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.login-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--secondary);
+  margin: 0;
+}
+
+.close-login {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color .2s;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-login:hover {
+  color: var(--text);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: .9rem;
+  color: var(--text);
+}
+
+.form-group input,
+.form-group select {
+  padding: .8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: .95rem;
+  color: var(--text);
+  background: var(--light);
+  font-family: inherit;
+  transition: border-color .2s, background .2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--white);
+}
+
+.form-group input::placeholder {
+  color: var(--muted);
+}
+
+.btn-block {
+  width: 100%;
+  padding: 1rem !important;
+  font-weight: 600;
+  margin-top: .5rem;
+}
+
+.login-toggle {
+  text-align: center;
+  font-size: .9rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.login-toggle p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-size: inherit;
+  transition: color .2s;
+}
+
+.toggle-btn:hover {
+  color: var(--primary-dark);
+}
+
+.login-message {
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  margin-top: 1rem;
+  font-size: .9rem;
+  text-align: center;
+  display: none;
+}
+
+.login-message.show {
+  display: block;
+}
+
+.login-message.success {
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  color: #166534;
+}
+
+.login-message.error {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
+/* ---------- Admin Login Modal ---------- */
+.login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  z-index: -1;
+}
+
+.login-modal .login-box {
+  position: relative;
+  z-index: 1;
+  max-width: 420px;
+  width: 90%;
+}
+
+.login-modal .login-container {
+  position: static;
+  background: transparent;
+  display: block;
+  z-index: 1;
+}
+
+.login-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color 0.2s;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.login-close:hover {
+  color: var(--text);
 }
 
 /* ---------- Responsive ---------- */
