@@ -126,7 +126,7 @@ Development followed an iterative approach — build a small piece, test it, rev
 
 ### 2.1.1 Real Estate Market in Nepal
 
-Nepal's property sector has expanded rapidly over the past decade. Urban migration into Kathmandu, Pokhara, Lalitpur, and Bhaktapur has pushed up both demand and prices [17]. Foreign investment has grown, and a significant portion of the Nepali diaspora regularly sends money home for land or housing purchases. Despite this activity, the digital infrastructure for property search in Nepal lags well behind countries of comparable size and internet penetration.
+Nepal's property sector has expanded rapidly over the past decade. Urban migration into Kathmandu, Pokhara, Lalitpur, and Bhaktapur has pushed up both demand and prices [17]. Foreign investment has grown, and a large share of the Nepali diaspora regularly sends money home for land or housing purchases. Despite this activity, the digital infrastructure for property search in Nepal lags well behind countries of comparable size and internet penetration.
 
 ### 2.1.2 Web Applications and Client-Server Architecture
 
@@ -254,7 +254,7 @@ A few practices shaped how this project was built:
 
 **FR4: Featured Properties**
 - `GET /api/properties/featured` returns only properties where `featured` is `true`.
-- The home page uses this endpoint to display highlighted listings.
+- The home page uses this endpoint to display featured listings.
 
 **FR5: Frontend Pages**
 - The home page shows a hero search form and featured listings.
@@ -343,7 +343,7 @@ In the current JSON implementation, Features and Images are stored as arrays wit
 | UC1 | View All Properties | User | Browses the full listing page with no filters applied |
 | UC2 | Search by Filters | User | Applies one or more filters and views matching results |
 | UC3 | View Property Detail | User | Opens a specific listing to see full information |
-| UC4 | View Featured Properties | User | Sees the highlighted listings on the home page |
+| UC4 | View Featured Properties | User | Sees the featured listings on the home page |
 | UC5 | Browse by Category | User | Filters by property type (apartment, house, etc.) |
 | UC6 | Contact Owner | User | Views contact details and calls or messages the owner |
 | UC7 | Filter by Price Range | User | Sets a minimum and/or maximum price |
@@ -1082,7 +1082,7 @@ The current system is a working prototype. Moving it toward a production-ready p
 
 **Image management** — implement file upload (using something like AWS S3 or Cloudinary), image resizing for thumbnails, and lazy loading. Property listings without real photos do not convert.
 
-**Saved searches and favourites** — once there are user accounts, letting users save a search or bookmark a property is straightforward to add and significantly improves the user experience.
+**Saved searches and favourites** — once there are user accounts, letting users save a search or bookmark a property is straightforward to add and makes the platform much more useful.
 
 ### Medium-Term (3–6 months):
 
@@ -1100,7 +1100,7 @@ The current system is a working prototype. Moving it toward a production-ready p
 
 **Price analytics** — show price trends by city and property type. This requires historical data, which means starting to store timestamp data now.
 
-**Multi-language support** — an English/Nepali toggle. A significant portion of the target user base is more comfortable reading Nepali, and NLP tools for Nepali have improved considerably in recent years.
+**Multi-language support** — an English/Nepali toggle. A good chunk of the target user base is more comfortable reading Nepali, and NLP tools for Nepali have improved considerably in recent years.
 
 **Machine learning features** — property price estimation based on comparable recent listings, and a recommendation engine that suggests similar properties based on what a user has viewed. These become viable once there is enough transaction and view data.
 
