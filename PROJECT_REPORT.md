@@ -383,47 +383,9 @@ Non-functional requirements define system quality attributes and constraints:
 
 #### 3.1.3.i Data Modelling: ER Diagram
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        ENTITY RELATIONSHIP DIAGRAM           │
-└─────────────────────────────────────────────────────────────┘
 
-┌──────────────────────────────────┐
-│         PROPERTIES               │
-├──────────────────────────────────┤
-│ id (PK)                          │
-│ title                            │
-│ type                             │
-│ status                           │
-│ price                            │
-│ bedrooms                         │
-│ bathrooms                        │
-│ area                             │
-│ areaUnit                         │
-│ city                             │
-│ district                         │
-│ address                          │
-│ description                      │
-│ features (JSON)                  │
-│ images (JSON)                    │
-│ contact                          │
-│ listedDate                       │
-│ featured                         │
-└──────────────────────────────────┘
-         │
-         │ 1:N
-         ├─────────────────────────┐
-         │                         │
-┌──────────────────────┐  ┌──────────────────────┐
-│    FEATURES          │  │      IMAGES          │
-├──────────────────────┤  ├──────────────────────┤
-│ id (PK)              │  │ id (PK)              │
-│ property_id (FK)     │  │ property_id (FK)     │
-│ feature_name         │  │ image_path           │
-│ feature_value        │  │ upload_date          │
-└──────────────────────┘  └──────────────────────┘
+![Figure 3.1: Entity-Relationship Diagram – Properties, Features, and Images entities](diagrams/er_diagram.png)
 
-```
 
 **Entity Attributes Explanation:**
 
@@ -433,40 +395,9 @@ Non-functional requirements define system quality attributes and constraints:
 
 #### 3.1.3.ii Use Case Diagram
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    SYSTEM BOUNDARY                              │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │              Nepal Real Estate System                    │  │
-│  │                                                          │  │
-│  │   ┌─────────────────────────────────────────────────┐   │  │
-│  │   │         USE CASES                               │   │  │
-│  │   │                                                 │   │  │
-│  │   │  1. View All Properties                        │   │  │
-│  │   │  2. Search Properties by Filters               │   │  │
-│  │   │  3. View Property Details                      │   │  │
-│  │   │  4. View Featured Properties                   │   │  │
-│  │   │  5. Browse Properties by Category              │   │  │
-│  │   │  6. Contact Property Owner                     │   │  │
-│  │   │  7. Filter by Price Range                      │   │  │
-│  │   │  8. Filter by Location                         │   │  │
-│  │   │  9. Filter by Bedroom Count                    │   │  │
-│  │                                                      │   │  │
-│  │   └─────────────────────────────────────────────────┘   │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                          ▲                                      │
-│                          │ Interacts                            │
-│                          │                                      │
-│                   ┌──────┴──────┐                               │
-│                   │             │                               │
-│              ┌────▼────┐   ┌────▼─────┐                        │
-│              │  User   │   │Property   │                        │
-│              │(Buyer/  │   │ Manager   │                        │
-│              │ Renter) │   │           │                        │
-│              └─────────┘   └───────────┘                        │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
+
+![Figure 3.2: Use Case Diagram – Actors and system use cases for the Nepal Real Estate Application](diagrams/use_case_diagram.png)
+
 
 **Use Case Descriptions:**
 
@@ -486,85 +417,15 @@ Non-functional requirements define system quality attributes and constraints:
 
 **Level 0 DFD (Context Diagram):**
 
-```
-                           User Input
-                                 │
-                                 ▼
-    ┌──────────────────────────────────────────────┐
-    │   Nepal Real Estate Web Application         │
-    │                                              │
-    │   - Property Search & Filtering              │
-    │   - Property Listing Display                 │
-    │   - Data Management                          │
-    │                                              │
-    └──────────────────────────────────────────────┘
-                    │
-            Output: Property Data
-            (HTML, JSON)
-```
+
+![Figure 3.3: DFD Level 0 – Context Diagram showing top-level data flows](diagrams/dfd_level0.png)
+
 
 **Level 1 DFD (Detailed Process Flow):**
 
-```
-┌─────────────┐
-│   Client    │
-│  (Browser)  │
-└──────┬──────┘
-       │
-       │ HTTP Request
-       │ (Search Criteria)
-       ▼
-┌──────────────────────────┐
-│  API Router              │
-│  (Express Routes)        │
-└──┬───────────┬───────────┬──┐
-   │           │           │  │
-   │ GET       │ GET       │  │ GET
-   │ /api/     │ /api/     │  │ /api/
-   │properties │properties/│  │properties
-   │           │featured   │  │:id
-   │           │           │  │
-   ▼           ▼           ▼  ▼
-┌─────────────────────────────────────┐
-│   Request Handler Functions         │
-│   - Validate Parameters              │
-│   - Apply Filters                    │
-│   - Query Data                       │
-│   - Format Response                  │
-└─────────────────────────────────────┘
-   │
-   │ Read Operations
-   ▼
-┌─────────────────────────────────────┐
-│   Data Layer                        │
-│   - Load Properties JSON            │
-│   - Parse JSON Data                 │
-│   - Return Property Objects         │
-└─────────────────────────────────────┘
-   │
-   │ Property Data
-   ▼
-┌──────────────────────────────────────┐
-│  JSON File Storage                   │
-│  (properties.json)                   │
-└──────────────────────────────────────┘
-       │
-       │ Filtered Data
-       ▼
-┌─────────────────────────────────────┐
-│   Response Formatter                │
-│   - Convert to JSON                 │
-│   - Add Metadata (count, success)   │
-└─────────────────────────────────────┘
-       │
-       │ HTTP Response (JSON)
-       ▼
-┌──────────────┐
-│   Client     │
-│   Receives   │
-│   Data       │
-└──────────────┘
-```
+
+![Figure 3.4: DFD Level 1 – Detailed data flow through API Router, Filter Engine, and Data Store](diagrams/dfd_level1.png)
+
 
 **Main Data Flows:**
 
@@ -573,85 +434,9 @@ Non-functional requirements define system quality attributes and constraints:
 
 #### 3.1.3.iv Object Modelling: Class Diagram
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                  CLASS DIAGRAM                              │
-└─────────────────────────────────────────────────────────────┘
 
-┌──────────────────────────────────────────┐
-│           Property                        │
-├──────────────────────────────────────────┤
-│ - id: number                             │
-│ - title: string                          │
-│ - type: string (enum)                    │
-│ - status: string (enum)                  │
-│ - price: number                          │
-│ - bedrooms: number                       │
-│ - bathrooms: number                      │
-│ - area: number                           │
-│ - areaUnit: string                       │
-│ - city: string                           │
-│ - district: string                       │
-│ - address: string                        │
-│ - description: string                    │
-│ - features: Feature[]                    │
-│ - images: Image[]                        │
-│ - contact: string                        │
-│ - listedDate: string                     │
-│ - featured: boolean                      │
-├──────────────────────────────────────────┤
-│ + getDetails(): void                     │
-│ + matchFilters(filters): boolean         │
-│ + toJSON(): object                       │
-└──────────────────────────────────────────┘
-         │
-         │ Composition
-         │
-    ┌────┴────┐
-    │          │
-┌───▼──────────┐    ┌───────────────┐
-│   Feature    │    │     Image     │
-├──────────────┤    ├───────────────┤
-│ - name       │    │ - path        │
-│ - value      │    │ - uploadDate  │
-├──────────────┤    ├───────────────┤
-│ + getValue() │    │ + getURL()    │
-└──────────────┘    └───────────────┘
+![Figure 3.5: Class Diagram – Property domain model with Repository, Controller, and Validator classes](diagrams/class_diagram.png)
 
-┌──────────────────────────────────────┐
-│      PropertyRepository              │
-├──────────────────────────────────────┤
-│ - properties: Property[]             │
-├──────────────────────────────────────┤
-│ + loadAll(): Property[]               │
-│ + getById(id): Property               │
-│ + search(filters): Property[]         │
-│ + getFeatured(): Property[]           │
-│ + save(property): void                │
-└──────────────────────────────────────┘
-
-┌──────────────────────────────────────┐
-│   PropertyController                 │
-├──────────────────────────────────────┤
-│ - repository: PropertyRepository     │
-├──────────────────────────────────────┤
-│ + getAll(req, res): void              │
-│ + getById(req, res): void             │
-│ + search(req, res): void              │
-│ + getFeatured(req, res): void         │
-└──────────────────────────────────────┘
-
-┌──────────────────────────────────────┐
-│     PropertyValidator                │
-├──────────────────────────────────────┤
-│ - validTypes: string[]               │
-│ - validStatuses: string[]            │
-├──────────────────────────────────────┤
-│ + validateFilters(filters): boolean   │
-│ + validatePrice(price): boolean       │
-│ + validateId(id): boolean             │
-└──────────────────────────────────────┘
-```
 
 ### 3.2 System Design - Object Oriented Approach
 
@@ -659,54 +444,9 @@ Non-functional requirements define system quality attributes and constraints:
 
 **Client-Server Architecture with REST API:**
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    CLIENT TIER                              │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │ Desktop Browser / Mobile Browser                       │ │
-│  │  HTML5 | CSS3 | Vanilla JavaScript                    │ │
-│  │  - UI Rendering                                        │ │
-│  │  - Event Handling                                      │ │
-│  │  - API Communication (Fetch API / XMLHttpRequest)     │ │
-│  └────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-                       │
-                  HTTP/HTTPS
-                       │
-┌─────────────────────────────────────────────────────────────┐
-│                  SERVER TIER                                │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │ Node.js Runtime                                        │ │
-│  └────────────────────────────────────────────────────────┘ │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │ Express.js Web Framework                               │ │
-│  │  - Request Handling                                    │ │
-│  │  - Middleware Pipeline (CORS, Rate Limiting)          │ │
-│  │  - Route Definition                                    │ │
-│  └────────────────────────────────────────────────────────┘ │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │ Application Logic Layer                                │ │
-│  │  - PropertyController (Request Handlers)              │ │
-│  │  - PropertyValidator (Input Validation)               │ │
-│  │  - FilterEngine (Search & Filter Logic)               │ │
-│  └────────────────────────────────────────────────────────┘ │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │ Data Access Layer                                      │ │
-│  │  - PropertyRepository (Data Operations)               │ │
-│  │  - DataLoader (File I/O)                              │ │
-│  └────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-                       │
-                File System Access
-                       │
-┌─────────────────────────────────────────────────────────────┐
-│                DATA TIER                                    │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │ JSON File Storage                                      │ │
-│  │ (data/properties.json)                                │ │
-│  └────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-```
+
+![Figure 3.6: System Architecture – Three-tier Client-Server architecture with REST API](diagrams/architecture_diagram.png)
+
 
 **Module Organization:**
 
@@ -838,103 +578,21 @@ project-root/
 
 **Home Page (index.html) Layout:**
 
-```
-┌─────────────────────────────────────────────────┐
-│         NEPAL ESTATES NAVIGATION BAR             │
-│ Logo    Home  Properties  Contact          Mobile│
-└─────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────┐
-│                  HERO SECTION                   │
-│     Find Your Dream Property in Nepal           │
-│              [Search Form with Filters]         │
-│  Status [ ] Type [ ] City [ ]  [Search Button] │
-└─────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────┐
-│            FEATURED PROPERTIES CARDS            │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐     │
-│  │ Property │  │ Property │  │ Property │     │
-│  │ Image    │  │ Image    │  │ Image    │     │
-│  │ Title    │  │ Title    │  │ Title    │     │
-│  │ Price    │  │ Price    │  │ Price    │     │
-│  │ Beds/Ba  │  │ Beds/Ba  │  │ Beds/Ba  │     │
-│  │ Location │  │ Location │  │ Location │     │
-│  │ [Details]│  │ [Details]│  │ [Details]│     │
-│  └──────────┘  └──────────┘  └──────────┘     │
-└─────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────┐
-│            Quick Stats / Info Section           │
-│  • 500+ Properties  • 3 Cities  • 24/7 Support │
-└─────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────┐
-│             FOOTER NAVIGATION                   │
-└─────────────────────────────────────────────────┘
-```
+
+![Figure 3.8(a): Home Page (index.html) UI Wireframe – Navigation, hero search, featured property cards, and footer](diagrams/wireframe_home.png)
+
 
 **Properties Listing Page (properties.html) Layout:**
 
-```
-┌─────────────────────────────────────────────────┐
-│              NAVIGATION BAR                      │
-└─────────────────────────────────────────────────┘
-┌─────────────────────────────────────┬───────────┐
-│  SEARCH & FILTER SIDEBAR            │ RESULTS   │
-│  ┌─────────────────────────────────┐│           │
-│  │ Status: [Buy▼] [Rent▼]         ││ ┌────────┐│
-│  │ Property Type:                  ││ │Card 1  ││
-│  │ □ Apartment □ House             ││ └────────┘│
-│  │ □ Villa □ Commercial            ││ ┌────────┐│
-│  │ □ Land                          ││ │Card 2  ││
-│  │ City: [Kathmandu▼]              ││ └────────┘│
-│  │ Price Range:                    ││ ┌────────┐│
-│  │ Min: [_______] Max: [_______]  ││ │Card 3  ││
-│  │ Bedrooms: Min [__] Bedrooms    ││ └────────┘│
-│  │ □ Featured Only                 ││           │
-│  │ [SEARCH]  [RESET]              ││ [Load More]│
-│  └─────────────────────────────────┘└───────────┘
-└─────────────────────────────────────┴───────────┘
-┌─────────────────────────────────────────────────┐
-│               FOOTER                            │
-└─────────────────────────────────────────────────┘
-```
+
+![Figure 3.8(b): Properties Listing Page (properties.html) UI Wireframe – Filter sidebar and property grid](diagrams/wireframe_properties.png)
+
 
 **Property Detail Page (property.html) Layout:**
 
-```
-┌─────────────────────────────────────────────────┐
-│              NAVIGATION BAR                      │
-└─────────────────────────────────────────────────┘
-┌─────────────────────────────────────┬───────────┐
-│                                      │ Similar  │
-│   IMAGE GALLERY                      │ Properties
-│  ┌─────────────────────────────────┐│           │
-│  │         Main Image              ││ ┌────────┐│
-│  │       (Large View)              ││ │Card 1  ││
-│  └─────────────────────────────────┘│ └────────┘│
-│  [Thumb1] [Thumb2] [Thumb3] ...    │ ┌────────┐│
-│                                      │ │Card 2  ││
-│  PROPERTY DETAILS                   │ └────────┘│
-│  Title: Modern Apartment in Thamel  │           │
-│  Status: For Sale                   │           │
-│  Price: NPR 8,500,000               │           │
-│  Type: Apartment                    │           │
-│  Beds: 2  Baths: 2                  │           │
-│  Area: 850 sqft                     │           │
-│  Location: Thamel, Kathmandu        │           │
-│                                      │           │
-│  FEATURES:                          │           │
-│  ✓ Parking ✓ Security ✓ Lift        │           │
-│                                      │           │
-│  DESCRIPTION:                       │           │
-│  A beautifully designed modern      │           │
-│  apartment in the heart of Thamel.. │           │
-│                                      │           │
-│  CONTACT:                           │           │
-│  Phone: 9801234567                  │           │
-│  [CALL] [WHATSAPP] [EMAIL]         │           │
-├─────────────────────────────────────┴───────────┤
-│              FOOTER                              │
-└──────────────────────────────────────────────────┘
-```
+
+![Figure 3.8(c): Property Detail Page (property.html) UI Wireframe – Image gallery, property details, and similar properties sidebar](diagrams/wireframe_property_detail.png)
+
 
 **Design Principles Applied:**
 
@@ -946,97 +604,9 @@ project-root/
 
 #### 3.2.4 Component Diagram
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│               COMPONENT DIAGRAM                             │
-└─────────────────────────────────────────────────────────────┘
 
-┌──────────────────────────────────────────────────────────┐
-│                  PRESENTATION LAYER                      │
-│  ┌────────────────┐  ┌─────────────────────────────┐    │
-│  │ HTML Pages     │  │ CSS Stylesheets             │    │
-│  │ - index.html   │  │ - styles.css                │    │
-│  │ - properties   │  │ - responsive design         │    │
-│  │ - property     │  │ - component styles          │    │
-│  │ - contact      │  └─────────────────────────────┘    │
-│  └────────────────┘              ▲                      │
-│          │                       │                      │
-│          └──────────────────┬────┬──────────────────┐   │
-│                             │                       │   │
-│  ┌──────────────────────────▼────────┐   ┌────────▼──┐ │
-│  │ JavaScript Client Engine          │   │ DOM API   │ │
-│  │ (main.js)                         │   │ & Fetch   │ │
-│  │ - Event Listeners                 │   │ API       │ │
-│  │ - API Calls                       │   │           │ │
-│  │ - DOM Manipulation                │   └───────────┘ │
-│  │ - Frontend Logic                  │                 │
-│  └───────────────────────────────────┘                 │
-└──────────────────────────────────────────────────────────┘
-                       │
-                    HTTP/REST
-                       │
-┌──────────────────────────────────────────────────────────┐
-│                  API LAYER (Express.js)                  │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │ Middleware Pipeline                             │   │
-│  │ - CORS Handler                                  │   │
-│  │ - JSON Parser                                   │   │
-│  │ - Rate Limiter                                  │   │
-│  │ - Static File Server                            │   │
-│  └──────────────────────────────────────────────────┘   │
-│           │                                              │
-│           ▼                                              │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │ Route Handlers (/api/properties)                │   │
-│  │ - getAll()                                      │   │
-│  │ - getById(id)                                   │   │
-│  │ - getFeatured()                                 │   │
-│  └──────────────────────────────────────────────────┘   │
-└──────────────────────────────────────────────────────────┘
-                       │
-                File System I/O
-                       │
-┌──────────────────────────────────────────────────────────┐
-│              BUSINESS LOGIC LAYER                        │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │ Filter Engine                                   │   │
-│  │ - applyStatusFilter()                           │   │
-│  │ - applyTypeFilter()                             │   │
-│  │ - applyCityFilter()                             │   │
-│  │ - applyPriceFilter()                            │   │
-│  │ - applyBedroomFilter()                          │   │
-│  └──────────────────────────────────────────────────┘   │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │ Validators                                      │   │
-│  │ - validateQueryParams()                         │   │
-│  │ - validatePropertyId()                          │   │
-│  │ - validateFilters()                             │   │
-│  └──────────────────────────────────────────────────┘   │
-└──────────────────────────────────────────────────────────┘
-                       │
-┌──────────────────────────────────────────────────────────┐
-│              DATA ACCESS LAYER                           │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │ PropertyRepository                              │   │
-│  │ - loadProperties()                              │   │
-│  │ - getPropertyById(id)                           │   │
-│  │ - filterProperties(criteria)                    │   │
-│  └──────────────────────────────────────────────────┘   │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │ FileManager                                     │   │
-│  │ - readJSON(path)                                │   │
-│  │ - writeJSON(path, data)                         │   │
-│  └──────────────────────────────────────────────────┘   │
-└──────────────────────────────────────────────────────────┘
-                       │
-┌──────────────────────────────────────────────────────────┐
-│              DATA STORAGE LAYER                          │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │ properties.json                                 │   │
-│  │ (Property Dataset)                              │   │
-│  └──────────────────────────────────────────────────┘   │
-└──────────────────────────────────────────────────────────┘
-```
+![Figure 3.7: Component Diagram – Layered architecture showing Presentation, API, Business Logic, and Data Access layers](diagrams/component_diagram.png)
+
 
 ---
 
