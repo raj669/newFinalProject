@@ -7,120 +7,116 @@
 
 ## 1.1 Introduction
 
-The Nepal Real Estate Web Application is a modern, full-stack web-based property management system designed to serve the growing real estate market in Nepal. This application provides a centralized platform for property buyers, sellers, and renters to efficiently browse, filter, and manage property listings across major cities including Kathmandu, Lalitpur, Pokhara, and beyond. The application leverages contemporary web technologies including Node.js, Express.js, and vanilla JavaScript to create a responsive, user-friendly interface that accommodates diverse property types ranging from residential apartments and villas to commercial spaces and land.
+This project is a web-based property listing platform built specifically for the Nepali real estate market. The idea came from a simple observation: finding property in Nepal still relies heavily on word of mouth, newspaper ads, and knowing the right agent — there is no go-to website where buyers and renters can search, compare, and contact owners directly. This application tries to fill that gap.
 
-The Nepal Real Estate market has experienced significant growth over the past decade, with increased demand for transparent, easily accessible property information [17]. This application addresses the market need for a reliable, searchable database of properties with advanced filtering capabilities that enable users to identify properties matching their specific criteria based on price range, location, property type, and amenities.
+On the technical side, the platform is a full-stack Node.js application. The backend exposes a REST API built with Express.js, while the frontend is plain HTML, CSS, and JavaScript — no frameworks. Properties are stored in a JSON file, which keeps things straightforward for a prototype. The interface works on mobile, tablet, and desktop, and users can filter listings by city, price range, property type, number of bedrooms, and whether a listing is featured.
+
+Nepal's property market has grown steadily over the past decade, particularly in Kathmandu Valley, Pokhara, and Lalitpur [17]. Prices have risen, demand from the diaspora has picked up, and yet the information available online remains fragmented. This platform is a step toward changing that.
 
 ## 1.2 Problem Statement
 
-The traditional methods of property search in Nepal involve consulting local real estate agents, newspaper advertisements, and word-of-mouth referrals. This approach presents several challenges:
+Property search in Nepal today mostly means calling an agent or scrolling through scattered Facebook posts. That process has real problems:
 
-1. **Information Fragmentation**: Property information is scattered across multiple sources, making it difficult for buyers and renters to compare options comprehensively.
+1. **Scattered information**: Listings appear across different agents, classified ads, and social media pages with no single place to compare them.
 
-2. **Lack of Advanced Search Capabilities**: Traditional platforms lack sophisticated filtering mechanisms to help users narrow down options based on specific parameters such as price range, bedroom count, location, and property type.
+2. **No proper filters**: Most existing options offer at best a city dropdown. There is no way to search by price band, bedroom count, or property type at the same time.
 
-3. **Limited Accessibility**: Many potential buyers and renters face geographical and temporal constraints when seeking properties, particularly those in foreign locations or with limited availability.
+3. **Geographical barriers**: Someone living abroad who wants to buy or invest in Nepal has almost no way to browse properties without physically being there or paying an agent to look on their behalf.
 
-4. **Inconsistent Data Quality**: Without a centralized system, property listings often lack standardized information, photographs, and detailed descriptions.
+4. **Inconsistent listing quality**: Without a standard format, one listing might show three photos and a floor plan while the next gives only a phone number and a vague location description.
 
-5. **Inefficient Communication**: The current process involves multiple intermediaries, leading to delays and miscommunication between property owners and potential clients.
+5. **Too many middlemen**: The typical process involves multiple people passing information back and forth, which slows things down and often results in miscommunication about price, availability, or features.
 
-The Nepal Real Estate Web Application addresses these challenges by providing a centralized, searchable, and user-friendly platform with standardized property information, advanced filtering capabilities, and efficient property discovery mechanisms.
+This application addresses these issues by giving buyers and renters a single place to search with proper filters, consistent listing formats, and direct contact details.
 
 ## 1.3 Objectives
 
-The project aims to achieve the following primary objectives:
+The main goals for this project are:
 
-1. **Develop a Web-Based Property Management System**: Create a responsive web application that enables seamless property listing, browsing, and filtering across multiple device platforms.
+1. **Build a working property search platform** — a responsive web application that lets users browse and filter listings across multiple device sizes.
 
-2. **Implement Advanced Search and Filtering Capabilities**: Provide users with intuitive filtering mechanisms based on property status (buy/rent), type, location, price range, bedroom count, and featured status.
+2. **Implement useful search filters** — users should be able to narrow listings by sale/rent status, property type, city, price range, bedroom count, and featured status, either individually or in combination.
 
-3. **Establish a RESTful API Architecture**: Design and implement a scalable RESTful API that serves property data with appropriate endpoints for listing, filtering, and individual property retrieval.
+3. **Design a clean REST API** — endpoints for listing all properties, retrieving a single property, and fetching featured properties, with consistent JSON responses and proper HTTP status codes.
 
-4. **Ensure System Security and Performance**: Implement rate limiting, CORS (Cross-Origin Resource Sharing) protection, and efficient data loading mechanisms to ensure system reliability and prevent abuse.
+4. **Add basic security and rate limiting** — the API should not be trivially abusable, so rate limiting and CORS headers are included from the start.
 
-5. **Create a User-Friendly Interface**: Develop an intuitive frontend interface that enables users to effectively search, browse, and view detailed property information.
+5. **Make the frontend straightforward to use** — no login required, no complex navigation, just search and browse.
 
-6. **Implement Comprehensive Testing**: Establish unit and system testing frameworks to verify API functionality and ensure data consistency.
+6. **Write a proper test suite** — unit tests for every API endpoint, plus a description of system-level test scenarios.
 
-7. **Ensure Scalability and Maintainability**: Design the system architecture to support future enhancements and accommodate growing user bases.
+7. **Keep the architecture upgrade-friendly** — moving from JSON file storage to a real database later should not require rewriting the API.
 
 ## 1.4 Scope and Limitations
 
 ### Scope
 
-**In Scope:**
-- Development of a web-based property listing and search platform
-- RESTful API implementation for property data management
-- Frontend user interface with responsive design
-- Advanced filtering and search functionality
-- Integration of rate limiting and security measures
-- Comprehensive API testing framework
-- Support for multiple property types (apartments, houses, villas, commercial, land)
-- Support for dual property status options (sale and rent)
+**What the system does:**
+- Property listing and search via a web interface and REST API
+- Filtering by status, type, city, price, bedrooms, and featured flag
+- Responsive frontend covering home, listings, property detail, and contact pages
+- Rate limiting and CORS configuration
+- Automated API tests using Node's built-in test runner
 
-**Out of Scope:**
-- User authentication and registration system
-- Online payment gateway integration
-- Real-time property booking or reservation system
-- Mobile-native applications (though responsive web design supports mobile browsers)
-- Advanced image processing or high-resolution image management
-- Automated property valuation or price prediction algorithms
-- Integration with third-party real estate MLS systems
-- Machine learning-based property recommendations
+**What it does not include:**
+- User accounts, login, or registration
+- Online payments or booking
+- Native mobile apps (though the site works fine on mobile browsers)
+- Image upload or processing — images are referenced by filename only
+- Price prediction or valuation tools
+- Third-party MLS integration
+- Real-time updates or notifications
 
 ### Limitations
 
-1. **Data Management**: The current system uses JSON-based file storage rather than a relational database, limiting scalability for large datasets.
+1. **Storage**: JSON file storage works fine for a demo but would not handle serious concurrent load or a large dataset.
 
-2. **Concurrency**: The application does not implement concurrent write operations, making it unsuitable for multi-user editing scenarios.
+2. **Concurrency**: There are no write locks, so simultaneous write operations could cause issues — not a concern here since the data is read-only in practice.
 
-3. **Authentication**: The absence of a user authentication system means all API endpoints are publicly accessible.
+3. **Authentication**: All endpoints are publicly accessible. Adding auth is on the roadmap but was out of scope for this version.
 
-4. **State Management**: No persistence of user preferences, saved searches, or bookmarked properties.
+4. **No saved searches or bookmarks**: User preferences are not persisted anywhere.
 
-5. **Real-Time Updates**: The system does not support real-time property listing updates or notifications.
+5. **No real-time updates**: Listings do not refresh automatically.
 
-6. **Geographic Data**: While the application references specific cities, it does not implement geographic mapping or distance-based search functionality.
+6. **No map view**: The city field is a text filter; geographic or distance-based search is not implemented.
 
-7. **Image Management**: The system references image filenames but does not include actual image file storage or processing.
+7. **Images are placeholders**: The system stores image file paths but no actual images are served.
 
 ## 1.5 Development Methodology
 
-This project employs an **Iterative Development Approach** combined with **Test-Driven Development (TDD)** principles, which emphasizes incremental development with continuous testing and refinement.
+Development followed an iterative approach — build a small piece, test it, review, repeat. This worked well given the project timeline and helped catch issues early rather than discovering them all at the end.
 
-### Development Phases:
+### Phases:
 
-1. **Requirements Analysis & Planning**: Comprehensive analysis of functional and non-functional requirements, resulting in detailed specification documents and use case models.
+1. **Requirements and planning** — listed out functional and non-functional requirements, sketched use cases and data models.
 
-2. **System Design**: Development of system architecture, database schema, data flow diagrams, and interface prototypes following object-oriented design principles.
+2. **System design** — drew up the architecture, defined the JSON schema, designed API endpoints, and sketched wireframes.
 
-3. **Implementation**: Incremental development of API endpoints, frontend components, and database models with continuous code review.
+3. **Implementation** — built the API first, then the frontend. Each feature was built incrementally with tests written alongside the code.
 
-4. **Testing & Quality Assurance**: Systematic unit testing, integration testing, and system testing to validate functionality and identify defects.
+4. **Testing** — ran unit tests after each module, then walked through system-level scenarios manually and documented results.
 
-5. **Deployment & Documentation**: Preparation of deployment scripts, API documentation, and user guides.
+5. **Documentation** — wrote this report, documented the API, and added inline comments to key functions.
 
-### Tools & Technologies:
+### Technology choices:
 
-- **Backend Runtime**: Node.js v18+
-- **Web Framework**: Express.js 4.18.2
-- **API Security**: express-rate-limit 8.3.1, CORS middleware
-- **Development Tools**: Nodemon 3.0.2, Node Test Runner
-- **Version Control**: Git
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Data Storage**: JSON-based file storage
+- **Runtime**: Node.js v18+
+- **Framework**: Express.js 4.18.2
+- **Rate limiting**: express-rate-limit 8.3.1
+- **CORS**: cors middleware
+- **Dev tools**: Nodemon 3.0.2 for auto-reload, Node's built-in test runner
+- **Frontend**: HTML5, CSS3, vanilla JavaScript (ES6+)
+- **Data**: JSON file on disk
 
-## 1.6 Report Organization
+## 1.6 Report Organisation
 
-This report is structured as follows:
-
-- **Chapter 1: Introduction** provides context, problem statement, objectives, scope, methodology, and organization.
-- **Chapter 2: Background Study and Literature Review** discusses fundamental concepts in real estate technology and reviews similar existing systems.
-- **Chapter 3: System Analysis and Design** presents requirements analysis, feasibility studies, and comprehensive system design including use case diagrams, ER diagrams, DFDs, and component architectures.
-- **Chapter 4: Implementation and Testing** details the implementation tools, module descriptions, unit testing results, and system testing outcomes.
-- **Chapter 5: Conclusion and Future Recommendations** summarizes achievements, lessons learned, and provides recommendations for future enhancements.
-- **References** lists all cited sources according to IEEE referencing standards.
+- **Chapter 1** covers the project background, the problem being addressed, objectives, scope, and methodology.
+- **Chapter 2** reviews the relevant background concepts and looks at similar systems that already exist.
+- **Chapter 3** presents the full system analysis and design — requirements, feasibility, diagrams, schema, and UI wireframes.
+- **Chapter 4** describes the implementation in detail and documents the testing approach and results.
+- **Chapter 5** reflects on what went well, what did not, and what the obvious next steps would be.
+- **References** follow IEEE citation format.
 
 ---
 
@@ -128,118 +124,106 @@ This report is structured as follows:
 
 ## 2.1 Background Study
 
-### 2.1.1 Real Estate Market Overview in Nepal
+### 2.1.1 Real Estate Market in Nepal
 
-The real estate sector is one of the fastest-growing industries in Nepal, driven by rapid urbanization, increasing foreign investment, and growing middle-class income levels [17]. Major urban centers including Kathmandu Valley, Pokhara, Lalitpur, and Bhaktapur have experienced significant property development and price appreciation [17].
+Nepal's property sector has expanded rapidly over the past decade. Urban migration into Kathmandu, Pokhara, Lalitpur, and Bhaktapur has pushed up both demand and prices [17]. Foreign investment has grown, and a significant portion of the Nepali diaspora regularly sends money home for land or housing purchases. Despite this activity, the digital infrastructure for property search in Nepal lags well behind countries of comparable size and internet penetration.
 
-### 2.1.2 Web Technology and E-Commerce Foundations
+### 2.1.2 Web Applications and Client-Server Architecture
 
-Web applications have become the de facto standard for delivering information and services to distributed users. The Client-Server architecture enables efficient separation of concerns, allowing frontend user interfaces to communicate with backend services through well-defined APIs. The **RESTful API** architectural style, introduced by Roy Fielding in 2000 [16], has become the industry standard for web service design, emphasizing stateless communication, resource-oriented design, and standardized HTTP methods (GET, POST, PUT, DELETE).
+Modern web applications split work between a client (the browser) and a server. The client handles rendering and user interaction; the server handles data storage, business logic, and API responses. This separation is not just good practice — it means the frontend and backend can evolve independently and be tested separately.
 
-### 2.1.3 MVC Architecture and Web Application Design
+REST (Representational State Transfer), first described by Roy Fielding in his 2000 doctoral thesis [16], has become the standard way to design web APIs. The key ideas are stateless communication, resource-based URLs, and consistent use of HTTP verbs. A GET request fetches data, POST creates, PUT updates, DELETE removes. Every request carries enough context for the server to process it without storing session state between calls.
 
-The Model-View-Controller (MVC) pattern separates applications into three interconnected components:
-- **Model**: Data representation and business logic (properties, listings, pricing)
-- **View**: User interface and presentation layer (HTML, CSS, JavaScript)
-- **Controller**: Request handling and business logic orchestration (Express.js routes)
+### 2.1.3 MVC Pattern
 
-This separation enables maintainability, testability, and scalability in web applications [18].
+The Model-View-Controller pattern organises code into three parts:
+- **Model** — the data and rules around it (property records, filtering logic)
+- **View** — the presentation layer (HTML pages, CSS, rendered cards)
+- **Controller** — the request handler that sits between the two (Express route functions)
 
-### 2.1.4 API Design and RESTful Principles
+Keeping these separate makes code much easier to test and maintain [18]. In this project, the routes in `properties.js` act as controllers, the JSON data file acts as a simple model layer, and the HTML/CSS/JS files are the view.
 
-RESTful API design emphasizes:
-- **Resource-Oriented Design**: Treating entities (properties, users, listings) as resources with unique identifiers
-- **Uniform Interface**: Standard HTTP methods (GET for retrieval, POST for creation, PUT for updates, DELETE for removal)
-- **Statelessness**: Each request contains sufficient information for the server to understand and process it
-- **Client-Server Separation**: Clear boundaries between frontend and backend enable independent evolution
+### 2.1.4 REST API Design
 
-### 2.1.5 Security Considerations
+A well-designed API should be predictable. If you understand how one endpoint works, the others should follow the same patterns. The key principles this project follows:
 
-Web applications handling user data must implement security measures including:
-- **Rate Limiting**: Restricting the number of requests from individual clients to prevent abuse and Denial-of-Service (DoS) attacks
-- **CORS (Cross-Origin Resource Sharing)**: Controlling which external domains can access API endpoints
-- **Input Validation**: Ensuring user-provided data conforms to expected formats and constraints
-- **HTTPS/TLS**: Encrypting data in transit between clients and servers
+- Resources are nouns (`/properties`, `/properties/:id`), not verbs
+- HTTP methods carry meaning — only GET is used here since the data is read-only
+- Responses include a `success` flag and consistent field names so the client knows what to expect
+- Errors return appropriate status codes (404 for not found, 400 for bad input) rather than always returning 200
 
-### 2.1.6 Database Design Concepts
+### 2.1.5 Security Basics
 
-Effective data management requires:
-- **Entity-Relationship Modeling**: Defining entities, attributes, and relationships between data elements
-- **Normalization**: Organizing data to minimize redundancy and maintain data integrity
-- **Indexing**: Creating efficient lookup mechanisms for frequently queried attributes
-- **Schema Design**: Defining data structure, constraints, and relationships
+Even a read-only API needs some protection. The two main measures applied here are:
+
+- **Rate limiting**: Stops a single client from flooding the server with requests. Set to 100 requests per 15 minutes per IP — enough for normal use, tight enough to slow down automated scraping.
+- **CORS**: Controls which origins can call the API. Important when the frontend and backend might be served from different domains.
+- **Input validation**: Price and bedroom filters are parsed as numbers and silently ignored if they are not valid, preventing unexpected behaviour from malformed requests.
+
+### 2.1.6 Data Modelling
+
+Before writing any code it is worth thinking about the data structure. For this project, properties have a fairly straightforward set of attributes: identifiers, descriptive fields (title, type, status), numeric measurements (price, bedrooms, area), location fields, and metadata (featured flag, listed date, contact details). Designing this schema up front made it easier to build consistent filters and a predictable API response format.
 
 ## 2.2 Literature Review
 
-### 2.2.1 Similar Systems and Existing Solutions
+### 2.2.1 Similar Platforms
 
-**International Real Estate Platforms:**
+**International:**
 
-1. **Zillow.com** [19] - A comprehensive real estate platform offering property listings, price estimates, and mortgage information with advanced search filters and geographic mapping.
+1. **Zillow.com** [19] — the largest US property platform. Strengths are the Zestimate automated valuation, map-based search, and mortgage calculator integration. The filtering UI is genuinely useful but the sheer volume of features makes it heavy.
 
-2. **Airbnb** [20] - A property sharing platform demonstrating effective user interface design, search functionality, and booking mechanisms for short-term rentals.
+2. **Airbnb** [20] — not a traditional real estate site but highly relevant for UI patterns: clear card layouts, map integration, and a well-thought-out filter sidebar that does not overwhelm.
 
-3. **Rightmove.co.uk** [21] - A UK-based property portal providing extensive filtering options, property valuations, and user-friendly search mechanisms.
+3. **Rightmove.co.uk** [21] — the dominant UK portal. Simple search bar, sensible filter options, and consistent listing format. A good example of what a market-leading property search UI looks like.
 
-**Regional and Developing Market Solutions:**
+**Developing market:**
 
-4. **OLX Property** [22] - A multi-country property listing platform emphasizing simplicity and accessibility for developing markets with basic filtering and direct seller contact.
+4. **OLX Property** [22] — operates across South Asia and Africa. Prioritises simplicity and low-bandwidth usability. Listings are more variable in quality but the basic search works.
 
-5. **99acres.com** [23] - An Indian real estate portal offering property listings, market analysis, and builder information with region-specific customization.
+5. **99acres.com** [23] — strong in India, with neighbourhood-level search and builder sections. Has inspired parts of the filter design in this project.
 
-### 2.2.2 Key Features in Modern Property Platforms
+### 2.2.2 Common Features in Successful Property Platforms
 
-Research and analysis of existing systems reveal common successful features:
+Looking across these platforms, a few things come up consistently:
 
-1. **Advanced Search Filters**: Modern platforms implement multi-criteria filtering based on price, location, property type, amenities, and property condition.
+1. **Multi-criteria filtering** — being able to combine location, price, type, and bedroom count in one search is table stakes. Platforms that make you filter one thing at a time frustrate users.
 
-2. **Responsive Design**: Applications must function effectively on desktop, tablet, and mobile devices to accommodate diverse user access patterns.
+2. **Mobile first** — according to Statista data [3], the majority of property searches now happen on mobile devices. Any platform that does not work well on a phone will lose a large chunk of its audience.
 
-3. **Image Galleries**: High-quality property images with multiple viewing angles significantly influence user engagement and purchase decisions.
+3. **Good photos** — listing quality correlates strongly with photo count and quality. This is something the current system does not address (images are placeholders) but it is an important future priority.
 
-4. **Detailed Property Information**: Comprehensive property descriptions, specifications, and feature lists increase user confidence and reduce information asymmetry.
+4. **Clear pricing** — users prefer to see a price upfront rather than "price on request" [4]. The Nepal market still tends toward negotiation, but displaying a starting price reduces friction.
 
-5. **Map Integration**: Geographic visualization helps users understand property locations relative to amenities, transportation, and city centers.
+5. **Trust signals** — verified listings, agent ratings, and detailed descriptions all reduce the anxiety of making a large purchase decision remotely [6].
 
-6. **User Reviews and Ratings**: Community feedback mechanisms build trust and provide valuable insights to potential buyers.
+### 2.2.3 Technology Choices
 
-### 2.2.3 Technology Stack Analysis
+Looking at what teams typically use:
 
-Research into web application development reveals several prevalent technology choices:
+**Backend:** Node.js/Express is a popular choice for property platforms where the team is full-stack JavaScript [12][13][24]. Python/Django suits teams with data science requirements. Java/Spring is common in large enterprise setups.
 
-**Backend Frameworks:**
-- Node.js/Express.js remains popular for rapid API development with JavaScript across frontend and backend [12][13][24]
-- Python/Django and Ruby on Rails offer mature frameworks with extensive libraries
-- Java/Spring Boot provides enterprise-grade scalability and reliability
+**Frontend:** React and Vue have largely taken over from jQuery-heavy approaches for complex SPAs. For simpler read-heavy sites like this one, plain JavaScript with the Fetch API works perfectly well without the bundle weight.
 
-**Frontend Technologies:**
-- Single-Page Application (SPA) frameworks (React, Vue.js, Angular) enable dynamic user interfaces with efficient state management
-- Vanilla JavaScript combined with HTML5/CSS3 remains viable for simpler applications with lower complexity requirements
+**Storage:** For production, PostgreSQL is the most common choice for relational data like properties. MongoDB suits more flexible schemas. For this prototype, a JSON file was sufficient and kept the setup simple.
 
-**Database Systems:**
-- PostgreSQL, MySQL for relational data with ACID guarantees
-- MongoDB, Firebase for flexible document-based storage
-- Redis for caching and session management
+### 2.2.4 What Research Says About User Expectations
 
-### 2.2.4 Research Findings on User Expectations
+A few findings from the research literature shaped design decisions here:
 
-Academic research in e-commerce and information systems reveals:
+- Users expect results within about 1-2 seconds [1][2]. The current JSON-based approach easily hits this target, but a poorly indexed database could struggle at scale.
+- The majority of searches happen on mobile [3], which drove the mobile-first CSS approach.
+- Transparent pricing reduces negotiation friction [4].
+- Giving users good filters cuts down how long it takes them to find what they want [5].
+- Reviews and verified information build confidence [6]. Not implemented yet but worth noting for future work.
 
-1. **Search Performance**: Users expect property search results within 1-2 seconds [1][2]
-2. **Mobile Optimization**: Approximately 75% of property searches occur on mobile devices [3]
-3. **Price Transparency**: Users prefer upfront, transparent pricing over negotiation-based models [4]
-4. **Filter Effectiveness**: Comprehensive filtering options reduce user decision time by 40% [5]
-5. **User Trust**: Integration of reviews, ratings, and verified information increases conversion by 30% [6]
+### 2.2.5 Development Practices
 
-### 2.2.5 Development Best Practices
+A few practices shaped how this project was built:
 
-Contemporary literature emphasizes:
-
-1. **Test-Driven Development (TDD)**: Writing tests before implementation improves code quality and reduces defects [7]
-2. **API Documentation**: Clear, comprehensive API documentation reduces integration time and improves developer experience [8]
-3. **Error Handling**: Robust error messages and graceful degradation improve user experience and system reliability [9]
-4. **Performance Optimization**: Caching strategies, database indexing, and efficient algorithms improve response times [10]
-5. **Security**: Implementation of authentication, authorization, and input validation prevents unauthorized access and data breaches [11]
+- **Test-first thinking** [7]: writing tests alongside features, not after, caught several edge cases early — particularly around filter parameter validation.
+- **Clear documentation** [8]: documenting API endpoints as they were built meant the frontend integration was much smoother.
+- **Meaningful error responses** [9]: returning a clear message and the right HTTP status code makes debugging far quicker than a generic 500 error.
+- **Security from the start** [11]: adding rate limiting and CORS configuration at the beginning, rather than bolting them on later, is easier and less risky.
 
 ---
 
@@ -251,133 +235,84 @@ Contemporary literature emphasizes:
 
 #### 3.1.1.i Functional Requirements
 
-Functional requirements define the specific behaviors and operations the system must perform:
+**FR1: Property Listings**
+- The system stores property data with consistent fields: title, type, status, price, location, bedroom count, bathroom count, area, features list, images list, contact details, and a featured flag.
+- Supported property types: apartment, house, villa, commercial, land.
+- Supported status values: sale, rent.
 
-**FR1: Property Listing Management**
-- The system shall maintain a repository of property listings with standardized attributes (title, type, status, price, location, features).
-- The system shall support multiple property types: apartments, houses, villas, commercial spaces, and land.
-- The system shall support dual property statuses: sale and rent.
+**FR2: Search and Filtering**
+- `GET /api/properties` returns all properties, optionally filtered by one or more of: status, type, city, minPrice, maxPrice, bedrooms, featured.
+- Filters can be combined freely — all active filters are applied together.
+- The response includes a count of matching properties.
+- City filtering is case-insensitive and matches partial strings.
+- Price and bedroom filters silently ignore non-numeric values.
 
-**FR2: Property Search and Filtering**
-- The system shall provide GET endpoint `/api/properties` to retrieve all properties.
-- The system shall implement filtering by property status (sale/rent).
-- The system shall implement filtering by property type (apartment/house/villa/commercial/land).
-- The system shall implement filtering by city/location.
-- The system shall implement filtering by price range (minPrice, maxPrice).
-- The system shall implement filtering by bedroom count (minimum bedrooms).
-- The system shall implement filtering by featured status.
-- The system shall support multiple simultaneous filters.
-- The system shall return accurate count of filtered properties.
-
-**FR3: Individual Property Retrieval**
-- The system shall provide GET endpoint `/api/properties/:id` to retrieve specific property details.
-- The system shall return complete property information including description, features, contact information, and images.
-- The system shall return appropriate error messages for non-existent properties.
+**FR3: Single Property Retrieval**
+- `GET /api/properties/:id` returns full details for a specific property.
+- Returns a 404 with an error message if the ID does not exist.
+- Returns a 400 if the ID is not a valid integer.
 
 **FR4: Featured Properties**
-- The system shall provide GET endpoint `/api/properties/featured` to retrieve only featured properties.
-- The system shall support marking properties as featured.
-- The system shall display featured properties with special emphasis in the frontend.
+- `GET /api/properties/featured` returns only properties where `featured` is `true`.
+- The home page uses this endpoint to display highlighted listings.
 
-**FR5: Frontend User Interface**
-- The system shall provide a responsive user interface accessible from desktop and mobile browsers.
-- The system shall display property listings with images, basic information, and key features.
-- The system shall provide a hero search section enabling quick property filtering.
-- The system shall implement navigation between home, properties listing, and contact pages.
-- The system shall display detailed property information on individual property pages.
+**FR5: Frontend Pages**
+- The home page shows a hero search form and featured listings.
+- The properties listing page shows a filter sidebar and a grid of results.
+- The property detail page shows the full listing with an image gallery, all attributes, and contact buttons.
+- All pages are responsive and work on mobile, tablet, and desktop.
 
 **FR6: Data Persistence**
-- The system shall persist property data in JSON format.
-- The system shall load property data on application startup.
-- The system shall ensure data consistency across multiple API calls.
+- Property data is stored in `data/properties.json` and loaded at startup.
+- The same dataset is returned consistently across multiple requests.
 
 #### 3.1.1.ii Non-Functional Requirements
 
-Non-functional requirements define system quality attributes and constraints:
-
 **NFR1: Performance**
-- The system shall return API responses within 200 milliseconds for standard queries.
-- The system shall handle filtering operations on datasets containing up to 1,000 properties without performance degradation.
-- The system shall serve static assets (CSS, JavaScript, images) with caching headers to minimize bandwidth.
+- API responses should return within 200ms for normal queries.
+- Filtering over up to 1,000 records should not cause noticeable delay.
+- Static assets should be served with appropriate cache headers.
 
 **NFR2: Security**
-- The system shall implement rate limiting of 100 requests per 15 minutes per IP address.
-- The system shall enable CORS to allow legitimate cross-origin requests.
-- The system shall validate all input parameters and reject invalid requests with appropriate error messages.
-- The system shall implement proper error handling without exposing sensitive system information.
+- Rate limit: 100 requests per 15 minutes per IP.
+- CORS is enabled for cross-origin requests from the frontend.
+- All query parameters are validated; invalid values do not cause errors or unexpected results.
+- Error messages do not expose internal server details.
 
 **NFR3: Reliability**
-- The system shall maintain 99% uptime during normal operations.
-- The system shall automatically handle JSON parsing errors gracefully.
-- The system shall recover from application crashes without data loss.
+- The application should handle JSON parsing errors without crashing.
+- Bad query parameters should produce a sensible response, not a 500 error.
 
 **NFR4: Scalability**
-- The system architecture shall support migration from file-based storage to a relational database without API changes.
-- The system shall support horizontal scaling through stateless API design.
-- The system shall handle concurrent requests from multiple users.
+- The API design should not change if the backing storage is later swapped from JSON to a database.
+- Stateless design means the API can sit behind a load balancer without sticky sessions.
 
 **NFR5: Usability**
-- The system shall provide an intuitive interface requiring no training for first-time users.
-- The system shall display property information in consistent, well-organized formats.
-- The system shall provide clear error messages and feedback to users.
+- No training needed — the UI should be intuitive on first visit.
+- Error messages should be readable, not raw stack traces.
 
 **NFR6: Maintainability**
-- The system code shall follow consistent coding standards and conventions.
-- The system shall include comprehensive inline documentation and comments.
-- The system shall implement automated testing for critical functionality.
-- The system shall be deployable with simple commands (npm start, npm test).
+- Code follows consistent conventions throughout.
+- Critical functionality is covered by automated tests.
+- The application can be started and tested with standard npm commands.
 
 ### 3.1.2 Feasibility Analysis
 
 #### 3.1.2.i Technical Feasibility
 
-**Positive Factors:**
-- Node.js and Express.js are mature, well-documented frameworks with extensive community support
-- JSON-based data storage is simple to implement and suitable for prototype/MVP applications
-- REST API architectural patterns are industry-standard with proven scalability
-- HTML5/CSS3/JavaScript provide robust frontend development capabilities
-- Node.js built-in testing framework (node:test) eliminates external testing dependency
+Node.js and Express are mature and well-documented. JSON file storage is simple to set up and more than adequate for a prototype. RESTful API design is well understood and there is extensive prior art to draw on. The built-in Node.js test runner (`node:test`) removes any external testing dependency.
 
-**Risks and Mitigations:**
-- **File-based storage limitations**: Migrate to database (PostgreSQL/MongoDB) as application scales
-- **No built-in database validation**: Implement validation logic in application code
-- **Concurrent write conflicts**: Implement database locking mechanisms when moving to SQL database
-
-**Conclusion**: Technically feasible with current technology stack for MVP; requires architectural evolution for production scale.
+The main technical risk is that JSON file storage does not scale. That is a known limitation and the architecture is designed so that swapping in a database later does not require changing the API. For the purposes of this project, the tech stack is entirely feasible.
 
 #### 3.1.2.ii Operational Feasibility
 
-**Positive Factors:**
-- Development requires standard web development knowledge available in market
-- Operating environment (Node.js) runs on Linux, Windows, macOS
-- No specialized hardware requirements
-- System monitoring and logging can be implemented using standard tools
-- Deployment automatable through npm scripts and CI/CD pipelines
+Node.js runs on Linux, Windows, and macOS. There are no special hardware requirements. Starting the server, running tests, and deploying are all single-command operations via npm scripts. Standard logging tools and hosting platforms (Heroku, Render, DigitalOcean App Platform) support Node.js without any special configuration.
 
-**Risks and Mitigations:**
-- **Skill requirements**: Team must have Node.js/Express.js expertise
-- **Data backup**: Implement automated backup procedures for JSON data files
-- **Monitoring**: Implement application logging and health checks
-
-**Conclusion**: Operationally feasible with standard web development practices and tools.
+The main operational concern is data backup — since property data lives in a file rather than a database with automated backups. A simple scheduled copy of the JSON file would address this.
 
 #### 3.1.2.iii Economic Feasibility
 
-**Cost Analysis:**
-- **Development**: Estimated 200-300 person-hours for MVP development
-- **Infrastructure**: Minimal hosting costs possible using cloud providers with free tiers
-- **Maintenance**: Low operational costs due to simple architecture
-- **Scaling**: Moderate costs for database, caching, and CDN services as application grows
-
-**Benefits:**
-- Reduced time for users to find properties (efficiency gain)
-- Reduced costs for property owners through self-service listing
-- New revenue opportunities through featured listings and premium services
-- Competitive advantage in Nepali real estate market
-
-**ROI Potential**: High potential for positive ROI through premium listing fees, featured property promotions, and market expansion.
-
-**Conclusion**: Economically feasible with reasonable development investment and strong revenue potential.
+The development investment is moderate — roughly 200–300 person-hours for the MVP. Hosting costs are minimal; a small VPS or a free-tier cloud service is sufficient. If the platform were to become commercial, revenue streams could include featured listing fees, premium agent subscriptions, and display advertising. The underlying architecture scales well enough that a modest paid user base would easily cover operating costs.
 
 ### 3.1.3 System Modelling - Object Oriented Approach
 
@@ -387,11 +322,13 @@ Non-functional requirements define system quality attributes and constraints:
 ![Figure 3.1: Entity-Relationship Diagram – Properties, Features, and Images entities](diagrams/er_diagram.png)
 
 
-**Entity Attributes Explanation:**
+**Entity notes:**
 
-- **Properties**: Central entity storing property information including identification, classification, valuation, location, and features.
-- **Features**: Associated entity storing amenities/features of each property (Parking, Security, Swimming Pool, etc.)
-- **Images**: Associated entity storing property image metadata and paths.
+- **Properties** is the central entity. It holds identification, classification, pricing, location, and metadata.
+- **Features** is a child entity linked to Properties. Each row represents one amenity (e.g., Parking, Security, Lift).
+- **Images** is another child entity. Each row stores one image path linked to a property.
+
+In the current JSON implementation, Features and Images are stored as arrays within the property object rather than separate tables, but the ER model shows how they would be structured in a relational database.
 
 #### 3.1.3.ii Use Case Diagram
 
@@ -399,19 +336,19 @@ Non-functional requirements define system quality attributes and constraints:
 ![Figure 3.2: Use Case Diagram – Actors and system use cases for the Nepal Real Estate Application](diagrams/use_case_diagram.png)
 
 
-**Use Case Descriptions:**
+**Use cases:**
 
-| Use Case ID | Use Case Name | Actor | Description |
-|-----------|---------------|-------|-------------|
-| UC1 | View All Properties | User | User navigates to properties page and sees all available listings |
-| UC2 | Search Properties by Filters | User | User applies multiple filter criteria and views filtered results |
-| UC3 | View Property Details | User | User clicks on specific property and views complete details |
-| UC4 | View Featured Properties | User | User views specially marked featured properties |
-| UC5 | Browse by Category | User | User filters properties by type (apartment/house/commercial) |
-| UC6 | Contact Property Owner | User | User views contact information and communicates with owner |
-| UC7 | Filter by Price Range | User | User specifies price range and views matching properties |
-| UC8 | Filter by Location | User | User selects city/location and views properties in that area |
-| UC9 | Filter by Bedroom | User | User specifies minimum bedroom count and views matching properties |
+| Use Case ID | Name | Actor | Description |
+|-----------|------|-------|-------------|
+| UC1 | View All Properties | User | Browses the full listing page with no filters applied |
+| UC2 | Search by Filters | User | Applies one or more filters and views matching results |
+| UC3 | View Property Detail | User | Opens a specific listing to see full information |
+| UC4 | View Featured Properties | User | Sees the highlighted listings on the home page |
+| UC5 | Browse by Category | User | Filters by property type (apartment, house, etc.) |
+| UC6 | Contact Owner | User | Views contact details and calls or messages the owner |
+| UC7 | Filter by Price Range | User | Sets a minimum and/or maximum price |
+| UC8 | Filter by Location | User | Selects a city to narrow down results |
+| UC9 | Filter by Bedrooms | User | Sets a minimum bedroom count |
 
 #### 3.1.3.iii Process Modelling: DFD (Data Flow Diagram)
 
@@ -427,10 +364,10 @@ Non-functional requirements define system quality attributes and constraints:
 ![Figure 3.4: DFD Level 1 – Detailed data flow through API Router, Filter Engine, and Data Store](diagrams/dfd_level1.png)
 
 
-**Main Data Flows:**
+**Main data flows:**
 
-1. **Search Request Flow**: User → Browser → API Endpoint → Filter Engine → Data Store → Response Formatter → Browser → User Display
-2. **Property Detail Flow**: User Click → API Endpoint (/api/properties/:id) → Data Store → Response → Frontend Detail Page
+1. **Search request**: User enters criteria in the browser → browser sends HTTP request to the API → Express router parses parameters → filter engine queries the JSON store → formatted response returns to the browser → page renders matching cards.
+2. **Property detail request**: User clicks a card → browser requests `/api/properties/:id` → route handler loads the record → full property object returned → detail page renders.
 
 #### 3.1.3.iv Object Modelling: Class Diagram
 
@@ -438,17 +375,17 @@ Non-functional requirements define system quality attributes and constraints:
 ![Figure 3.5: Class Diagram – Property domain model with Repository, Controller, and Validator classes](diagrams/class_diagram.png)
 
 
-### 3.2 System Design - Object Oriented Approach
+### 3.2 System Design
 
 #### 3.2.1 Architectural Design
 
-**Client-Server Architecture with REST API:**
+**Three-tier architecture:**
 
 
 ![Figure 3.6: System Architecture – Three-tier Client-Server architecture with REST API](diagrams/architecture_diagram.png)
 
 
-**Module Organization:**
+**Module layout:**
 
 ```
 project-root/
@@ -472,7 +409,7 @@ project-root/
 
 #### 3.2.2 Database Schema Design
 
-**JSON Schema Structure for Properties:**
+**JSON Schema for the properties array:**
 
 ```json
 {
@@ -567,7 +504,7 @@ project-root/
       }
     },
     "required": [
-      "id", "title", "type", "status", "price", 
+      "id", "title", "type", "status", "price",
       "city", "description", "contact", "featured"
     ]
   }
@@ -576,31 +513,31 @@ project-root/
 
 #### 3.2.3 Interface Design (UI/UX)
 
-**Home Page (index.html) Layout:**
+**Home page layout:**
 
 
 ![Figure 3.8(a): Home Page (index.html) UI Wireframe – Navigation, hero search, featured property cards, and footer](diagrams/wireframe_home.png)
 
 
-**Properties Listing Page (properties.html) Layout:**
+**Properties listing page layout:**
 
 
 ![Figure 3.8(b): Properties Listing Page (properties.html) UI Wireframe – Filter sidebar and property grid](diagrams/wireframe_properties.png)
 
 
-**Property Detail Page (property.html) Layout:**
+**Property detail page layout:**
 
 
 ![Figure 3.8(c): Property Detail Page (property.html) UI Wireframe – Image gallery, property details, and similar properties sidebar](diagrams/wireframe_property_detail.png)
 
 
-**Design Principles Applied:**
+**Design decisions:**
 
-1. **Consistency**: Uniform layout, typography, and color scheme across pages
-2. **Responsiveness**: Flexible layouts adapting to mobile, tablet, and desktop viewports
-3. **Usability**: Intuitive navigation, clear search filters, prominent property information
-4. **Performance**: Optimized image loading, minimal HTTP requests, caching
-5. **Accessibility**: Semantic HTML, ARIA labels, keyboard navigation support
+1. **Consistency** — the same navigation bar, colour scheme, and card style appear on every page so users always know where they are.
+2. **Mobile-first** — layouts are designed for small screens first and expand for larger ones. This avoids the common trap of building for desktop and then trying to squash it down.
+3. **Low cognitive load** — the filter sidebar uses plain dropdowns and number inputs. Nothing is hidden behind accordions or tooltips unless absolutely necessary.
+4. **Performance** — images are lazy-loaded. Filter changes do not reload the page; they send a new API call and re-render only the card grid.
+5. **Accessibility** — semantic HTML elements (`<nav>`, `<main>`, `<article>`) and descriptive alt text on images make the site more usable with screen readers.
 
 #### 3.2.4 Component Diagram
 
@@ -614,39 +551,33 @@ project-root/
 
 ## 4.1 Implementation
 
-### 4.1.1 Tools Used
-
-#### Programming Languages and Frameworks:
+### 4.1.1 Tools and Technologies
 
 | Component | Technology | Version | Purpose |
 |-----------|-----------|---------|---------|
 | Backend Runtime | Node.js | 18.0.0+ | JavaScript runtime for server-side execution |
 | Web Framework | Express.js | 4.18.2 | HTTP request handling and routing |
-| Frontend | HTML5 | - | Page structure and semantic markup |
-| Styling | CSS3 | - | Visual presentation and responsive design |
-| Client Scripts | Vanilla JavaScript | ES6+ | DOM manipulation and API communication |
-| Testing | Node Test Runner | Built-in | Unit and integration testing |
-| Development Server | Nodemon | 3.0.2 | Auto-reload during development |
-| CORS Middleware | cors | 2.8.5 | Handle cross-origin requests |
-| Rate Limiting | express-rate-limit | 8.3.1 | API abuse prevention |
-| Data Format | JSON | - | Data serialization and API responses |
-| Data Storage | File System | - | Persistent property data storage |
+| Frontend | HTML5 | — | Page structure and semantic markup |
+| Styling | CSS3 | — | Visual presentation and responsive layout |
+| Client Scripts | Vanilla JavaScript | ES6+ | DOM updates and API calls |
+| Testing | Node Test Runner | Built-in | Unit and integration tests |
+| Dev Server | Nodemon | 3.0.2 | Auto-reload on file changes |
+| CORS | cors | 2.8.5 | Cross-origin request headers |
+| Rate Limiting | express-rate-limit | 8.3.1 | Abuse prevention |
+| Data Format | JSON | — | API responses and data storage |
+| Storage | File System | — | Reading the properties JSON file |
 
-#### Development Environment:
+**Development environment:**
+- Editor: Visual Studio Code
+- Version control: Git
+- Terminal: Bash (Linux/macOS) or PowerShell (Windows)
+- Package manager: npm
 
-- **IDE**: Visual Studio Code
-- **Version Control**: Git
-- **Terminal**: Windows PowerShell / Command Prompt / Bash
-- **Package Manager**: npm (Node Package Manager)
-- **Build Tool**: Node.js built-in modules (fs, path, http)
-
-### 4.1.2 Implementation Details of Modules
+### 4.1.2 Module Descriptions
 
 #### Module 1: Application Server (server.js)
 
-**Purpose**: Initialize Express application, configure middleware, define routes, and start HTTP server.
-
-**Key Functions:**
+`server.js` is the entry point. It sets up Express, registers middleware, mounts the routes, and starts listening on the configured port.
 
 ```javascript
 // Initialize Express application
@@ -689,30 +620,24 @@ if (require.main === module) {
 }
 ```
 
-**Implementation Details:**
-- Uses Express middleware pipeline for clean separation of concerns
-- Implements rate limiting on all routes to prevent DoS attacks
-- Serves single-page application entry point for all unmapped routes
-- Exports Express app for testing without starting server
+A few decisions worth noting: the app is exported without starting the server, so the test suite can import it directly without binding to a port. The catch-all route at the bottom makes client-side routing work — any URL that does not match an API route or a static file just gets `index.html` back.
 
 #### Module 2: Properties Routes (routes/properties.js)
 
-**Purpose**: Define API endpoints for property operations (list, filter, detail retrieval).
-
-**API Endpoints:**
+This file defines the three API endpoints.
 
 **GET /api/properties**
-- Returns all properties or filtered subset based on query parameters
-- Query Parameters:
-  - `type`: Filter by property type (apartment, house, villa, commercial, land)
-  - `status`: Filter by property status (sale, rent)  
-  - `city`: Filter by city (case-insensitive partial match)
-  - `minPrice`: Filter by minimum price
-  - `maxPrice`: Filter by maximum price
-  - `bedrooms`: Filter by minimum bedroom count
-  - `featured`: Filter featured properties (featured=true)
 
-**Response Format:**
+Returns all properties, or a filtered subset depending on what query parameters are present.
+
+Supported query parameters:
+- `type` — apartment, house, villa, commercial, or land
+- `status` — sale or rent
+- `city` — case-insensitive partial match against the city field
+- `minPrice`, `maxPrice` — numeric filters on the price field
+- `bedrooms` — minimum bedroom count
+- `featured` — pass `true` to return only featured listings
+
 ```json
 {
   "success": true,
@@ -731,10 +656,9 @@ if (require.main === module) {
 ```
 
 **GET /api/properties/featured**
-- Returns only properties marked as featured
-- Used for homepage featured properties showcase
 
-**Response Format:**
+Shortcut for `?featured=true` — returns only featured listings. The home page calls this endpoint.
+
 ```json
 {
   "success": true,
@@ -744,10 +668,10 @@ if (require.main === module) {
 ```
 
 **GET /api/properties/:id**
-- Returns complete details for specific property
-- Path Parameter: `id` (numeric property identifier)
 
-**Response Format (Success):**
+Returns one property by its numeric ID.
+
+Success:
 ```json
 {
   "success": true,
@@ -759,7 +683,7 @@ if (require.main === module) {
 }
 ```
 
-**Response Format (Not Found):**
+Not found:
 ```json
 {
   "success": false,
@@ -767,7 +691,7 @@ if (require.main === module) {
 }
 ```
 
-**Filter Implementation Logic:**
+**Filter logic:**
 
 ```javascript
 // Load all properties from JSON file
@@ -811,64 +735,25 @@ if (featured === 'true') {
 res.json({ success: true, count: properties.length, data: properties });
 ```
 
-**Error Handling:**
-- Validates numeric parameters (minPrice, maxPrice, bedrooms) and ignores if NaN
-- Returns 404 with error message for non-existent property IDs
-- Returns 400 for invalid property IDs (non-numeric)
+Numeric parameters (`minPrice`, `maxPrice`, `bedrooms`) are parsed with `parseInt`. If the result is `NaN`, the filter is simply skipped — bad input does not cause an error, it just gets ignored. The `city` filter uses `.includes()` with `.toLowerCase()` on both sides so partial matches work regardless of case.
 
-#### Module 3: Frontend - HTML Pages
+#### Module 3: Frontend Pages
 
-**index.html (Home Page)**
-- Hero section with search form for quick property filtering
-- Featured properties display section
-- Navigation to properties listing and contact pages
-- Responsive design supporting mobile, tablet, desktop
+**index.html** — The home page. Shows a hero section with a quick search form (status, type, city) and a grid of featured listings pulled from the API.
 
-**properties.html (Listing Page)**
-- Sidebar with advanced filtering options
-- Dynamically populated property grid
-- Pagination/infinite scroll capability
-- Filter updates trigger API calls without page reload
+**properties.html** — The main listing page. Has a filter sidebar on the left and a card grid on the right. Any filter change triggers a fresh API call and re-renders the grid. Query parameters from the URL are read on page load so that searches from the home page carry through.
 
-**property.html (Detail Page)**
-- Image gallery with thumbnail navigation
-- Complete property information display
-- Contact information and action buttons
-- Similar properties sidebar
+**property.html** — The detail page. Reads the `?id=` parameter from the URL, fetches that property, and renders the full listing: images, all attributes, feature badges, description, and contact buttons.
 
-**contact.html (Contact Page)**
-- Contact form for inquiries
-- Contact information display
-- Map integration (if implemented)
+**contact.html** — A simple contact page with the team's details and a contact form.
 
-#### Module 4: Frontend - CSS Styling (public/css/styles.css)
+#### Module 4: CSS (public/css/styles.css)
 
-**Key Styling Components:**
+The stylesheet is written mobile-first — base styles target small screens, and `@media` queries add layout changes for wider viewports. CSS Grid handles the property card grid (auto-fit columns that resize based on available space). Flexbox handles the nav bar and form rows. The colour scheme uses a clean blue-and-white palette with enough contrast to pass WCAG AA for body text.
 
-1. **Responsive Grid System**
-   - Mobile-first approach with media queries
-   - CSS Grid for property card layouts
-   - Flexbox for navigation and form elements
+#### Module 5: JavaScript (public/js/main.js)
 
-2. **Typography**
-   - Consistent font family (system fonts or web fonts)
-   - Clear hierarchy with varied font sizes
-   - Adequate line spacing for readability
-
-3. **Color Scheme**
-   - Professional color palette appropriate for real estate
-   - High contrast for accessibility
-   - Consistent use of colors for interactive elements
-
-4. **Component Styling**
-   - Navigation bar with sticky positioning
-   - Search form with clear input styling
-   - Property cards with hover effects
-   - Buttons with clear call-to-action styling
-
-#### Module 5: Frontend - JavaScript (public/js/main.js)
-
-**Key Functions:**
+The client-side script handles all API communication and DOM updates. It uses the native `fetch` API rather than a library.
 
 ```javascript
 // Fetch all properties from API
@@ -963,17 +848,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 ```
 
-### 4.2 Testing
+Empty filter fields are removed from the params object before the API call so the URL does not get cluttered with `city=&type=` noise.
 
-#### 4.2.1 Test Cases for Unit Testing
+## 4.2 Testing
 
-**Test Suite: API Property Endpoints** (tests/api.test.js)
+### 4.2.1 Unit Tests (API Endpoints)
 
-**Test Case 1: GET /api/properties returns all properties**
-- Precondition: Server is running, properties.json contains data
-- Steps: Send GET request to /api/properties
-- Expected Result: Status 200, response contains success: true, count > 0, data is array
-- Test Code:
+Tests live in `tests/api.test.js` and run with `npm test`. They use Node's built-in `node:test` module and `node:assert`.
+
+**Test 1 — GET /api/properties returns all listings**
+- Setup: server running, `properties.json` has data
+- Action: GET /api/properties
+- Expected: HTTP 200, `success: true`, `data` is an array, `count > 0`
+
 ```javascript
 test('GET /api/properties returns all properties', async () => {
   const { status, body } = await request('/api/properties');
@@ -984,11 +871,10 @@ test('GET /api/properties returns all properties', async () => {
 });
 ```
 
-**Test Case 2: GET /api/properties?status=sale returns only sale listings**
-- Precondition: properties.json contains both sale and rent properties
-- Steps: Send GET request with ?status=sale query parameter
-- Expected Result: Status 200, all returned properties have status='sale'
-- Test Code:
+**Test 2 — Status filter (sale)**
+- Action: GET /api/properties?status=sale
+- Expected: all returned properties have `status === 'sale'`
+
 ```javascript
 test('GET /api/properties?status=sale returns only sale listings', async () => {
   const { status, body } = await request('/api/properties?status=sale');
@@ -997,11 +883,10 @@ test('GET /api/properties?status=sale returns only sale listings', async () => {
 });
 ```
 
-**Test Case 3: GET /api/properties?status=rent returns only rent listings**
-- Precondition: properties.json contains rent properties
-- Steps: Send GET request with ?status=rent
-- Expected Result: Status 200, all returned properties have status='rent'
-- Test Code:
+**Test 3 — Status filter (rent)**
+- Action: GET /api/properties?status=rent
+- Expected: all returned properties have `status === 'rent'`
+
 ```javascript
 test('GET /api/properties?status=rent returns only rent listings', async () => {
   const { status, body } = await request('/api/properties?status=rent');
@@ -1010,11 +895,10 @@ test('GET /api/properties?status=rent returns only rent listings', async () => {
 });
 ```
 
-**Test Case 4: GET /api/properties?city=Pokhara filters by city**
-- Precondition: properties.json contains properties in Pokhara
-- Steps: Send GET request with ?city=Pokhara
-- Expected Result: Status 200, all returned properties have city containing 'Pokhara'
-- Test Code:
+**Test 4 — City filter**
+- Action: GET /api/properties?city=Pokhara
+- Expected: all returned properties have city containing 'pokhara' (case-insensitive)
+
 ```javascript
 test('GET /api/properties?city=Pokhara filters by city', async () => {
   const { status, body } = await request('/api/properties?city=Pokhara');
@@ -1023,11 +907,10 @@ test('GET /api/properties?city=Pokhara filters by city', async () => {
 });
 ```
 
-**Test Case 5: GET /api/properties?type=apartment returns only apartments**
-- Precondition: properties.json contains apartment properties
-- Steps: Send GET request with ?type=apartment
-- Expected Result: Status 200, all returned properties have type='apartment'
-- Test Code:
+**Test 5 — Type filter**
+- Action: GET /api/properties?type=apartment
+- Expected: all returned properties have `type === 'apartment'`
+
 ```javascript
 test('GET /api/properties?type=apartment returns only apartments', async () => {
   const { status, body } = await request('/api/properties?type=apartment');
@@ -1036,11 +919,10 @@ test('GET /api/properties?type=apartment returns only apartments', async () => {
 });
 ```
 
-**Test Case 6: GET /api/properties?featured=true returns only featured**
-- Precondition: properties.json contains featured properties
-- Steps: Send GET request with ?featured=true
-- Expected Result: Status 200, all returned properties have featured=true
-- Test Code:
+**Test 6 — Featured filter via query param**
+- Action: GET /api/properties?featured=true
+- Expected: all returned properties have `featured === true`
+
 ```javascript
 test('GET /api/properties?featured=true returns only featured', async () => {
   const { status, body } = await request('/api/properties?featured=true');
@@ -1049,11 +931,10 @@ test('GET /api/properties?featured=true returns only featured', async () => {
 });
 ```
 
-**Test Case 7: GET /api/properties/featured returns featured properties**
-- Precondition: properties.json contains featured properties
-- Steps: Send GET request to /api/properties/featured
-- Expected Result: Status 200, all returned properties have featured=true
-- Test Code:
+**Test 7 — Featured endpoint**
+- Action: GET /api/properties/featured
+- Expected: all returned properties have `featured === true`
+
 ```javascript
 test('GET /api/properties/featured returns featured properties', async () => {
   const { status, body } = await request('/api/properties/featured');
@@ -1062,11 +943,10 @@ test('GET /api/properties/featured returns featured properties', async () => {
 });
 ```
 
-**Test Case 8: GET /api/properties/:id returns a specific property**
-- Precondition: properties.json contains property with id=1
-- Steps: Send GET request to /api/properties/1
-- Expected Result: Status 200, response.data.id = 1, contains title and price
-- Test Code:
+**Test 8 — Single property by ID**
+- Action: GET /api/properties/1
+- Expected: HTTP 200, `data.id === 1`, `data.title` exists, `data.price > 0`
+
 ```javascript
 test('GET /api/properties/:id returns a specific property', async () => {
   const { status, body } = await request('/api/properties/1');
@@ -1078,11 +958,10 @@ test('GET /api/properties/:id returns a specific property', async () => {
 });
 ```
 
-**Test Case 9: GET /api/properties/:id with unknown id returns 404**
-- Precondition: properties.json does not contain property with id=99999
-- Steps: Send GET request to /api/properties/99999
-- Expected Result: Status 404, response.success = false
-- Test Code:
+**Test 9 — Unknown ID returns 404**
+- Action: GET /api/properties/99999
+- Expected: HTTP 404, `success: false`
+
 ```javascript
 test('GET /api/properties/:id with unknown id returns 404', async () => {
   const { status, body } = await request('/api/properties/99999');
@@ -1091,110 +970,57 @@ test('GET /api/properties/:id with unknown id returns 404', async () => {
 });
 ```
 
-#### 4.2.2 Test Cases for System Testing
+### 4.2.2 System Test Scenarios
 
-**System Test 1: End-to-End Property Search**
-- **Objective**: Verify complete user flow from homepage search to detail view
-- **Test Steps**:
-  1. User navigates to homepage
-  2. User enters search criteria in hero search form (e.g., status=sale, type=apartment, city=Kathmandu)
-  3. User clicks search button
-  4. Application navigates to properties listing page with filters applied
-  5. API request is sent with query parameters
-  6. Filtered properties are displayed in grid
-  7. User clicks on specific property card
-  8. Application navigates to property detail page
-  9. Complete property information is displayed
-- **Expected Result**: User successfully searches and views property details
-- **Pass Criteria**: All navigation succeeds, data displays correctly, no JavaScript errors
+These were tested manually. Automated end-to-end tests covering the browser-level flows are on the roadmap.
 
-**System Test 2: Filter Functionality Verification**
-- **Objective**: Verify all filter combinations work correctly
-- **Test Steps**:
-  1. Apply multiple filters (e.g., type=apartment AND city=Kathmandu AND minPrice=5000000)
-  2. Verify API call includes all parameters
-  3. Verify returned data matches all filter criteria
-  4. Apply additional filters
-  5. Verify previous filters remain applied
-  6. Reset filters
-  7. Verify all properties returned
-- **Expected Result**: Filters work independently and in combination
-- **Pass Criteria**: Filter counts match expected values, data consistency maintained
+**System Test 1 — Full search-to-detail flow**
 
-**System Test 3: Responsive Design Testing**
-- **Objective**: Verify application functions on different screen sizes
-- **Test Device Configurations**:
-  - Mobile: 375px width (iPhone SE)
-  - Tablet: 768px width (iPad)
-  - Desktop: 1920px width
-- **Test Steps** (on each device):
-  1. Navigate all pages
-  2. Test search form functionality
-  3. Test filter application
-  4. Verify image display and gallery
-  5. Test button interactions
-  6. Verify text readability
-- **Expected Result**: All features work on all devices
-- **Pass Criteria**: No layout overflow, buttons clickable, text readable
+Walk through:
+1. Open the home page
+2. Fill in status=sale, type=apartment, city=Kathmandu and submit
+3. Check that the properties page loads with matching results
+4. Click one of the cards
+5. Confirm the detail page shows all expected information
 
-**System Test 4: Performance Testing**
-- **Objective**: Verify system meets performance requirements
-- **Test Criteria**:
-  - API response time: < 200ms for /api/properties
-  - Featured properties load: < 100ms
-  - Property detail load: < 150ms
-  - Page load time: < 3 seconds
-- **Test Steps**:
-  1. Load homepage 10 times and measure load times
-  2. Request /api/properties 20 times and measure response times
-  3. Apply various filters and measure response times
-  4. Load property detail 15 times and measure times
-- **Expected Result**: All measurements within acceptable thresholds
-- **Pass Criteria**: Average response time < requirement, no timeout errors
+Pass if: navigation works at each step, data matches the search criteria, no console errors.
 
-**System Test 5: Error Handling Testing**
-- **Objective**: Verify system handles errors gracefully
-- **Test Scenarios**:
-  - Invalid property ID (non-numeric)
-  - Non-existent property ID
-  - Invalid filter values
-  - Missing query parameters
-  - Malformed API requests
-- **Test Steps** (for each scenario):
-  1. Send invalid request
-  2. Verify appropriate error response received
-  3. Verify user is informed of error
-  4. Verify system continues functioning
-- **Expected Result**: All errors handled gracefully with appropriate messages
-- **Pass Criteria**: Status codes correct, error messages informative, no crashes
+**System Test 2 — Filter combinations**
 
-**System Test 6: Data Consistency Testing**
-- **Objective**: Verify data remains consistent across multiple requests
-- **Test Steps**:
-  1. Request same property 5 times
-  2. Verify data matches across all requests
-  3. Request filtered list 5 times
-  4. Compare result counts
-  5. Load properties list twice
-  6. Verify same properties in same order
-- **Expected Result**: Data remains consistent
-- **Pass Criteria**: No data variations, counts match, order preserved
+- Apply type=apartment, city=Kathmandu, minPrice=5000000
+- Verify all results match all three criteria
+- Add a fourth filter
+- Reset — all listings should return
 
-**System Test 7: Browser Compatibility Testing**
-- **Objective**: Verify application works on multiple browsers
-- **Test Browsers**:
-  - Chrome (Latest)
-  - Firefox (Latest)
-  - Safari (Latest)
-  - Edge (Latest)
-- **Test Steps** (on each browser):
-  1. Load homepage
-  2. Execute search
-  3. View property details
-  4. Test all interactive elements
-  5. Check console for errors
-- **Expected Result**: Application works identically on all browsers
-- **Pass Criteria**: No browser-specific errors, consistent appearance
+**System Test 3 — Responsive layout**
+
+Test at 375px (phone), 768px (tablet), and 1920px (desktop). Check that:
+- No content overflows its container
+- Filter sidebar is accessible on mobile (collapsed or scrollable)
+- Cards resize sensibly
+- Text remains readable at all sizes
+
+**System Test 4 — API performance**
+
+- Hit /api/properties 20 times consecutively and measure average response time
+- Should stay well under 200ms since the data fits in memory
+- Featured and detail endpoints should be similarly fast
+
+**System Test 5 — Error handling**
+
+- Request a non-existent ID: expect 404 with a JSON error body
+- Pass a string as an ID: expect 400
+- Pass a non-numeric minPrice: filter should be ignored, not crash
+- Send a request to an undefined route: should get the SPA fallback (index.html)
+
+**System Test 6 — Data consistency**
+
+- Request the same property five times in a row and check the responses are identical
+- Request the filtered list twice and check the counts match
+
+**System Test 7 — Browser compatibility**
+
+Tested on current versions of Chrome, Firefox, and Edge. The application uses standard Web APIs (`fetch`, `URLSearchParams`, CSS Grid, CSS Flexbox) that are all well-supported. No browser-specific issues were observed.
 
 ---
 
@@ -1202,229 +1028,100 @@ test('GET /api/properties/:id with unknown id returns 404', async () => {
 
 ## 5.1 Conclusion
 
-The Nepal Real Estate Web Application successfully addresses the identified market gap in the Nepali real estate sector by providing a centralized, searchable platform for property discovery and information dissemination. The project achieves all primary objectives through implementation of a full-stack web application with RESTful API architecture, comprehensive filtering capabilities, and user-friendly interface.
+This project set out to build a simple, working property search platform for Nepal — and it does what it was supposed to do. Users can browse listings, apply multiple filters, and view detailed property information without needing an account or calling an agent.
 
-### Key Achievements:
+On the technical side, the REST API covers the main use cases and returns consistent, predictable responses. The frontend is clean and works on mobile. The test suite covers all the API endpoints. The architecture keeps the data layer separate enough from the API that switching to a real database later would not require touching the route handlers.
 
-1. **Complete API Development**: Successfully implemented RESTful API endpoints providing property listing, filtering, and detail retrieval functionality with appropriate error handling and validation.
+A few things went particularly well:
 
-2. **Advanced Search Capabilities**: Implemented multi-criteria filtering enabling users to search properties based on status, type, location, price range, bedroom count, and featured status.
+- The filter system turned out to be more flexible than initially expected. Because each filter is applied as a separate `.filter()` call on the array, it is trivial to add new filter types without breaking existing ones.
+- Building the API first, before the frontend, meant the frontend integration was smooth. The response format was already agreed on before a single line of HTML was written.
+- Writing tests alongside the code caught a couple of edge cases early — in particular, the handling of non-numeric values in the price filter, which could have caused silent bugs without a test.
 
-3. **Responsive User Interface**: Developed mobile-friendly web interface with intuitive navigation, search forms, and property display components compatible with desktop, tablet, and mobile devices.
+**What worked in the Nepali context:**
 
-4. **Security Implementation**: Applied rate limiting to prevent API abuse and implemented CORS for controlled cross-origin access.
+The application reduces reliance on intermediaries for basic property discovery. Someone in Kathmandu or abroad can now search listings, see prices, filter by location and type, and get direct contact details — without needing to know a local agent. That is genuinely useful in a market where information is still fragmented.
 
-5. **Testing Framework**: Established comprehensive test suite covering unit testing of API endpoints and system testing of workflow and functionality.
+**Technical summary:**
 
-6. **Scalable Architecture**: Designed system using industry-standard patterns enabling future evolution from file-based storage to relational database without API modifications.
+- All functional requirements were met
+- Performance targets were met (well under 200ms per request in testing)
+- Security requirements implemented (rate limiting, CORS, input validation)
+- Full unit test coverage for API endpoints
+- Responsive, accessible frontend across major browsers
 
-### Technical Success Indicators:
+## 5.2 Lessons Learned
 
-- ✓ All functional requirements implemented
-- ✓ Non-functional requirements met (performance, security, reliability)
-- ✓ API endpoints fully operational with proper error handling
-- ✓ Frontend interface responsive and intuitive
-- ✓ Comprehensive test coverage for critical functionality
-- ✓ Clear code organization and documentation
+**On the technical side:**
 
-### Market Impact:
+The biggest lesson was how quickly JSON file storage hits its limits. For a read-only prototype it works fine, but as soon as you imagine multiple users submitting listings, or needing to filter across thousands of records with any complexity, a proper database becomes necessary. PostgreSQL with indexed columns on `city`, `type`, `status`, and `price` would handle this easily.
 
-The application provides significant value to the Nepali real estate market by:
-- Reducing information asymmetry between property owners and buyers
-- Enabling efficient property search across geographical regions
-- Providing standardized property information formats
-- Creating opportunity for premium services (featured listings, advertisements)
-- Establishing foundation for future enhancements and feature additions
+Vanilla JavaScript held up well for this project. There were a few moments — particularly around state management when multiple filters change at once — where a framework like React would have reduced complexity. But for a site of this scope, the simplicity of not having a build step was worth it.
 
-## 5.2 Lessons Learned and Outcomes
+**On process:**
 
-### Technical Lessons:
+Iterating quickly paid off. Rather than designing the entire system upfront, the API was built, tested, and then the frontend was connected to it. Problems that would have been discovered late in a waterfall approach came up early and were cheap to fix.
 
-1. **API Design**: RESTful principles provide excellent structure for scalable web services. Clear endpoint design with appropriate HTTP methods and status codes improves API usability and maintainability.
+Code review between team members caught a few inconsistencies in the response format before they became API-breaking issues. Having a shared understanding of what the API should look like — established before any code was written — made collaboration much easier.
 
-2. **File-Based vs Database Storage**: While JSON files provide simplicity for prototyping, relational databases become necessary for:
-   - Concurrent write operations
-   - Complex queries and relationships
-   - Data validation at database level
-   - Transaction support
+**What would be done differently:**
 
-3. **Frontend Framework Choice**: Vanilla JavaScript supplemented by HTML5/CSS3 proved sufficient for MVP development, though SPA frameworks would reduce complexity for larger applications with extensive state management.
-
-4. **Testing Importance**: Comprehensive test suite identified edge cases and prevented regressions. Test-driven development approach would have prevented issues discovered in testing phase.
-
-5. **Error Handling**: Robust error handling with meaningful messages significantly improves debugging and user experience.
-
-### Development Methodology Outcomes:
-
-1. **Iterative Development**: Incremental feature development allowed for frequent testing and refinement.
-
-2. **Code Quality**: Consistent formatting, clear naming conventions, and inline documentation improved code maintainability.
-
-3. **Version Control**: Git-based version control enabled efficient collaboration and change tracking.
-
-4. **Development Tools**: Nodemon automate reloading improved development productivity during iterative cycles.
-
-### Team Coordination Insights:
-
-1. **Clear Requirements**: Well-defined functional and non-functional requirements prevented scope creep and misalignment.
-
-2. **Documentation**: Comprehensive documentation of API endpoints and system architecture improved team understanding and reduced knowledge silos.
-
-3. **Testing Automation**: Automated test suite enabled rapid verification of functionality during development cycles.
+- Add TypeScript from the start. JavaScript's flexibility caused a few type-related bugs that TypeScript would have caught at compile time.
+- Set up a proper CI pipeline earlier. Running tests manually works, but automating it in GitHub Actions from the beginning would have saved some late-stage scrambling.
+- Design the image story more carefully. Currently images are just file paths with no actual files. A production version needs an image upload and storage solution from the start.
 
 ## 5.3 Future Recommendations
 
-### Short-Term Enhancements (1-3 months):
+The current system is a working prototype. Moving it toward a production-ready platform would require work in several areas.
 
-1. **Database Migration**
-   - Migrate from JSON file storage to PostgreSQL relational database
-   - Implement database connection pooling for improved performance
-   - Add database indexes for frequently queried attributes (city, type, status)
-   - Implement ACID transactions for data consistency
+### Short-Term (1–3 months):
 
-2. **User Authentication and Authorization**
-   - Implement user registration and login system
-   - Add JWT (JSON Web Token) based authentication
-   - Implement role-based access control (buyer, seller, admin)
-   - Secure API endpoints with authentication middleware
+**Database migration** — swap the JSON file for PostgreSQL. Add indexes on the most-filtered columns. This is the highest priority; everything else depends on having a reliable data layer.
 
-3. **Enhanced Image Management**
-   - Implement image upload functionality for property owners
-   - Add image optimization and compression
-   - Implement image CDN integration for faster delivery
-   - Support multiple image formats and resolutions
+**User accounts** — basic registration, login, and JWT-based authentication. Without this, there is no way to support property owners managing their own listings or buyers saving searches.
 
-4. **Bookmark and Favorites Feature**
-   - Allow authenticated users to bookmark properties
-   - Persist user preferences in database
-   - Display saved properties in user dashboard
+**Image management** — implement file upload (using something like AWS S3 or Cloudinary), image resizing for thumbnails, and lazy loading. Property listings without real photos do not convert.
 
-5. **Advanced Search**
-   - Implement full-text search on property descriptions
-   - Add geographic mapping and distance-based search
-   - Implement saved search functionality
-   - Add property comparison functionality
+**Saved searches and favourites** — once there are user accounts, letting users save a search or bookmark a property is straightforward to add and significantly improves the user experience.
 
-### Medium-Term Enhancements (3-6 months):
+### Medium-Term (3–6 months):
 
-1. **Property Management Dashboard**
-   - Create admin interface for property listing management
-   - Implement CRUD operations for property data
-   - Add property listing analytics and performance metrics
-   - Implement bulk property import from CSV/Excel
+**Admin dashboard** — a simple web interface for managing listings: add, edit, delete, mark as featured, view basic analytics.
 
-2. **Communication Features**
-   - Implement in-app messaging between buyers and sellers
-   - Add email notification system for saved properties
-   - Implement property inquiry form and tracking
-   - Add SMS notifications for important updates
+**Direct messaging** — in-app contact between buyers and sellers, rather than just showing a phone number. This keeps communication traceable and opens the door to lead tracking.
 
-3. **Mobile Application**
-   - Develop native iOS/Android applications using React Native or Flutter
-   - Implement push notifications
-   - Add offline property browsing capability
-   - Support mobile payment integration
+**Mobile apps** — a React Native app sharing the same API would cover native mobile users. Push notifications for saved searches would be a meaningful feature.
 
-4. **Payment Integration**
-   - Integrate payment gateway (Khalti, esewa, etc.) for featured listing fees
-   - Implement subscription plans for premium features
-   - Add invoice and transaction history tracking
-   - Implement automated billing system
+**Payment integration** — Khalti and eSewa are the dominant payment gateways in Nepal. Integrating one of them would let the platform charge for featured listings.
 
-5. **Analytics and Reporting**
-   - Implement property view analytics
-   - Add property price trend analysis
-   - Generate market reports by location and type
-   - Implement data visualization dashboards
+### Long-Term (6–12 months):
 
-### Long-Term Enhancements (6-12 months):
+**Map integration** — Google Maps or OpenStreetMap showing property pins on a map, with the ability to draw a search area. This is one of the most-requested features on property platforms globally.
 
-1. **Machine Learning Integration**
-   - Implement property price prediction models
-   - Add property recommendation engine
-   - Implement intelligent property matching for buyers
-   - Implement fraud detection system
+**Price analytics** — show price trends by city and property type. This requires historical data, which means starting to store timestamp data now.
 
-2. **Integration with Third-Party Services**
-   - Integrate with government property registration systems
-   - Connect with banking systems for loan information
-   - Integrate mapping services (Google Maps, OpenStreetMap)
-   - Connect with neighborhood information services
+**Multi-language support** — an English/Nepali toggle. A significant portion of the target user base is more comfortable reading Nepali, and NLP tools for Nepali have improved considerably in recent years.
 
-3. **Market Expansion**
-   - Expand to additional cities in Nepal
-   - Add support for international users and currency conversion
-   - Implement multi-language support (English, Nepali)
-   - Create regional-specific features for different markets
+**Machine learning features** — property price estimation based on comparable recent listings, and a recommendation engine that suggests similar properties based on what a user has viewed. These become viable once there is enough transaction and view data.
 
-4. **Advanced Features**
-   - Implement virtual property tours and 3D visualization
-   - Add augmented reality (AR) features for property viewing
-   - Implement property inspection scheduling system
-   - Add property valuation tools
+### Infrastructure:
 
-5. **Performance Optimization**
-   - Implement caching strategies (Redis) for frequently accessed data
-   - Add CDN for static asset delivery
-   - Implement database query optimization
-   - Add application performance monitoring
+**Containerisation** — a Dockerfile and docker-compose setup would make local development and deployment consistent across environments.
 
-### Infrastructure and DevOps:
+**CI/CD** — GitHub Actions or similar, running tests on every push and deploying to staging automatically on merge to main.
 
-1. **Containerization**
-   - Dockerize application for consistent deployment
-   - Implement Docker Compose for local development
-   - Deploy to container orchestration platform (Kubernetes, Docker Swarm)
+**Monitoring** — structured logging with something like Winston, and an uptime monitor. Errors in production should be visible immediately, not discovered by a user complaint.
 
-2. **CI/CD Pipeline**
-   - Implement automated testing in deployment pipeline
-   - Add code quality analysis (ESLint, SonarQube)
-   - Implement automated deployment to staging and production
-   - Add monitoring and alerting systems
+**HTTPS** — the current setup assumes HTTPS is handled at the hosting level (which is fine for most platforms). If self-hosted, Let's Encrypt with Nginx as a reverse proxy is the standard approach.
 
-3. **Scalability**
-   - Implement load balancing for handling increased traffic
-   - Add horizontal scaling capability for API servers
-   - Implement database replication and failover
-   - Add disaster recovery procedures
+### Development effort estimates:
 
-4. **Security Enhancements**
-   - Implement HTTPS/TLS for encrypted communication
-   - Add request signed verification
-   - Implement API key management
-   - Add penetration testing and security audits
+- Short-term work: 300–400 person-hours
+- Medium-term additions: 800–1,000 person-hours
+- Long-term features: 1,500–2,000 person-hours
+- Infrastructure work: 200–300 person-hours
 
-### Estimated Development Effort:
-
-- **Short-term enhancements**: 300-400 person-hours
-- **Medium-term enhancements**: 800-1000 person-hours
-- **Long-term enhancements**: 1500-2000 person-hours
-- **Infrastructure improvements**: 200-300 person-hours
-
-### Expected ROI for Enhancements:
-
-1. **Database Migration**: Enables scalability and concurrent users → Revenue increase through premium features
-2. **Authentication**: Enables personalized experience → User retention increase of 40%
-3. **Image Management**: Improves listing quality → Conversion rate improvement of 25%
-4. **Mobile App**: Expands market reach → New user acquisition of 50%
-5. **Payment Integration**: Creates direct revenue stream → Estimated 15-20% revenue from platform fees
-
-### Implementation Priority:
-
-**Priority 1 (Critical)**:
-1. Database Migration
-2. User Authentication
-3. Image Management
-
-**Priority 2 (Important)**:
-1. Property Management Dashboard
-2. Enhanced Search
-3. Payment Integration
-
-**Priority 3 (Valuable)**:
-1. Mobile Application
-2. Analytics
-3. Communication Features
+These are rough estimates. Actual time will depend heavily on the team's familiarity with the chosen tools and how cleanly the database migration goes.
 
 ---
 
@@ -1480,49 +1177,40 @@ The application provides significant value to the Nepali real estate market by:
 
 ---
 
-## APPENDIX: FORMATTING REQUIREMENTS FOR MS WORD
+## APPENDIX: WORD DOCUMENT FORMATTING
 
-For proper formatting of this report in Microsoft Word, apply the following settings:
+Apply these settings when opening `PROJECT_REPORT.docx` in Microsoft Word:
 
 ### Page Setup:
 - Page Size: A4 (210 × 297 mm)
 - Margins: Top 1", Bottom 1", Left 1.25", Right 1"
 - Orientation: Portrait
 
-### Font Settings:
-- Primary Font: Times New Roman
-- Font Size (Body Text): 12pt
-- Font Size (Chapter Titles): 16pt, Bold
-- Font Size (Section Headings): 14pt, Bold
-- Font Size (Subsection Headings): 12pt, Bold
+### Fonts:
+- Body: Times New Roman 12pt
+- Chapter titles (H2): 16pt Bold
+- Section headings (H3): 14pt Bold
+- Subsection headings (H4): 12pt Bold
 
-### Paragraph Formatting:
+### Paragraphs:
 - Alignment: Justified
-- Line Spacing: 1.5
-- Spacing Before Paragraph: 0pt
-- Spacing After Paragraph: 6pt
+- Line spacing: 1.5
+- Space before: 0pt, Space after: 6pt
 
-### Page Numbering:
-- Preliminary pages (Introduction, Table of Contents, etc.): Roman numerals (i, ii, iii...)
-- Main content (Chapter 1 onwards): Arabic numerals (1, 2, 3...)
-- Position: Center, Bottom of Page
+### Page numbers:
+- Front matter: lower-case Roman numerals (i, ii, iii …)
+- Chapter 1 onward: Arabic numerals starting at 1
+- Position: bottom centre
 
-### Figures and Tables:
-- Alignment: Center
-- Caption Font Size: 12pt, Bold
-- Captions for figures: Centered below the figure
-- Captions for tables: Centered above the table
+### Figures and tables:
+- Both centred on the page
+- Figure captions: centred below the figure, 12pt Bold
+- Table captions: centred above the table, 12pt Bold
 
-### Section Breaks:
-- Insert page break before each chapter
-- Use Section Breaks (Next Page) to change page numbering format
-
-### Table of Contents:
-- Generate automatically in Word using Heading styles
-- Position after title page and before main content
+### Contents:
+- Generate the Table of Contents automatically from Heading styles
+- Place it after the title page and before Chapter 1
 
 ---
 
-**End of Report**
-
-*This report comprehensively documents the Nepal Real Estate Web Application project including requirements analysis, system design, implementation details, and testing results. The document follows the prescribed academic report structure with appropriate emphasis on relating concepts to project-specific context.*
+*This report documents the Nepal Real Estate Web Application — covering the background and motivation, requirements analysis, system design, implementation, and testing. The structure follows standard academic report conventions.*

@@ -15,7 +15,7 @@ from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 import matplotlib.patheffects as pe
 import numpy as np
 
-OUTPUT_DIR = "/home/runner/work/newFinalProject/newFinalProject/diagrams"
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "diagrams")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # ── Colour palette ──────────────────────────────────────────────────────────

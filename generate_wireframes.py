@@ -11,7 +11,7 @@ import matplotlib.patches as mpatches
 from matplotlib.patches import FancyBboxPatch
 import matplotlib.patheffects as pe
 
-OUTPUT_DIR = "/home/runner/work/newFinalProject/newFinalProject/diagrams"
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "diagrams")
 
 # Colours
 C_NAV       = "#1E40AF"
