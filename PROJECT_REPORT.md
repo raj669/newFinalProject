@@ -9,7 +9,7 @@
 
 The Nepal Real Estate Web Application is a modern, full-stack web-based property management system designed to serve the growing real estate market in Nepal. This application provides a centralized platform for property buyers, sellers, and renters to efficiently browse, filter, and manage property listings across major cities including Kathmandu, Lalitpur, Pokhara, and beyond. The application leverages contemporary web technologies including Node.js, Express.js, and vanilla JavaScript to create a responsive, user-friendly interface that accommodates diverse property types ranging from residential apartments and villas to commercial spaces and land.
 
-The Nepal Real Estate market has experienced significant growth over the past decade, with increased demand for transparent, easily accessible property information. This application addresses the market need for a reliable, searchable database of properties with advanced filtering capabilities that enable users to identify properties matching their specific criteria based on price range, location, property type, and amenities.
+The Nepal Real Estate market has experienced significant growth over the past decade, with increased demand for transparent, easily accessible property information [17]. This application addresses the market need for a reliable, searchable database of properties with advanced filtering capabilities that enable users to identify properties matching their specific criteria based on price range, location, property type, and amenities.
 
 ## 1.2 Problem Statement
 
@@ -130,11 +130,11 @@ This report is structured as follows:
 
 ### 2.1.1 Real Estate Market Overview in Nepal
 
-The real estate sector is one of the fastest-growing industries in Nepal, with an annual growth rate of approximately 8-12% over the past decade. The primary drivers of this growth include rapid urbanization, increasing foreign investment, and growing middle-class income levels. Major urban centers including Kathmandu Valley, Pokhara, Lalitpur, and Bhaktapur have experienced significant property development and price appreciation.
+The real estate sector is one of the fastest-growing industries in Nepal, driven by rapid urbanization, increasing foreign investment, and growing middle-class income levels [17]. Major urban centers including Kathmandu Valley, Pokhara, Lalitpur, and Bhaktapur have experienced significant property development and price appreciation [17].
 
 ### 2.1.2 Web Technology and E-Commerce Foundations
 
-Web applications have become the de facto standard for delivering information and services to distributed users. The Client-Server architecture enables efficient separation of concerns, allowing frontend user interfaces to communicate with backend services through well-defined APIs. The **RESTful API** architectural style, introduced by Roy Fielding in 2000, has become the industry standard for web service design, emphasizing stateless communication, resource-oriented design, and standardized HTTP methods (GET, POST, PUT, DELETE).
+Web applications have become the de facto standard for delivering information and services to distributed users. The Client-Server architecture enables efficient separation of concerns, allowing frontend user interfaces to communicate with backend services through well-defined APIs. The **RESTful API** architectural style, introduced by Roy Fielding in 2000 [16], has become the industry standard for web service design, emphasizing stateless communication, resource-oriented design, and standardized HTTP methods (GET, POST, PUT, DELETE).
 
 ### 2.1.3 MVC Architecture and Web Application Design
 
@@ -143,7 +143,7 @@ The Model-View-Controller (MVC) pattern separates applications into three interc
 - **View**: User interface and presentation layer (HTML, CSS, JavaScript)
 - **Controller**: Request handling and business logic orchestration (Express.js routes)
 
-This separation enables maintainability, testability, and scalability in web applications.
+This separation enables maintainability, testability, and scalability in web applications [18].
 
 ### 2.1.4 API Design and RESTful Principles
 
@@ -175,17 +175,17 @@ Effective data management requires:
 
 **International Real Estate Platforms:**
 
-1. **Zillow.com** - A comprehensive real estate platform offering property listings, price estimates, and mortgage information with advanced search filters and geographic mapping.
+1. **Zillow.com** [19] - A comprehensive real estate platform offering property listings, price estimates, and mortgage information with advanced search filters and geographic mapping.
 
-2. **Airbnb** - A property sharing platform demonstrating effective user interface design, search functionality, and booking mechanisms for short-term rentals.
+2. **Airbnb** [20] - A property sharing platform demonstrating effective user interface design, search functionality, and booking mechanisms for short-term rentals.
 
-3. **Rightmove.co.uk** - A UK-based property portal providing extensive filtering options, property valuations, and user-friendly search mechanisms.
+3. **Rightmove.co.uk** [21] - A UK-based property portal providing extensive filtering options, property valuations, and user-friendly search mechanisms.
 
 **Regional and Developing Market Solutions:**
 
-4. **OLX Property** - A multi-country property listing platform emphasizing simplicity and accessibility for developing markets with basic filtering and direct seller contact.
+4. **OLX Property** [22] - A multi-country property listing platform emphasizing simplicity and accessibility for developing markets with basic filtering and direct seller contact.
 
-5. **99acres.com** - An Indian real estate portal offering property listings, market analysis, and builder information with region-specific customization.
+5. **99acres.com** [23] - An Indian real estate portal offering property listings, market analysis, and builder information with region-specific customization.
 
 ### 2.2.2 Key Features in Modern Property Platforms
 
@@ -208,7 +208,7 @@ Research and analysis of existing systems reveal common successful features:
 Research into web application development reveals several prevalent technology choices:
 
 **Backend Frameworks:**
-- Node.js/Express.js remains popular for rapid API development with JavaScript across frontend and backend
+- Node.js/Express.js remains popular for rapid API development with JavaScript across frontend and backend [12][13][24]
 - Python/Django and Ruby on Rails offer mature frameworks with extensive libraries
 - Java/Spring Boot provides enterprise-grade scalability and reliability
 
@@ -1889,6 +1889,24 @@ The application provides significant value to the Nepali real estate market by:
 [14] MDN Web Docs, "CSS: Cascading Style Sheets," Mozilla Developer Network, 2024. Available: https://developer.mozilla.org/en-US/docs/Web/CSS/
 
 [15] W3C, "HTML Standard," World Wide Web Consortium, 2024. Available: https://html.spec.whatwg.org/
+
+[16] Fielding, R. T., "Architectural Styles and the Design of Network-based Software Architectures," Doctoral Dissertation, University of California, Irvine, 2000. Available: https://ics.uci.edu/~fielding/pubs/dissertation/top.htm
+
+[17] Nepal Rastra Bank, "Financial Stability Report," Nepal Rastra Bank, Kathmandu, 2023. Available: https://www.nrb.org.np/
+
+[18] Gamma, E., Helm, R., Johnson, R., & Vlissides, J., "Design Patterns: Elements of Reusable Object-Oriented Software," Addison-Wesley, 1994.
+
+[19] Zillow Group, "Zillow Real Estate Marketplace," Available: https://www.zillow.com/
+
+[20] Airbnb, Inc., "Airbnb Property Sharing Platform," Available: https://www.airbnb.com/
+
+[21] Rightmove plc, "Rightmove Property Portal," Available: https://www.rightmove.co.uk/
+
+[22] OLX Group, "OLX Property Platform," Available: https://www.olx.com/
+
+[23] 99acres.com, "99acres Real Estate Platform," Available: https://www.99acres.com/
+
+[24] Stack Overflow, "Stack Overflow Developer Survey 2023," Stack Overflow, 2023. Available: https://survey.stackoverflow.co/2023/
 
 ---
 
