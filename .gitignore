@@ -3,3 +3,7 @@ npm-debug.log*
 .env
 .DS_Store
 *.log
+*serviceAccount*.json
+*serviceAccountKey*.json
+.firebase/
+

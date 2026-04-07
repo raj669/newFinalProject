@@ -192,15 +192,38 @@ async function loadPropertyDetail() {
 }
 
 // ── Contact form submission ───────────────────────────────────────────────
-function handleContactSubmit(e) {
+async function handleContactSubmit(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('[type=submit]');
+  const form   = e.target;
+  const btn    = form.querySelector('[type=submit]');
+  const status = document.getElementById('contactStatus');
+
   btn.textContent = 'Sending…';
   btn.disabled = true;
-  setTimeout(() => {
-    e.target.reset();
+  if (status) { status.textContent = ''; status.className = 'contact-status'; }
+
+  try {
+    const res  = await fetch('/api/contact', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(Object.fromEntries(new FormData(form))),
+    });
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Submission failed');
+
+    form.reset();
+    if (status) {
+      status.textContent = '✅ ' + data.message;
+      status.className = 'contact-status contact-status--ok';
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = '❌ ' + (err.message || 'Unable to send. Please try again.');
+      status.className = 'contact-status contact-status--err';
+    }
+  } finally {
     btn.textContent = 'Submit Inquiry';
     btn.disabled = false;
-    alert('Thank you! Your inquiry has been received. Our team will contact you shortly.');
-  }, 800);
+  }
 }

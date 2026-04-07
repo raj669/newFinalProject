@@ -206,3 +206,60 @@ describe('Unmatched API paths', () => {
     assert.ok(data.error);
   });
 });
+
+// ── POST /api/contact ─────────────────────────────────────────────────────
+describe('POST /api/contact', () => {
+  const post = (body) => fetch(`${BASE}/api/contact`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(body),
+  });
+
+  test('returns 201 with a valid inquiry', async () => {
+    const res  = await post({ name: 'Ram Thapa', email: 'ram@example.com', message: 'I am interested.' });
+    assert.equal(res.status, 201);
+    const data = await res.json();
+    assert.equal(data.success, true);
+    assert.ok(typeof data.message === 'string');
+  });
+
+  test('returns 400 when name is missing', async () => {
+    const res = await post({ email: 'ram@example.com', message: 'Hi' });
+    assert.equal(res.status, 400);
+    const data = await res.json();
+    assert.ok(data.error);
+  });
+
+  test('returns 400 when email is missing', async () => {
+    const res = await post({ name: 'Ram', message: 'Hi' });
+    assert.equal(res.status, 400);
+    const data = await res.json();
+    assert.ok(data.error);
+  });
+
+  test('returns 400 when email is malformed', async () => {
+    const res = await post({ name: 'Ram', email: 'not-an-email', message: 'Hi' });
+    assert.equal(res.status, 400);
+    const data = await res.json();
+    assert.ok(data.error);
+  });
+
+  test('returns 400 when message is missing', async () => {
+    const res = await post({ name: 'Ram', email: 'ram@example.com' });
+    assert.equal(res.status, 400);
+    const data = await res.json();
+    assert.ok(data.error);
+  });
+
+  test('accepts optional phone and interest fields', async () => {
+    const res = await post({
+      name:     'Sita Sharma',
+      email:    'sita@example.com',
+      phone:    '+977-9801111222',
+      interest: 'buy',
+      message:  'Looking for a 3BHK in Kathmandu.',
+    });
+    assert.equal(res.status, 201);
+  });
+});
+

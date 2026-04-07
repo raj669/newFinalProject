@@ -21,7 +21,9 @@ app.use('/api', limiter);
 
 // Routes
 const propertiesRouter = require('./routes/properties');
+const contactRouter    = require('./routes/contact');
 app.use('/api/properties', propertiesRouter);
+app.use('/api/contact',    contactRouter);
 
 // Return JSON 404 for any unmatched /api/* path (prevents HTML falling through)
 app.use('/api', (req, res) => {

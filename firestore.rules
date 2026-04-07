@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Properties collection — public read, no client-side write
+    match /properties/{propertyId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Inquiries collection — public write (contact form), no client-side read
+    match /inquiries/{inquiryId} {
+      allow read:  if false;
+      allow create: if request.resource.data.keys().hasAll(['name','email','message'])
+                   && request.resource.data.name    is string
+                   && request.resource.data.name.size() <= 200
+                   && request.resource.data.email   is string
+                   && request.resource.data.email.size() <= 200
+                   && request.resource.data.message is string
+                   && request.resource.data.message.size() <= 2000;
+    }
+
+  }
+}
