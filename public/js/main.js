@@ -2,6 +2,11 @@
 
 const API = '/api/properties';
 
+// Active Firestore unsubscribe handles (cleared on re-load)
+let _unsubFeatured   = null;
+let _unsubProperties = null;
+let _unsubDetail     = null;
+
 // ── Utility: escape HTML to prevent XSS ──────────────────────────────────
 function esc(str) {
   return String(str)
@@ -58,13 +63,41 @@ let _propertiesController = null;
 async function loadFeatured() {
   const grid = document.getElementById('featuredGrid');
   if (!grid) return;
+
+  // Cancel any previous real-time listener
+  if (_unsubFeatured) { _unsubFeatured(); _unsubFeatured = null; }
+
+  function render(data) {
+    grid.innerHTML = data && data.length
+      ? data.map(renderCard).join('')
+      : '<p class="empty-state">No featured listings at the moment.</p>';
+  }
+
+  // ── Firestore real-time path ──────────────────────────────────────────
+  if (window.neListenProperties) {
+    grid.innerHTML = '<div class="spinner"></div>';
+    _unsubFeatured = window.neListenProperties({ featured: 'true' }, function (data) {
+      if (data === null) {
+        // Firestore error — fall back to REST
+        _unsubFeatured = null;
+        loadFeaturedREST(grid, render);
+      } else {
+        render(data);
+      }
+    });
+    return;
+  }
+
+  // ── REST API fallback ─────────────────────────────────────────────────
+  loadFeaturedREST(grid, render);
+}
+
+async function loadFeaturedREST(grid, render) {
+  grid.innerHTML = '<div class="spinner"></div>';
   try {
     const res  = await fetch(`${API}/featured`);
     if (!res.ok) throw new Error(res.status);
-    const data = await res.json();
-    grid.innerHTML = data.length
-      ? data.map(renderCard).join('')
-      : '<p class="empty-state">No featured listings at the moment.</p>';
+    render(await res.json());
   } catch {
     grid.innerHTML = '<p class="empty-state">Unable to load featured listings.</p>';
   }
@@ -85,12 +118,14 @@ async function loadProperties() {
   const countEl = document.getElementById('resultsCount');
   if (!grid) return;
 
-  // Cancel any in-flight request before starting a new one
+  // Cancel any previous real-time listener or in-flight request
+  if (_unsubProperties) { _unsubProperties(); _unsubProperties = null; }
   if (_propertiesController) _propertiesController.abort();
   _propertiesController = new AbortController();
 
   // Read current URL params
   const params = new URLSearchParams(window.location.search);
+  const filters = Object.fromEntries(params.entries());
 
   // Populate filter form from URL
   const form = document.getElementById('filterForm');
@@ -101,19 +136,39 @@ async function loadProperties() {
     }
   }
 
-  grid.innerHTML = '<div class="spinner"></div>';
-  if (countEl) countEl.textContent = 'Loading…';
-
-  try {
-    const res  = await fetch(`${API}?${params.toString()}`, { signal: _propertiesController.signal });
-    if (!res.ok) throw new Error(res.status);
-    const data = await res.json();
-
+  function render(data) {
     if (countEl) countEl.textContent = `Showing ${data.length} propert${data.length === 1 ? 'y' : 'ies'}`;
-
     grid.innerHTML = data.length
       ? data.map(renderCard).join('')
       : `<div class="empty-state"><div class="icon">🔍</div><p>No properties match your search. Try different filters.</p></div>`;
+  }
+
+  grid.innerHTML = '<div class="spinner"></div>';
+  if (countEl) countEl.textContent = 'Loading…';
+
+  // ── Firestore real-time path ──────────────────────────────────────────
+  if (window.neListenProperties) {
+    _unsubProperties = window.neListenProperties(filters, function (data) {
+      if (data === null) {
+        // Firestore error — fall back to REST
+        _unsubProperties = null;
+        loadPropertiesREST(grid, countEl, params, render);
+      } else {
+        render(data);
+      }
+    });
+    return;
+  }
+
+  // ── REST API fallback ─────────────────────────────────────────────────
+  loadPropertiesREST(grid, countEl, params, render);
+}
+
+async function loadPropertiesREST(grid, countEl, params, render) {
+  try {
+    const res  = await fetch(`${API}?${params.toString()}`, { signal: _propertiesController.signal });
+    if (!res.ok) throw new Error(res.status);
+    render(await res.json());
   } catch (err) {
     if (err.name === 'AbortError') return;
     if (countEl) countEl.textContent = '';
@@ -137,17 +192,19 @@ async function loadPropertyDetail() {
   const main = document.getElementById('propertyDetail');
   if (!main) return;
 
-  // Show error immediately when id is missing rather than leaving spinner
   if (!id) {
     main.innerHTML = '<div class="empty-state"><div class="icon">❌</div><p>No property selected.</p></div>';
     return;
   }
 
-  try {
-    const res = await fetch(`${API}/${encodeURIComponent(id)}`);
-    if (!res.ok) throw new Error(res.status);
-    const p   = await res.json();
+  // Cancel any previous real-time listener
+  if (_unsubDetail) { _unsubDetail(); _unsubDetail = null; }
 
+  function render(p) {
+    if (!p) {
+      main.innerHTML = '<div class="empty-state"><div class="icon">❌</div><p>Property not found.</p></div>';
+      return;
+    }
     const statusClass = p.status === 'sale' ? 'badge-sale' : 'badge-rent';
     const statusLabel = p.status === 'sale' ? 'For Sale' : 'For Rent';
     const img = p.images && p.images[0]
@@ -186,8 +243,34 @@ async function loadPropertyDetail() {
       <a href="tel:${esc(p.contact)}" class="btn btn-primary" style="display:inline-block">📞 ${esc(p.contact)}</a>
       <a href="/contact.html" class="btn btn-outline" style="display:inline-block;margin-left:.8rem">Send Inquiry</a>
     `;
+  }
+
+  // ── Firestore real-time path ──────────────────────────────────────────
+  if (window.neListenProperty) {
+    main.innerHTML = '<div class="spinner"></div>';
+    _unsubDetail = window.neListenProperty(Number(id), function (p) {
+      if (p === null && !window.neFirestore) {
+        // Firestore error — fall back to REST
+        _unsubDetail = null;
+        loadPropertyDetailREST(id, main, render);
+      } else {
+        render(p);
+      }
+    });
+    return;
+  }
+
+  // ── REST API fallback ─────────────────────────────────────────────────
+  loadPropertyDetailREST(id, main, render);
+}
+
+async function loadPropertyDetailREST(id, main, render) {
+  try {
+    const res = await fetch(`${API}/${encodeURIComponent(id)}`);
+    if (!res.ok) throw new Error(res.status);
+    render(await res.json());
   } catch {
-    main.innerHTML = '<div class="empty-state"><div class="icon">❌</div><p>Property not found.</p></div>';
+    render(null);
   }
 }
 
