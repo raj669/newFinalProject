@@ -31,7 +31,7 @@ function renderCard(p) {
     : `<div class="card-img-placeholder">🏠</div>`;
 
   return `
-    <a class="card" href="/property.html?id=${esc(p.id)}">
+    <a class="card" href="/property.html?id=${p.id}">
       ${img}
       <div class="card-body">
         <div class="card-badges">
@@ -154,7 +154,7 @@ async function loadPropertyDetail() {
       ? `<img class="property-detail-img" src="${esc(p.images[0])}" alt="${esc(p.title)}" />`
       : `<div class="card-img-placeholder" style="height:350px;border-radius:10px">🏠</div>`;
 
-    document.title = `${esc(p.title)} — NepalEstates`;
+    document.title = `${p.title} — NepalEstates`;
 
     main.innerHTML = `
       ${img}

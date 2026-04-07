@@ -13,10 +13,10 @@ let server;
 let BASE;
 
 before(async () => {
-  server = app.listen(TEST_PORT);
+  await new Promise(resolve => {
+    server = app.listen(TEST_PORT, resolve);
+  });
   BASE = `http://localhost:${TEST_PORT}`;
-  // Wait for server to be ready
-  await new Promise(resolve => server.once('listening', resolve));
 });
 
 after(async () => {
