@@ -2,6 +2,16 @@
 
 const API = '/api/properties';
 
+// ── Utility: escape HTML to prevent XSS ──────────────────────────────────
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ── Utility: format price in NPR (Crore / Lakh) ──────────────────────────
 function formatNPR(amount) {
   if (amount >= 10_000_000) return `NPR ${(amount / 10_000_000).toFixed(2)} Cr`;
@@ -17,29 +27,32 @@ function renderCard(p) {
   const statusClass = p.status === 'sale' ? 'badge-sale' : 'badge-rent';
   const statusLabel = p.status === 'sale' ? 'Buy' : 'Rent';
   const img = p.images && p.images[0]
-    ? `<img class="card-img" src="${p.images[0]}" alt="${p.title}" loading="lazy" />`
+    ? `<img class="card-img" src="${esc(p.images[0])}" alt="${esc(p.title)}" loading="lazy" />`
     : `<div class="card-img-placeholder">🏠</div>`;
 
   return `
-    <a class="card" href="/property.html?id=${p.id}">
+    <a class="card" href="/property.html?id=${esc(p.id)}">
       ${img}
       <div class="card-body">
         <div class="card-badges">
-          <span class="badge badge-type">${cap(p.type)}</span>
+          <span class="badge badge-type">${esc(cap(p.type))}</span>
           <span class="badge ${statusClass}">${statusLabel}</span>
           ${p.featured ? '<span class="badge badge-featured">⭐ Featured</span>' : ''}
         </div>
-        <h3 class="card-title">${p.title}</h3>
-        <p class="card-location">📍 ${p.city}, ${p.district}</p>
+        <h3 class="card-title">${esc(p.title)}</h3>
+        <p class="card-location">📍 ${esc(p.city)}, ${esc(p.district)}</p>
         <p class="card-price">${formatNPR(p.price)}${p.status === 'rent' ? '/mo' : ''}</p>
         <div class="card-meta">
-          ${p.bedrooms > 0 ? `<span>🛏 ${p.bedrooms} bd</span>` : ''}
-          ${p.bathrooms > 0 ? `<span>🚿 ${p.bathrooms} ba</span>` : ''}
-          <span>📐 ${p.area} ${p.areaUnit}</span>
+          ${p.bedrooms > 0 ? `<span>🛏 ${esc(p.bedrooms)} bd</span>` : ''}
+          ${p.bathrooms > 0 ? `<span>🚿 ${esc(p.bathrooms)} ba</span>` : ''}
+          <span>📐 ${esc(p.area)} ${esc(p.areaUnit)}</span>
         </div>
       </div>
     </a>`;
 }
+
+// ── AbortController for in-flight loadProperties requests ────────────────
+let _propertiesController = null;
 
 // ── Load featured properties (home page) ─────────────────────────────────
 async function loadFeatured() {
@@ -47,6 +60,7 @@ async function loadFeatured() {
   if (!grid) return;
   try {
     const res  = await fetch(`${API}/featured`);
+    if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     grid.innerHTML = data.length
       ? data.map(renderCard).join('')
@@ -67,9 +81,13 @@ function handleHeroSearch(e) {
 
 // ── Load & filter properties (properties.html) ───────────────────────────
 async function loadProperties() {
-  const grid     = document.getElementById('propertiesGrid');
-  const countEl  = document.getElementById('resultsCount');
+  const grid    = document.getElementById('propertiesGrid');
+  const countEl = document.getElementById('resultsCount');
   if (!grid) return;
+
+  // Cancel any in-flight request before starting a new one
+  if (_propertiesController) _propertiesController.abort();
+  _propertiesController = new AbortController();
 
   // Read current URL params
   const params = new URLSearchParams(window.location.search);
@@ -84,9 +102,11 @@ async function loadProperties() {
   }
 
   grid.innerHTML = '<div class="spinner"></div>';
+  if (countEl) countEl.textContent = 'Loading…';
 
   try {
-    const res  = await fetch(`${API}?${params.toString()}`);
+    const res  = await fetch(`${API}?${params.toString()}`, { signal: _propertiesController.signal });
+    if (!res.ok) throw new Error(res.status);
     const data = await res.json();
 
     if (countEl) countEl.textContent = `Showing ${data.length} propert${data.length === 1 ? 'y' : 'ies'}`;
@@ -94,7 +114,9 @@ async function loadProperties() {
     grid.innerHTML = data.length
       ? data.map(renderCard).join('')
       : `<div class="empty-state"><div class="icon">🔍</div><p>No properties match your search. Try different filters.</p></div>`;
-  } catch {
+  } catch (err) {
+    if (err.name === 'AbortError') return;
+    if (countEl) countEl.textContent = '';
     grid.innerHTML = '<div class="empty-state"><p>Unable to load properties. Please try again.</p></div>';
   }
 }
@@ -113,27 +135,33 @@ function handleFilter(e) {
 async function loadPropertyDetail() {
   const id   = new URLSearchParams(window.location.search).get('id');
   const main = document.getElementById('propertyDetail');
-  if (!main || !id) return;
+  if (!main) return;
+
+  // Show error immediately when id is missing rather than leaving spinner
+  if (!id) {
+    main.innerHTML = '<div class="empty-state"><div class="icon">❌</div><p>No property selected.</p></div>';
+    return;
+  }
 
   try {
-    const res = await fetch(`${API}/${id}`);
+    const res = await fetch(`${API}/${encodeURIComponent(id)}`);
     if (!res.ok) throw new Error(res.status);
     const p   = await res.json();
 
     const statusClass = p.status === 'sale' ? 'badge-sale' : 'badge-rent';
     const statusLabel = p.status === 'sale' ? 'For Sale' : 'For Rent';
     const img = p.images && p.images[0]
-      ? `<img class="property-detail-img" src="${p.images[0]}" alt="${p.title}" />`
+      ? `<img class="property-detail-img" src="${esc(p.images[0])}" alt="${esc(p.title)}" />`
       : `<div class="card-img-placeholder" style="height:350px;border-radius:10px">🏠</div>`;
 
-    document.title = `${p.title} — NepalEstates`;
+    document.title = `${esc(p.title)} — NepalEstates`;
 
     main.innerHTML = `
       ${img}
-      <h1 style="font-size:1.6rem;font-weight:700;color:#0f172a;margin-bottom:.5rem">${p.title}</h1>
-      <p style="color:#64748b;margin-bottom:.5rem">📍 ${p.address}, ${p.city}, ${p.district}</p>
+      <h1 style="font-size:1.6rem;font-weight:700;color:#0f172a;margin-bottom:.5rem">${esc(p.title)}</h1>
+      <p style="color:#64748b;margin-bottom:.5rem">📍 ${esc(p.address)}, ${esc(p.city)}, ${esc(p.district)}</p>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
-        <span class="badge badge-type">${cap(p.type)}</span>
+        <span class="badge badge-type">${esc(cap(p.type))}</span>
         <span class="badge ${statusClass}">${statusLabel}</span>
         ${p.featured ? '<span class="badge badge-featured">⭐ Featured</span>' : ''}
       </div>
@@ -141,21 +169,21 @@ async function loadPropertyDetail() {
         ${formatNPR(p.price)}${p.status === 'rent' ? '<span style="font-size:1rem;color:#64748b"> /month</span>' : ''}
       </p>
       <div class="property-attrs">
-        ${p.bedrooms > 0 ? `<div class="attr-item"><span class="attr-label">Bedrooms</span><span class="attr-value">🛏 ${p.bedrooms}</span></div>` : ''}
-        ${p.bathrooms > 0 ? `<div class="attr-item"><span class="attr-label">Bathrooms</span><span class="attr-value">🚿 ${p.bathrooms}</span></div>` : ''}
-        <div class="attr-item"><span class="attr-label">Area</span><span class="attr-value">📐 ${p.area} ${p.areaUnit}</span></div>
-        <div class="attr-item"><span class="attr-label">City</span><span class="attr-value">🏙 ${p.city}</span></div>
-        <div class="attr-item"><span class="attr-label">District</span><span class="attr-value">${p.district}</span></div>
-        <div class="attr-item"><span class="attr-label">Listed</span><span class="attr-value">${p.listedDate}</span></div>
+        ${p.bedrooms > 0 ? `<div class="attr-item"><span class="attr-label">Bedrooms</span><span class="attr-value">🛏 ${esc(p.bedrooms)}</span></div>` : ''}
+        ${p.bathrooms > 0 ? `<div class="attr-item"><span class="attr-label">Bathrooms</span><span class="attr-value">🚿 ${esc(p.bathrooms)}</span></div>` : ''}
+        <div class="attr-item"><span class="attr-label">Area</span><span class="attr-value">📐 ${esc(p.area)} ${esc(p.areaUnit)}</span></div>
+        <div class="attr-item"><span class="attr-label">City</span><span class="attr-value">🏙 ${esc(p.city)}</span></div>
+        <div class="attr-item"><span class="attr-label">District</span><span class="attr-value">${esc(p.district)}</span></div>
+        <div class="attr-item"><span class="attr-label">Listed</span><span class="attr-value">${esc(p.listedDate)}</span></div>
       </div>
       <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 .5rem">Description</h3>
-      <p style="color:#374151;line-height:1.7">${p.description}</p>
+      <p style="color:#374151;line-height:1.7">${esc(p.description)}</p>
       <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 .5rem">Features</h3>
       <div class="features-list">
-        ${(p.features || []).map(f => `<span class="feature-tag">${f}</span>`).join('')}
+        ${(p.features || []).map(f => `<span class="feature-tag">${esc(f)}</span>`).join('')}
       </div>
       <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 .5rem">Contact Agent</h3>
-      <a href="tel:${p.contact}" class="btn btn-primary" style="display:inline-block">📞 ${p.contact}</a>
+      <a href="tel:${esc(p.contact)}" class="btn btn-primary" style="display:inline-block">📞 ${esc(p.contact)}</a>
       <a href="/contact.html" class="btn btn-outline" style="display:inline-block;margin-left:.8rem">Send Inquiry</a>
     `;
   } catch {
@@ -171,7 +199,7 @@ function handleContactSubmit(e) {
   btn.disabled = true;
   setTimeout(() => {
     e.target.reset();
-    btn.textContent = 'Submit';
+    btn.textContent = 'Submit Inquiry';
     btn.disabled = false;
     alert('Thank you! Your inquiry has been received. Our team will contact you shortly.');
   }, 800);

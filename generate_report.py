@@ -247,6 +247,9 @@ def build(lines: list) -> Document:
     code_lines: list = []
     md_table_rows: list = []
     chapter_section_created = False
+    # Track whether the first horizontal rule (title-page divider) has been seen.
+    # Only the metadata lines before that divider should be centred.
+    past_first_divider = False
 
     i = 0
     while i < len(lines):
@@ -285,6 +288,9 @@ def build(lines: list) -> Document:
         # ── Horizontal rule / blank ──────────────────────────────────────────
         stripped = raw.strip()
         if stripped in ("---", "***", "___") or not stripped:
+            # Mark that we are past the title-page divider on the first `---`
+            if stripped == "---" and not past_first_divider:
+                past_first_divider = True
             i += 1; continue
 
         # ── H1: document title ───────────────────────────────────────────────
@@ -383,9 +389,11 @@ def build(lines: list) -> Document:
 
         # ── Regular paragraph (including bold metadata cover lines) ──────────
         p = doc.add_paragraph()
-        # Cover-page metadata: centred, no extra space
-        if stripped.startswith("**") and (stripped.endswith("  ") or
-                                           re.match(r'^\*\*.+\*\*', stripped)):
+        # Cover-page metadata: centred, no extra space.
+        # Only apply centering to bold lines that appear before the first `---`
+        # divider (the title-page block). Body paragraphs starting with **bold**
+        # must not be centred.
+        if not past_first_divider and stripped.startswith("**"):
             _para_fmt(p, align=WD_ALIGN_PARAGRAPH.CENTER,
                       before=Pt(0), after=Pt(4), ls=1.5)
         else:
