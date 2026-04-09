@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contact the NepalEstates team. Send an inquiry about buying, renting, or selling property in Nepal." />
   <title>Contact Us – NepalEstates</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>" />
   <link rel="stylesheet" href="/css/styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <nav class="navbar">
+  <nav class="navbar" aria-label="Main navigation">
     <div class="nav-brand">🏠 NepalEstates</div>
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
@@ -30,15 +32,15 @@
       <form class="contact-form" id="contactForm">
         <div class="form-group">
           <label for="name">Full Name *</label>
-          <input type="text" id="name" name="name" placeholder="Ram Bahadur Thapa" required />
+          <input type="text" id="name" name="name" placeholder="Ram Bahadur Thapa" required aria-required="true" autocomplete="name" />
         </div>
         <div class="form-group">
           <label for="email">Email Address *</label>
-          <input type="email" id="email" name="email" placeholder="ram@example.com" required />
+          <input type="email" id="email" name="email" placeholder="ram@example.com" required aria-required="true" autocomplete="email" />
         </div>
         <div class="form-group">
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" placeholder="+977-9800000000" />
+          <input type="tel" id="phone" name="phone" placeholder="+977-9800000000" autocomplete="tel" />
         </div>
         <div class="form-group">
           <label for="interest">I am interested in</label>
@@ -52,9 +54,10 @@
         </div>
         <div class="form-group">
           <label for="message">Message *</label>
-          <textarea id="message" name="message" placeholder="Tell us what you are looking for…" required></textarea>
+          <textarea id="message" name="message" placeholder="Tell us what you are looking for…" required aria-required="true"></textarea>
         </div>
         <button type="submit" class="btn btn-primary" style="width:100%">Submit Inquiry</button>
+        <p id="contactStatus" class="contact-status" aria-live="polite"></p>
       </form>
     </div>
 
@@ -75,13 +78,20 @@
   </div>
 
   <footer class="footer">
-    <p>&copy; 2024 NepalEstates. All rights reserved.</p>
+    <p>&copy; 2026 NepalEstates. All rights reserved.</p>
     <p>Kathmandu, Nepal | info@nepalestates.com.np | +977-01-4123456</p>
   </footer>
 
+  <!-- Firebase client SDK (compat) + app config — enables real-time Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="/js/firebase-config.js"></script>
+  <script src="/js/firebase-client.js"></script>
   <script src="/js/main.js"></script>
   <script>
-    document.getElementById('contactForm').addEventListener('submit', handleContactSubmit);
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('contactForm').addEventListener('submit', handleContactSubmit);
+    });
   </script>
 </body>
 </html>

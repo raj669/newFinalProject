@@ -41,7 +41,7 @@ NepalEstates is a full-stack real estate property listing web application purpos
   - [4.2 Testing](#42-testing)
 - [Chapter 5: Conclusion and Future Recommendations](#chapter-5-conclusion-and-future-recommendations)
   - [5.1 Conclusion](#51-conclusion)
-  - [5.2 Lesson Learnt / Outcome](#52-lesson-learnt--outcome)
+  - [5.2 Lesson Learnt / Outcome](#52-lesson-learnt-outcome)
   - [5.3 Future Recommendations](#53-future-recommendations)
 - [References](#references)
 

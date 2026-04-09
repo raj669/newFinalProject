@@ -244,6 +244,9 @@ ul { list-style: none; }
 .contact-form textarea { resize: vertical; min-height: 120px; }
 .contact-info p { margin-bottom: .8rem; font-size: .95rem; }
 .contact-info strong { color: #0f172a; }
+.contact-status { margin-top: .75rem; font-size: .9rem; font-weight: 600; min-height: 1.2em; }
+.contact-status--ok  { color: #16a34a; }
+.contact-status--err { color: #dc2626; }
 
 /* ── Page header ─────────────────────────────────────────────────────────── */
 .page-header {

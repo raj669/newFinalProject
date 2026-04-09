@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NepalEstates project report – full BScCSIT final-year project documentation covering system analysis, design, implementation, and testing." />
   <title>NepalEstates – Project Report</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>" />
   <style>
     /* ── Reset & Base ─────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,12 +37,11 @@
       position: sticky;
       top: 0;
       z-index: 999;
-      print-color-adjust: exact;
     }
     .topbar a { color: #e2e8f0; text-decoration: none; font-family: Inter, sans-serif; font-size: .9rem; }
-    .topbar a:hover { color: #dc2626; }
-    .topbar .brand { font-family: "Playfair Display", serif; font-size: 1.1rem; font-weight: 700; }
-    .topbar nav { display: flex; gap: 1.5rem; }
+    .topbar a:hover, .topbar a.active { color: #fbbf24; }
+    .topbar .brand { font-family: "Playfair Display", serif; font-size: 1.1rem; font-weight: 700; color: #fff; }
+    .topbar .topbar-links { display: flex; gap: 1.5rem; }
     .topbar .download-btn {
       background: #dc2626; color: #fff; border: none; padding: .4rem 1rem;
       border-radius: 4px; cursor: pointer; font-size: .85rem; font-family: Inter, sans-serif;
@@ -218,23 +219,23 @@
       .title-block { padding: 2rem 0 1.5rem; }
       .title-block h1 { font-size: 1.4rem; }
       .report-content h2 { font-size: 1.25rem; }
-      .topbar nav { gap: .8rem; }
+      .topbar .topbar-links { gap: .8rem; }
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 </head>
 <body>
   <!-- Top navigation bar -->
-  <div class="topbar">
+  <nav class="topbar" aria-label="Main navigation">
     <a class="brand" href="/">🏠 NepalEstates</a>
-    <nav>
+    <div class="topbar-links">
       <a href="/">Home</a>
       <a href="/properties.html">Properties</a>
       <a href="/contact.html">Contact</a>
-      <a href="/report.html" style="color:#fbbf24;font-weight:600;">Report</a>
-    </nav>
+      <a href="/report.html" class="active">Report</a>
+    </div>
     <button class="download-btn" onclick="window.print()">⬇ Print / Save PDF</button>
-  </div>
+  </nav>
 
   <div class="page-wrapper">
     <div class="report-body">
@@ -275,7 +276,7 @@
 <li><a href="#42-testing">4.2 Testing</a></li>
 <li><a href="#chapter-5-conclusion-and-future-recommendations">Chapter 5: Conclusion and Future Recommendations</a></li>
 <li><a href="#51-conclusion">5.1 Conclusion</a></li>
-<li><a href="#52-lesson-learnt--outcome">5.2 Lesson Learnt / Outcome</a></li>
+<li><a href="#52-lesson-learnt-outcome">5.2 Lesson Learnt / Outcome</a></li>
 <li><a href="#53-future-recommendations">5.3 Future Recommendations</a></li>
 <li><a href="#references">References</a></li>
 </ul>
